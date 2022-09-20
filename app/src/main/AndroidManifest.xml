@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.siemas">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="true"
+        android:requiredFeature="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/siemas"
+        android:label="Siemas 2022"
+        android:roundIcon="@drawable/siemas"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Siemas"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".Activities.FormInput212Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Input212Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ReportPmlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.InputPemeriksaanPmlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PemeriksaanPmlDsrtActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PemeriksaanPmlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ReportPclActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DirectoryDsrtActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PemeriksaanPclDsrtActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.EditPencacahanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DirectoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.InputPemeriksaanPclActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PemeriksaanPclActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.InputPencacahanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PencacahanDsrtActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.PencacahanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DsbsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.MainActivityPML"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".AlarmReceiver" />
+    </application>
+
+</manifest>

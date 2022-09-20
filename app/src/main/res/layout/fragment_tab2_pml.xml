@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Tab2PmlFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/titleTable2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:padding="10dp"
+            android:text="PROGRESS PELAPORAN 2-1-2"
+            android:textStyle="bold"></TextView>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/containerTable2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical|horizontal">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical|horizontal">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TableLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:background="@color/orange_pastel">
+
+                                <TextView
+                                    android:layout_width="120dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="BLOK SENSUS"
+                                    android:textStyle="bold"></TextView>
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="TARGET"
+                                    android:textStyle="bold"></TextView>
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="ENTRI"
+                                    android:textStyle="bold"></TextView>
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="UPLOAD"
+                                    android:textStyle="bold"></TextView>
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="% ENTRI"
+                                    android:textStyle="bold"></TextView>
+
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_column="1"
+                                    android:background="@drawable/cell_shape"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="% UPLOAD"
+                                    android:textStyle="bold"></TextView>
+                            </TableRow>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerTable2Pml"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:listitem="@layout/table1_item"></androidx.recyclerview.widget.RecyclerView>
+                        </TableLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </HorizontalScrollView>
+            </ScrollView>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</FrameLayout>

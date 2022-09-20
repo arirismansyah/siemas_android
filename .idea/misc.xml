@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../.gradle/caches/transforms-3/7590ad9ed403b7792fca0ccb60f5c888/transformed/appcompat-1.3.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/drawable-v24/bg_button.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable-v24/bg_header.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable-v24/bg_header_main.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable-v24/bg_input.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable-v24/ic_eye.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable-v24/ic_eye_off.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/bg_input_grey.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/bg_tag.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/cell_shape.xml" value="0.159" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_tag_notyet.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_tag_saved.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_tag_savedlocal.xml" value="0.2085" />
+        <entry key="app/src/main/res/drawable/ic_upload.xml" value="0.1075" />
+        <entry key="app/src/main/res/drawable/logo_wrapper.xml" value="0.2085" />
+        <entry key="app/src/main/res/layout/activity_directory.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_directory_dsrt.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_dsbs.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_edit_pencacahan.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_form_input212.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_input212_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_input_pemeriksaan_pcl.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_input_pemeriksaan_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_input_pencacah.xml" value="0.10625" />
+        <entry key="app/src/main/res/layout/activity_input_pencacahan.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_main_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_pemeriksaan_pcl.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_pemeriksaan_pcl_dsrt.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_pemeriksaan_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_pemeriksaan_pml_dsrt.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_pencacahan.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_pencacahan_dsrt.xml" value="0.28072916666666664" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/activity_report_pcl.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_report_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/calendar_day_layout.xml" value="0.15416666666666667" />
+        <entry key="app/src/main/res/layout/dsbs_direktori_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/dsbs_pemeriksaan_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsbs_pencacahan_item.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/dsbs_table_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsrt_direktori_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsrt_laporan_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsrt_pemeriksaan_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsrt_pemeriksaan_pml_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/dsrt_pencacahan_item.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/fragment_tab1_pml.xml" value="0.28072916666666664" />
+        <entry key="app/src/main/res/layout/fragment_tab2_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/fragment_tab3_pml.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/fragment_table1.xml" value="0.24162257495590828" />
+        <entry key="app/src/main/res/layout/fragment_table2.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/fragment_table3.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/getfoto_dialog.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/getfoto_sheetlayout.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/spinner_textview.xml" value="0.28804347826086957" />
+        <entry key="app/src/main/res/layout/table1_item.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/table2_item.xml" value="0.28804347826086957" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.1" />
+      </ProjectState>
+    </option>
+  </component>
+</project>
