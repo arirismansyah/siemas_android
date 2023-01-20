@@ -37,13 +37,19 @@ public class Dsbs {
     @ColumnInfo(name = "nks")
     public String nks;
 
+    @ColumnInfo(name = "tahun")
+    public String tahun;
+
+    @ColumnInfo(name = "semester")
+    public int semester;
+
     @ColumnInfo(name = "status")
     @Nullable
     public int status;
 
-    @ColumnInfo(name = "jml_rt_c1")
+    @ColumnInfo(name = "jml_rt")
     @Nullable
-    public int jml_rt_c1;
+    public int jml_rt;
 
     @ColumnInfo(name = "sumber")
     @Nullable
@@ -57,7 +63,8 @@ public class Dsbs {
     @Nullable
     public String pengawas;
 
-    public Dsbs(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String nbs, String id_bs, String nks, int status, int jml_rt_c1, @Nullable String sumber, @Nullable String pencacah, @Nullable String pengawas) {
+
+    public Dsbs(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String nbs, String id_bs, String nks, String tahun, int semester, int status, int jml_rt, @Nullable String sumber, @Nullable String pencacah, @Nullable String pengawas) {
         this.id = id;
         this.kd_kab = kd_kab;
         this.nama_kab = nama_kab;
@@ -68,12 +75,16 @@ public class Dsbs {
         this.nbs = nbs;
         this.id_bs = id_bs;
         this.nks = nks;
+        this.tahun = tahun;
+        this.semester = semester;
         this.status = status;
-        this.jml_rt_c1 = jml_rt_c1;
+        this.jml_rt = jml_rt;
         this.sumber = sumber;
         this.pencacah = pencacah;
         this.pengawas = pengawas;
     }
+
+
 
     public int getId() {
         return id;
@@ -155,6 +166,22 @@ public class Dsbs {
         this.nks = nks;
     }
 
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -163,12 +190,12 @@ public class Dsbs {
         this.status = status;
     }
 
-    public int getJml_rt_c1() {
-        return jml_rt_c1;
+    public int getJml_rt() {
+        return jml_rt;
     }
 
-    public void setJml_rt_c1(int jml_rt_c1) {
-        this.jml_rt_c1 = jml_rt_c1;
+    public void setJml_rt(int jml_rt) {
+        this.jml_rt = jml_rt;
     }
 
     @Nullable

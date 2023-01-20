@@ -10,15 +10,18 @@ import androidx.lifecycle.LiveData;
 
 import com.example.siemas.InterfaceApi;
 import com.example.siemas.RetrofitClientInstance;
+import com.example.siemas.RoomDatabase.Dao.DsartDao;
 import com.example.siemas.RoomDatabase.Dao.DsbsDao;
 import com.example.siemas.RoomDatabase.Dao.DsrtDao;
 import com.example.siemas.RoomDatabase.Dao.Jadwal212Dao;
 import com.example.siemas.RoomDatabase.Dao.KegiatanUtamaDao;
 import com.example.siemas.RoomDatabase.Dao.Laporan212Dao;
 import com.example.siemas.RoomDatabase.Dao.PendidikanDao;
+import com.example.siemas.RoomDatabase.Dao.PeriodeDao;
 import com.example.siemas.RoomDatabase.Dao.StatusDao;
 import com.example.siemas.RoomDatabase.Dao.StatusRumahDao;
 import com.example.siemas.RoomDatabase.Dao.UserDao;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Jadwal212;
@@ -46,6 +49,7 @@ import retrofit2.Response;
 
 public class Repository {
     private UserDao userDao;
+    private DsartDao dsartDao;
     private DsbsDao dsbsDao;
     private DsrtDao dsrtDao;
     private StatusRumahDao statusRumahDao;
@@ -55,10 +59,13 @@ public class Repository {
     private Jadwal212Dao jadwal212Dao;
     private Laporan212Dao laporan212Dao;
 
+    private PeriodeDao periodeDao;
+
     public Repository(Application application) {
         LocalDatabase ldb = LocalDatabase.getLocalDatabase(application);
         this.userDao = ldb.userDao();
         this.dsbsDao = ldb.dsbsDao();
+        this.dsartDao = ldb.dsartDao();
         this.dsrtDao = ldb.dsrtDao();
         this.statusRumahDao = ldb.statusRumahDao();
         this.pendidikanDao = ldb.pendidikanDao();
@@ -66,6 +73,7 @@ public class Repository {
         this.kegiatanUtamaDao = ldb.kegiatanUtamaDao();
         this.jadwal212Dao = ldb.jadwal212Dao();
         this.laporan212Dao = ldb.laporan212Dao();
+        this.periodeDao = ldb.periodeDao();
     }
 
 
@@ -171,8 +179,10 @@ public class Repository {
                                     ob.getString("nbs"),
                                     ob.getString("id_bs"),
                                     ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
                                     status,
-                                    ob.getInt("jumlah_rt_c1"),
+                                    ob.getInt("jml_rt"),
                                     ob.getString("sumber"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas")
@@ -236,8 +246,10 @@ public class Repository {
                                     ob.getString("nbs"),
                                     ob.getString("id_bs"),
                                     ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
                                     status,
-                                    ob.getInt("jumlah_rt_c1"),
+                                    ob.getInt("jml_rt"),
                                     ob.getString("sumber"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas")
@@ -468,12 +480,18 @@ public class Repository {
                             if (!ob.getString("gsmp").equals("null")) {
                                 gsmp = ob.getInt("gsmp");
                             }
-
-                            int jumlah_rt_c1 = 0;
-                            if (!ob.getString("jumlah_rt_c1").equals("null")) {
-                                jumlah_rt_c1 = ob.getInt("jumlah_rt_c1");
+                            int status_res = 0 ;
+                            if (!ob.getString("status_res").equals("null")) {
+                                gsmp = ob.getInt("status_res");
                             }
-
+                            int jml_komoditas_makanan = 0 ;
+                            if (!ob.getString("jml_komoditas_makanan").equals("null")) {
+                                gsmp = ob.getInt("jml_komoditas_makanan");
+                            }
+                            int jml_komoditas_nonmakanan = 0 ;
+                            if (!ob.getString("jml_komoditas_nonmakanan").equals("null")) {
+                                gsmp = ob.getInt("jml_komoditas_nonmakanan");
+                            }
 
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
@@ -485,8 +503,10 @@ public class Repository {
                                     ob.getString("nama_desa"),
                                     ob.getString("id_bs"),
                                     ob.getString("nks"),
-                                    ob.getInt("nu_rt"),
+                                    ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getInt("nu_rt"),
+                                    status_pencacahan,
                                     ob.getString("alamat"),
                                     ob.getString("nuc1"),
                                     ob.getString("nama_krt"),
@@ -494,8 +514,12 @@ public class Repository {
                                     ob.getString("nama_krt2"),
                                     jml_art2,
                                     ob.getString("status_rumah"),
+                                    jml_komoditas_makanan,
+                                    jml_komoditas_nonmakanan,
                                     ob.getString("makanan_sebulan"),
                                     ob.getString("nonmakanan_sebulan"),
+                                    ob.getString("makanan_sebulan_bypml"),
+                                    ob.getString("nonmakanan_sebulan_bypml"),
                                     ob.getString("transportasi"),
                                     ob.getString("peliharaan"),
                                     art_sekolah,
@@ -504,7 +528,6 @@ public class Repository {
                                     ob.getString("kegiatan_seminggu"),
                                     ob.getString("deskripsi_kegiatan"),
                                     luas_lantai,
-                                    status_pencacahan,
                                     gsmp,
                                     ob.getString("foto"),
                                     ob.getString("latitude"),
@@ -516,7 +539,6 @@ public class Repository {
                                     ob.getString("durasi_pencacahan"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas"),
-                                    jumlah_rt_c1,
                                     ob.getString("sumber")
                             );
                             dsrtList.add(dsrt);
@@ -600,10 +622,17 @@ public class Repository {
                             if (!ob.getString("gsmp").equals("null")) {
                                 gsmp = ob.getInt("gsmp");
                             }
-
-                            int jumlah_rt_c1 = 0;
-                            if (!ob.getString("jumlah_rt_c1").equals("null")) {
-                                jumlah_rt_c1 = ob.getInt("jumlah_rt_c1");
+                            int status_res = 0 ;
+                            if (!ob.getString("status_res").equals("null")) {
+                                gsmp = ob.getInt("status_res");
+                            }
+                            int jml_komoditas_makanan = 0 ;
+                            if (!ob.getString("jml_komoditas_makanan").equals("null")) {
+                                gsmp = ob.getInt("jml_komoditas_makanan");
+                            }
+                            int jml_komoditas_nonmakanan = 0 ;
+                            if (!ob.getString("jml_komoditas_nonmakanan").equals("null")) {
+                                gsmp = ob.getInt("jml_komoditas_nonmakanan");
                             }
 
 
@@ -617,8 +646,10 @@ public class Repository {
                                     ob.getString("nama_desa"),
                                     ob.getString("id_bs"),
                                     ob.getString("nks"),
-                                    ob.getInt("nu_rt"),
+                                    ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getInt("nu_rt"),
+                                    status_pencacahan,
                                     ob.getString("alamat"),
                                     ob.getString("nuc1"),
                                     ob.getString("nama_krt"),
@@ -626,8 +657,12 @@ public class Repository {
                                     ob.getString("nama_krt2"),
                                     jml_art2,
                                     ob.getString("status_rumah"),
+                                    jml_komoditas_makanan,
+                                    jml_komoditas_nonmakanan,
                                     ob.getString("makanan_sebulan"),
                                     ob.getString("nonmakanan_sebulan"),
+                                    ob.getString("makanan_sebulan_bypml"),
+                                    ob.getString("nonmakanan_sebulan_bypml"),
                                     ob.getString("transportasi"),
                                     ob.getString("peliharaan"),
                                     art_sekolah,
@@ -636,7 +671,6 @@ public class Repository {
                                     ob.getString("kegiatan_seminggu"),
                                     ob.getString("deskripsi_kegiatan"),
                                     luas_lantai,
-                                    status_pencacahan,
                                     gsmp,
                                     ob.getString("foto"),
                                     ob.getString("latitude"),
@@ -648,7 +682,6 @@ public class Repository {
                                     ob.getString("durasi_pencacahan"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas"),
-                                    jumlah_rt_c1,
                                     ob.getString("sumber")
                             );
                             dsrtList.add(dsrt);

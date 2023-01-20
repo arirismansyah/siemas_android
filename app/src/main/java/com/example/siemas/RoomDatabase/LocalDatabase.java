@@ -9,31 +9,38 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.siemas.RoomDatabase.Dao.DsartDao;
 import com.example.siemas.RoomDatabase.Dao.DsbsDao;
 import com.example.siemas.RoomDatabase.Dao.DsrtDao;
 import com.example.siemas.RoomDatabase.Dao.Jadwal212Dao;
 import com.example.siemas.RoomDatabase.Dao.KegiatanUtamaDao;
 import com.example.siemas.RoomDatabase.Dao.Laporan212Dao;
 import com.example.siemas.RoomDatabase.Dao.PendidikanDao;
+import com.example.siemas.RoomDatabase.Dao.PeriodeDao;
 import com.example.siemas.RoomDatabase.Dao.StatusDao;
 import com.example.siemas.RoomDatabase.Dao.StatusRumahDao;
 import com.example.siemas.RoomDatabase.Dao.UserDao;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Jadwal212;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
 import com.example.siemas.RoomDatabase.Entities.Pendidikan;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.Status;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.Entities.User;
 
-@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class}, version = 12)
+
+
+@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class, Periode.class, Dsart.class}, version = 13)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase localDatabase;
     public static final String databaseName = "siemas";
 
     public abstract UserDao userDao();
+    public abstract DsartDao dsartDao();
     public abstract DsbsDao dsbsDao();
     public abstract DsrtDao dsrtDao();
     public abstract StatusRumahDao statusRumahDao();
@@ -42,6 +49,8 @@ public abstract class LocalDatabase extends RoomDatabase {
     public abstract KegiatanUtamaDao kegiatanUtamaDao();
     public abstract Jadwal212Dao jadwal212Dao();
     public abstract Laporan212Dao laporan212Dao();
+
+    public abstract PeriodeDao periodeDao();
 
     public static synchronized LocalDatabase getLocalDatabase(Context context){
         if(localDatabase == null){
@@ -59,7 +68,6 @@ public abstract class LocalDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateStatusAsync(localDatabase).execute();
-
 
         }
     };
