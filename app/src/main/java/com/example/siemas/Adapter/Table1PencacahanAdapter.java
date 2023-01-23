@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class Table1PencacahanAdapter extends RecyclerView.Adapter<Table1Pencacah
     private List<Dsrt> dsrtList = new ArrayList<>();
     private List<Dsrt> dsrtListEntri = new ArrayList<>();
     private List<Dsrt> dsrtListUpload = new ArrayList<>();
+    private List<Periode> periodeList;
 
     public Table1PencacahanAdapter(ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -42,9 +44,11 @@ public class Table1PencacahanAdapter extends RecyclerView.Adapter<Table1Pencacah
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (dsbsList != null && dsbsList.size()>0){
             Dsbs dsbsCurrent = dsbsList.get(position);
-            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs());
-            dsrtListEntri = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 0);
-            dsrtListUpload = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 3);
+            periodeList = viewModel.getPeriode();
+            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs(),periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+
+            dsrtListEntri = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 0, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+            dsrtListUpload = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
 
             holder.tvNbs.setText(dsbsCurrent.getId_bs());
             holder.tvTarget.setText(String.valueOf(dsrtList.size()));

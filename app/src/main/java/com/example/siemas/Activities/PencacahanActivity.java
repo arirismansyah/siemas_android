@@ -17,6 +17,7 @@ import com.example.siemas.Adapter.DsbsPencacahanAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class PencacahanActivity extends AppCompatActivity {
     private DsbsPencacahanAdapter dsbsPencacahanAdapter;
     private List<Dsrt> dsrtListBelum, dsrtListSudah;
     private LinearLayoutCompat containerEmpty;
+
+    private List<Periode> periode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +47,11 @@ public class PencacahanActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
-
+        periode = viewModel.getPeriode();
 
         dsbsPencacahanAdapter = new DsbsPencacahanAdapter(viewModel);
         recyclerView.setAdapter(dsbsPencacahanAdapter);
-        viewModel.getLiveDataDsbs().observe(this, new Observer<List<Dsbs>>() {
+        viewModel.getLiveDataDsbs(periode.get(0).getTahun(), periode.get(0).getSemester()).observe(this, new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 if (dsbs.size()>0){

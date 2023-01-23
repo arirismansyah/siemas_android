@@ -17,6 +17,7 @@ import com.example.siemas.Adapter.DsbsDirektoriPclAdapter;
 import com.example.siemas.Adapter.DsbsPemeriksaanPclAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public class DirectoryActivity extends AppCompatActivity {
     private ViewModel viewModel;
     private DsbsDirektoriPclAdapter adapter;
     private LinearLayoutCompat containerEmpty;
+
+    private List<Periode> periodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +47,10 @@ public class DirectoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
-
+        periodeList = viewModel.getPeriode();
         adapter = new DsbsDirektoriPclAdapter(viewModel);
         recyclerView.setAdapter(adapter);
-        viewModel.getLiveDataDsbs().observe(this, new Observer<List<Dsbs>>() {
+        viewModel.getLiveDataDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 if (dsbs.size()>0){

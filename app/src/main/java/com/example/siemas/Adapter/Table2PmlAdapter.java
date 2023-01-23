@@ -12,6 +12,7 @@ import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Table2PmlAdapter extends RecyclerView.Adapter<Table2PmlAdapter.View
     private List<Dsrt> dsrtList = new ArrayList<>();
     private List<Laporan212> laporanEntriList = new ArrayList<>();
     private List<Laporan212> laporanUploadList = new ArrayList<>();
-
+    private List<Periode> periodeList;
     public Table2PmlAdapter(ViewModel viewModel) {
         this.viewModel = viewModel;
     }
@@ -40,7 +41,8 @@ public class Table2PmlAdapter extends RecyclerView.Adapter<Table2PmlAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (dsbsList != null && dsbsList.size()>0){
             Dsbs dsbsCurrent = dsbsList.get(position);
-            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs());
+            periodeList = viewModel.getPeriode();
+            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs(),periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
             laporanEntriList = viewModel.getListLaporanByIdBsStatusUp(dsbsCurrent.getId_bs(), 0);
             laporanUploadList = viewModel.getListLaporanByIdBsStatus(dsbsCurrent.getId_bs(), 2);
 

@@ -28,6 +28,7 @@ import com.example.siemas.RoomDatabase.Entities.Jadwal212;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
 import com.example.siemas.RoomDatabase.Entities.Pendidikan;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.Status;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.Entities.User;
@@ -303,20 +304,24 @@ public class Repository {
     // get list dsbs
     public static class getListDsbs extends AsyncTask<Void, Void, List<Dsbs>> {
         private DsbsDao dsbsDao;
+        private String tahun;
+        private int semester;
 
-        public getListDsbs(DsbsDao dsbsDao) {
+        public getListDsbs(DsbsDao dsbsDao, String tahun, int semester) {
             this.dsbsDao = dsbsDao;
+            this.tahun = tahun;
+            this.semester = semester;
         }
 
         @Override
         protected List<Dsbs> doInBackground(Void... voids) {
-            return dsbsDao.getDsbsList();
+            return dsbsDao.getDsbsList(tahun, semester);
         }
     }
 
-    public List<Dsbs> getDsbs() {
+    public List<Dsbs> getDsbs(String tahun, int semester) {
         try {
-            return new getListDsbs(dsbsDao).execute().get();
+            return new getListDsbs(dsbsDao, tahun, semester).execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -733,20 +738,24 @@ public class Repository {
     // get list dsrt
     public static class getListDsrt extends AsyncTask<Void, Void, List<Dsrt>> {
         private DsrtDao dsrtDao;
+        private String tahun;
+        private int semester;
 
-        public getListDsrt(DsrtDao dsrtDao) {
+        public getListDsrt(DsrtDao dsrtDao, String tahun, int semester) {
             this.dsrtDao = dsrtDao;
+            this.tahun = tahun;
+            this.semester = semester;
         }
 
         @Override
         protected List<Dsrt> doInBackground(Void... voids) {
-            return dsrtDao.getDsrtList();
+            return dsrtDao.getDsrtList(tahun, semester);
         }
     }
 
-    public List<Dsrt> getDsrt() {
+    public List<Dsrt> getDsrt(String tahun, int semester) {
         try {
-            return new getListDsrt(dsrtDao).execute().get();
+            return new getListDsrt(dsrtDao, tahun, semester).execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -783,21 +792,27 @@ public class Repository {
     // get list dsrt by idBs
     public static class getListDsrtByIdBsAsync extends AsyncTask<String, Void, List<Dsrt>>{
         private DsrtDao dsrtDao;
+        private String tahun;
+        private int semester;
 
-        public getListDsrtByIdBsAsync(DsrtDao dsrtDao) {
+        public getListDsrtByIdBsAsync(DsrtDao dsrtDao, String tahun, int semester) {
+
             this.dsrtDao = dsrtDao;
+            this.tahun = tahun;
+            this.semester= semester;
+
         }
 
 
         @Override
         protected List<Dsrt> doInBackground(String... strings) {
-            return dsrtDao.getListDsrtByIdBs(strings[0]);
+            return dsrtDao.getListDsrtByIdBs(strings[0] ,tahun ,semester);
         }
     }
 
-    public List<Dsrt> getListDsrtByIdBs(String idBs){
+    public List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester ){
         try {
-            return new getListDsrtByIdBsAsync(dsrtDao).execute(idBs).get();
+            return new getListDsrtByIdBsAsync(dsrtDao, tahun, semester).execute(idBs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -809,22 +824,26 @@ public class Repository {
     // get list dsrt by idBs and status pencacahan lower
     public static class getListDsrtByIdBsStatusLwAsync extends AsyncTask<Object, Void, List<Dsrt>> {
         private DsrtDao dsrtDao;
+        private String tahun;
+        private int semester;
 
-        public getListDsrtByIdBsStatusLwAsync(DsrtDao dsrtDao) {
+        public getListDsrtByIdBsStatusLwAsync(DsrtDao dsrtDao,String tahun, int semester) {
             this.dsrtDao = dsrtDao;
+            this.tahun = tahun;
+            this.semester = semester;
         }
 
         @Override
         protected List<Dsrt> doInBackground(Object... objects) {
             String idBs = (String) objects[0];
             int status = (int) objects[1];
-            return dsrtDao.getListDsrtByIdBsStatusLw(idBs, status);
+            return dsrtDao.getListDsrtByIdBsStatusLw(idBs, status, tahun, semester);
         }
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status) {
+    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status, String tahun, int semester) {
         try {
-            return new getListDsrtByIdBsStatusLwAsync(dsrtDao).execute(idBs, status).get();
+            return new getListDsrtByIdBsStatusLwAsync(dsrtDao, tahun, semester).execute(idBs, status).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -845,13 +864,15 @@ public class Repository {
         protected List<Dsrt> doInBackground(Object... objects) {
             String idBs = (String) objects[0];
             int status = (int) objects[1];
-            return dsrtDao.getListDsrtByIdBsStatusUp(idBs, status);
+            String tahun = (String) objects[2];
+            int semester = (int) objects[3];
+            return dsrtDao.getListDsrtByIdBsStatusUp(idBs, status, tahun, semester);
         }
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status) {
+    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status, String tahun, int semester) {
         try {
-            return new getListDsrtByIdBsStatusUpAsync(dsrtDao).execute(idBs, status).get();
+            return new getListDsrtByIdBsStatusUpAsync(dsrtDao).execute(idBs, status, tahun, semester).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -861,18 +882,18 @@ public class Repository {
     }
 
     // get live data dsbs
-    public LiveData<List<Dsbs>> getLiveDataDsbs() {
-        return dsbsDao.getDsbsLive();
+    public LiveData<List<Dsbs>> getLiveDataDsbs(String tahun , int semester) {
+        return dsbsDao.getDsbsLive(tahun, semester);
     }
 
     // get live data dsrt by idbs
-    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String idBs) {
-        return dsrtDao.getLiveDsrtByIdBs(idBs);
+    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String idBs, String tahun, int semester ) {
+        return dsrtDao.getLiveDsrtByIdBs(idBs,tahun,semester);
     }
 
     // get live data dsrt
-    public LiveData<List<Dsrt>> getLiveDataDsrt(){
-        return dsrtDao.getDsrtLive();
+    public LiveData<List<Dsrt>> getLiveDataDsrt(String tahun, int semester){
+        return dsrtDao.getDsrtLive(tahun, semester);
     }
 
     // get dsrt by id
@@ -913,7 +934,9 @@ public class Repository {
         protected Dsrt doInBackground(Object... objects) {
             String idBs = (String) objects[0];
             int nuRt = (int) objects[1];
-            return dsrtDao.getDsrtByIdBSNuRt(idBs, nuRt);
+            String tahun = (String) objects[2];
+            int semester = (int) objects[3] ;
+            return dsrtDao.getDsrtByIdBSNuRt(idBs, nuRt, tahun, semester);
         }
     }
 
@@ -1571,12 +1594,9 @@ public class Repository {
     // get list laporan by id bs and status up
     public static class getListLaporanByIdBsStatusUpAsync extends AsyncTask<Object, Void, List<Laporan212>>{
         private Laporan212Dao laporan212Dao;
-
         public getListLaporanByIdBsStatusUpAsync(Laporan212Dao laporan212Dao) {
             this.laporan212Dao = laporan212Dao;
         }
-
-
         @Override
         protected List<Laporan212> doInBackground(Object... objects) {
             String idBs = (String) objects[0];
@@ -1660,9 +1680,77 @@ public class Repository {
         new updateJamSelesaiAsync(dsrtDao).execute(idDsrt, jamSelesai);
     }
 
+    public void getPeriodeFromAPI(){
+        InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
+        Call<ResponseBody> call = interfaceApi.getPeriodeFromApi();
+            call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    JSONObject jo = new JSONObject(result);
+                    String message = jo.getString("message");
+                    if (message.equals("success")) {
+                        JSONArray joArray = new JSONArray(jo.getString("body"));
+                        ArrayList<Periode> periodes = new ArrayList<Periode>(joArray.length());
+                        for (int i = 0; i < joArray.length(); i++) {
+                            JSONObject ob = new JSONObject(joArray.get(i).toString());
+                                Periode periode = new Periode(
+                                        ob.getInt("id"),
+                                        ob.getString("tahun"),
+                                        ob.getInt("semester"),
+                                        ob.getString("bulan")
+                                );
 
+                            periodes.add(periode );
+                        }
+                        insertPeriodeList(periodes);
+                    }
+                }catch (JSONException | IOException e){
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            }
+        });
+    }
 
-
-
+    public void insertPeriodeList(List<Periode> periodeList) {
+        Periode[] arrayPeriode = new Periode[periodeList.size()];
+        arrayPeriode = periodeList.toArray(arrayPeriode);
+        new insertPeriodeListAsync(periodeDao).execute(arrayPeriode);
+    }
+    private static class insertPeriodeListAsync extends AsyncTask<Periode, Void, Void> {
+        private PeriodeDao periodeDao;
+        public insertPeriodeListAsync(PeriodeDao periodeDao) {
+            this.periodeDao = periodeDao;
+        }
+        @Override
+        protected Void doInBackground(Periode... periodes) {
+            periodeDao.insert_periode(Arrays.asList(periodes));
+            return null;
+        }
+    }
+    public List<Periode> getPeriode() {
+        try {
+            return new getperiodeAsync(periodeDao).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class getperiodeAsync extends AsyncTask<Object, Void, List<Periode>>{
+        private PeriodeDao periodeDao;
+        public getperiodeAsync(PeriodeDao periodeDao){
+            this.periodeDao = periodeDao;
+        }
+        @Override
+        protected List<Periode> doInBackground(Object... objects) {
+            return periodeDao.getPeriode();
+        }
+    }
 
 }

@@ -16,6 +16,7 @@ import com.example.siemas.Adapter.DsrtDirektoriPclAdapter;
 import com.example.siemas.Adapter.DsrtPemeriksaanPclAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class DirectoryDsrtActivity extends AppCompatActivity {
     private ViewModel viewModel;
     private DsrtDirektoriPclAdapter dsrtDirektoriPclAdapter;
     private LinearLayoutCompat containerEmpty;
+    private List<Periode> periodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,8 @@ public class DirectoryDsrtActivity extends AppCompatActivity {
         String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
         dsrtDirektoriPclAdapter = new DsrtDirektoriPclAdapter(viewModel);
         recyclerView.setAdapter(dsrtDirektoriPclAdapter);
-
-        viewModel.getLiveDataDsrtByIdBs(idBs).observe(this, new Observer<List<Dsrt>>() {
+        periodeList = viewModel.getPeriode();
+        viewModel.getLiveDataDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
                 if (dsrts.size()>0){

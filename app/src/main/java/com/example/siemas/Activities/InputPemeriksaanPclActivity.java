@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.siemas.Adapter.InputPemeriksaanPCLAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
@@ -43,6 +44,8 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
     private List<Pendidikan> pendidikanList;
     private List<KegiatanUtama> kegiatanUtamaList;
+
+    private InputPemeriksaanPCLAdapter inputPemeriksaanPCLAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +104,9 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
             namaPendidikan.add(pendidikanList.get(i).getPendidikan());
         }
 
-        ArrayAdapter<String> spinnerIjazahAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaPendidikan);
+        ArrayAdapter<String> spinnerIjazahAdapter = new ArrayAdapter<String>(this , R.layout.multi_line_spinner_support,namaPendidikan);
         spinnerIjazahKrt.setAdapter(spinnerIjazahAdapter);
+
 
         // mount spinner kegiatan
         kegiatanUtamaList = viewModel.getAllKegiatan();

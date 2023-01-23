@@ -19,6 +19,7 @@ import com.example.siemas.Adapter.DsrtPemeriksaanPclAdapter;
 import com.example.siemas.Adapter.DsrtPemeriksaanPmlAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class PemeriksaanPmlDsrtActivity extends AppCompatActivity {
     private ViewModel viewModel;
     private DsrtPemeriksaanPmlAdapter dsrtPemeriksaanPmlAdapter;
     private LinearLayoutCompat containerEmpty;
-
+    private List<Periode> periodeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +48,12 @@ public class PemeriksaanPmlDsrtActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
-
+        periodeList = viewModel.getPeriode();
         String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
         dsrtPemeriksaanPmlAdapter = new DsrtPemeriksaanPmlAdapter(viewModel);
         recyclerView.setAdapter(dsrtPemeriksaanPmlAdapter);
 
-        viewModel.getLiveDataDsrtByIdBs(idBs).observe(this, new Observer<List<Dsrt>>() {
+        viewModel.getLiveDataDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
                 if (dsrts.size()>0){

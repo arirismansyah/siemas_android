@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.siemas.Adapter.TableDsbsAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
 
@@ -28,6 +29,7 @@ public class DsbsActivity extends AppCompatActivity {
     User user;
     RecyclerView recyclerView;
     TableDsbsAdapter adapter;
+    private List<Periode> periodeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class DsbsActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
         user = viewModel.getUser().get(0);
+        periodeList = viewModel.getPeriode();
         tvKdProv = findViewById(R.id.tvKdProv);
         tvNamaProv = findViewById(R.id.tvNamaProv);
         tvKdKab = findViewById(R.id.tvKdKab);
@@ -62,7 +65,7 @@ public class DsbsActivity extends AppCompatActivity {
 
         adapter = new TableDsbsAdapter();
         recyclerView.setAdapter(adapter);
-        viewModel.getLiveDataDsbs().observe(this, new Observer<List<Dsbs>>() {
+        viewModel.getLiveDataDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 adapter.setListDsbs(dsbs);

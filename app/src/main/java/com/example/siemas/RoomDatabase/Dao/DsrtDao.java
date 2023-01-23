@@ -16,24 +16,20 @@ import java.util.List;
 public interface DsrtDao {
     @Insert(entity = Dsrt.class, onConflict = OnConflictStrategy.REPLACE)
     void insertDsrt(Dsrt dsrt);
-
     @Insert(entity = Dsrt.class, onConflict = OnConflictStrategy.REPLACE)
     void insertListDsrt(List<Dsrt> listDsrt);
-
-    @Query("Select * FROM dsrt")
-    LiveData<List<Dsrt>> getDsrtLive();
-
+    @Query("Select * FROM dsrt WHERE tahun = :tahun AND semester = :semester ")
+    LiveData<List<Dsrt>> getDsrtLive(String tahun, int semester);
     @Query("Select * FROM dsrt WHERE id = :idDsrt")
     Dsrt getDsrtById(int idDsrt);
-
-    @Query("Select * FROM dsrt")
-    List<Dsrt> getDsrtList();
+    @Query("Select * FROM dsrt  WHERE tahun = :tahun AND semester = :semester ")
+    List<Dsrt> getDsrtList(String tahun, int semester);
 
     @Query("Select * FROM dsrt WHERE id_bs = :idBS AND nks = :nks AND nu_rt = :nu_rt")
     Dsrt getDsrtByIdBSNksNuRt(String idBS, String nks, int nu_rt);
 
-    @Query("Select * FROM dsrt WHERE id_bs = :idBS AND nu_rt = :nu_rt")
-    Dsrt getDsrtByIdBSNuRt(String idBS, int nu_rt);
+    @Query("Select * FROM dsrt WHERE id_bs = :idBS AND nu_rt = :nu_rt AND tahun = :tahun AND semester = :semester  ")
+    Dsrt getDsrtByIdBSNuRt(String idBS, int nu_rt, String tahun, int semester);
 
     @Query("Select * FROM dsrt WHERE pencacah = :pencacah")
     Dsrt getDsrtPcl(String pencacah);
@@ -47,17 +43,17 @@ public interface DsrtDao {
     @Query("Select * FROM dsrt WHERE status_pencacahan = :status_pencacahan AND id_bs= :idBs")
     LiveData<List<Dsrt>> getLiveDsrtByStatusIdBs(int status_pencacahan, String idBs);
 
-    @Query("Select * FROM dsrt WHERE status_pencacahan < :status_pencacahan AND id_bs = :idBs")
-    List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status_pencacahan);
+    @Query("Select * FROM dsrt WHERE status_pencacahan < :status_pencacahan AND id_bs = :idBs AND tahun = :tahun AND semester = :semester")
+    List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status_pencacahan, String tahun, int semester);
 
-    @Query("Select * FROM dsrt WHERE status_pencacahan > :status_pencacahan AND id_bs = :idBs")
-    List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status_pencacahan);
+    @Query("Select * FROM dsrt WHERE status_pencacahan > :status_pencacahan AND id_bs = :idBs AND tahun = :tahun AND semester = :semester")
+    List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status_pencacahan, String tahun, int semester );
 
-    @Query("Select * FROM dsrt WHERE id_bs= :idBs")
-    LiveData<List<Dsrt>> getLiveDsrtByIdBs(String idBs);
+    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester")
+    LiveData<List<Dsrt>> getLiveDsrtByIdBs(String idBs, String tahun, int semester );
 
-    @Query("Select * FROM dsrt WHERE id_bs= :idBs")
-    List<Dsrt> getListDsrtByIdBs(String idBs);
+    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester")
+    List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester );
 
     @Query("UPDATE dsrt SET foto = :fileFoto WHERE id = :idDsrt")
     void updateFotoRumah(int idDsrt, String fileFoto);
@@ -106,7 +102,6 @@ public interface DsrtDao {
             "deskripsi_kegiatan = :deskripsiKegiatan," +
             "luas_lantai = :luasLantai," +
             "status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
-
     void updatePemeriksaan(
             int idDsrt,
             String namaKrt,

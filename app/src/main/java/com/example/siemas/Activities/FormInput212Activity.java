@@ -17,6 +17,7 @@ import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,7 +39,7 @@ public class FormInput212Activity extends AppCompatActivity {
     private Dsrt dsrtSelected;
     private User user;
     private SimpleDateFormat dateFormatDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
+    private List<Periode> periodeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class FormInput212Activity extends AppCompatActivity {
         // setting viewmodel
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(com.example.siemas.RoomDatabase.ViewModel.class);
         user = viewModel.getUser().get(0);
-
+        periodeList = viewModel.getPeriode();
         tiKdKab = findViewById(R.id.kdKab);
         tiNamaKab = findViewById(R.id.namaKab);
         tiNamaKrt = findViewById(R.id.namaKrt);
@@ -65,7 +66,7 @@ public class FormInput212Activity extends AppCompatActivity {
         tiNamaKab.setText(user.getNama_kab());
 
         // mount spinner dsbs
-        dsbsList = viewModel.getDsbs();
+        dsbsList = viewModel.getDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
 
         List<String> idBsList = new ArrayList<String>();
 
@@ -81,8 +82,7 @@ public class FormInput212Activity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String idBs = spinnerBs.getSelectedItem().toString();
-                dsrtList = viewModel.getListDsrtByIdBs(idBs);
-
+                dsrtList = viewModel.getListDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
                 // mount spinner dsrt
                 List<String> nuRtList = new ArrayList<String>();
                 for (int j = 0; j < dsrtList.size(); j++) {
@@ -110,9 +110,7 @@ public class FormInput212Activity extends AppCompatActivity {
                 nuRtString = nuRtString.replace("]","");
                 int nuRT = Integer.parseInt(nuRtString);
                 tiNamaKrt.setText(arrayStr[1]);
-
                 dsrtSelected = viewModel.getDsrtByIdBsNuRt(idBs, nuRT);
-
             }
 
             @Override

@@ -1,5 +1,7 @@
 package com.example.siemas.Activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -182,7 +184,8 @@ public class LoginActivity extends AppCompatActivity {
                                 );
 
                                 viewModel.insertUser(user);
-
+                                Log.d(TAG, "onResponse: "+user.getToken());
+                                viewModel.getPeriodeFromServer();
                                 // intent to main
                                 Thread.sleep(5000);
                                 String role = objectRole.getString("name");

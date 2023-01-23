@@ -19,6 +19,7 @@ import com.example.siemas.Adapter.Table1PemeriksaanAdapter;
 import com.example.siemas.Adapter.Table1PencacahanAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class Table1Fragment extends Fragment {
     private RecyclerView recyclerView1, recyclerView2;
     private Table1PencacahanAdapter table1PencacahanAdapter;
     private Table1PemeriksaanAdapter table1PemeriksaanAdapter;
-
+    private List<Periode> periodeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,14 +61,14 @@ public class Table1Fragment extends Fragment {
 
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ViewModel.class);
-
+        periodeList = viewModel.getPeriode();
         table1PencacahanAdapter = new Table1PencacahanAdapter(viewModel);
         table1PemeriksaanAdapter = new Table1PemeriksaanAdapter(viewModel);
 
         recyclerView1.setAdapter(table1PencacahanAdapter);
         recyclerView2.setAdapter(table1PemeriksaanAdapter);
 
-        viewModel.getLiveDataDsbs().observe(getActivity(), new Observer<List<Dsbs>>() {
+        viewModel.getLiveDataDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 table1PemeriksaanAdapter.setListDsbs(dsbs);

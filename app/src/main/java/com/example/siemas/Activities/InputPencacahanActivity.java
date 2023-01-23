@@ -115,7 +115,9 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private double currentLongitude, doneLongitude;
     private String lokasi = "";
 
-    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat;
+    private TextInputEditText  tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat;
+
+    private TextView tiKdKab, tinamaKab, tiNks, tiNuRt;
     private Spinner spinnerStatusRumah;
     private RadioButton rbGsmpYa, rbGsmpNo;
     private RadioGroup rgGsmp;

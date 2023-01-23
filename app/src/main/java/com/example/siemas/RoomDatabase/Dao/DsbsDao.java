@@ -19,11 +19,11 @@ public interface DsbsDao {
     @Insert(entity = Dsbs.class, onConflict = OnConflictStrategy.REPLACE)
     void insertListDsbs(List<Dsbs> listDsbs);
 
-    @Query("Select * FROM dsbs")
-    LiveData<List<Dsbs>> getDsbsLive();
+    @Query("Select * FROM dsbs WHERE tahun = :tahun AND semester = :semester ")
+    LiveData<List<Dsbs>> getDsbsLive(String tahun, int semester);
 
-    @Query("Select * FROM dsbs")
-    List<Dsbs> getDsbsList();
+    @Query("Select * FROM dsbs WHERE tahun = :tahun AND semester = :semester")
+    List<Dsbs> getDsbsList(String tahun, int semester);
 
     @Query("Select * FROM dsbs WHERE id_bs = :idBS")
     Dsbs getDsbsById(String idBS);

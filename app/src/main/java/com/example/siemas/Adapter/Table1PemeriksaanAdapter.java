@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class Table1PemeriksaanAdapter extends RecyclerView.Adapter<Table1Pemerik
     private List<Dsrt> dsrtList = new ArrayList<>();
     private List<Dsrt> dsrtListEntri = new ArrayList<>();
     private List<Dsrt> dsrtListUpload = new ArrayList<>();
+    private List<Periode> periodeList;
+
 
     public Table1PemeriksaanAdapter(ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -40,9 +43,10 @@ public class Table1PemeriksaanAdapter extends RecyclerView.Adapter<Table1Pemerik
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (dsbsList != null && dsbsList.size()>0){
             Dsbs dsbsCurrent = dsbsList.get(position);
-            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs());
-            dsrtListEntri = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 2);
-            dsrtListUpload = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 3);
+            periodeList = viewModel.getPeriode();
+            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs(), periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+            dsrtListEntri = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 2, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+            dsrtListUpload = viewModel.getListDsrtByIdBsStatusUp(dsbsCurrent.getId_bs(), 3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
 
             holder.tvNbs.setText(dsbsCurrent.getId_bs());
             holder.tvTarget.setText(String.valueOf(dsrtList.size()));

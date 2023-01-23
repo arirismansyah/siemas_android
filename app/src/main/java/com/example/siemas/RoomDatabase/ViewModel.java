@@ -14,6 +14,7 @@ import com.example.siemas.RoomDatabase.Entities.Jadwal212;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
 import com.example.siemas.RoomDatabase.Entities.Pendidikan;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.Status;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.Entities.User;
@@ -52,8 +53,8 @@ public class ViewModel extends AndroidViewModel {
     public void getJadwalFromApi(Context context, String email, String token) {
         repository.getJadwal212FromApi(context, email, token);
     }
-    public List<Dsbs> getDsbs() {
-        return repository.getDsbs();
+    public List<Dsbs> getDsbs(String tahun, int semester) {
+        return repository.getDsbs(tahun, semester);
     }
 
     public void getDsrtPclFromApi(Context context, String pencacah, String token) {
@@ -64,34 +65,36 @@ public class ViewModel extends AndroidViewModel {
         repository.getDsrtPmlFromApi(context, pengawas, token);
     }
 
-    public LiveData<List<Dsrt>> getLiveDataDsrt(){return repository.getLiveDataDsrt();}
-
-    public List<Dsrt> getDsrt() {
-        return repository.getDsrt();
+    public LiveData<List<Dsrt>> getLiveDataDsrt(String tahun, int semester){
+        return repository.getLiveDataDsrt(tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBs(String idBs){
-        return repository.getListDsrtByIdBs(idBs);
+    public List<Dsrt> getDsrt(String tahun, int semester) {
+        return repository.getDsrt(tahun, semester);
+    }
+
+    public List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester ){
+        return repository.getListDsrtByIdBs(idBs , tahun,  semester );
     }
 
     public Dsrt getDsrtById(Integer idDsrt){
         return repository.getDsrtById(idDsrt);
     }
 
-    public LiveData<List<Dsbs>> getLiveDataDsbs() {
-        return repository.getLiveDataDsbs();
+    public LiveData<List<Dsbs>> getLiveDataDsbs(String tahun, int semester) {
+        return repository.getLiveDataDsbs(tahun, semester);
     }
 
-    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String idBs) {
-        return repository.getLiveDataDsrtByIdBs(idBs);
+    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String idBs, String tahun, int semester) {
+        return repository.getLiveDataDsrtByIdBs(idBs, tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status){
-        return repository.getListDsrtByIdBsStatusLw(idBs, status);
+    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status, String tahun, int semester){
+        return repository.getListDsrtByIdBsStatusLw(idBs, status, tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status){
-        return repository.getListDsrtByIdBsStatusUp(idBs, status);
+    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status, String tahun, int semester){
+        return repository.getListDsrtByIdBsStatusUp(idBs, status, tahun, semester);
     }
 
     // update foto
@@ -259,5 +262,13 @@ public class ViewModel extends AndroidViewModel {
     // update jam selesai
     public void updateJamSelesai(int idDsrt, String jamSelesai){
         repository.updateJamSelesai(idDsrt, jamSelesai);
+    }
+
+    public void getPeriodeFromServer(){
+         repository.getPeriodeFromAPI();
+    }
+
+    public List<Periode> getPeriode(){
+        return repository.getPeriode();
     }
 }

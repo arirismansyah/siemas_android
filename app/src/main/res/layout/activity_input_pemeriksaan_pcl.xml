@@ -37,507 +37,548 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingHorizontal="25dp"
-                android:paddingVertical="10dp">
+                android:paddingHorizontal="7dp"
+                android:paddingVertical="5dp">
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginVertical="5dp"
                     android:background="@drawable/bg_input_grey"
                     android:orientation="vertical"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="10dp">
 
-                    <TextView
+                    <TableLayout
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Provinsi"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
+                        android:layout_height="match_parent"
+                        android:stretchColumns="1,2,3"
+                        >
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        <TableRow
+                            android:gravity="center_vertical"
+                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Provinsi"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal" android:layout_column="1">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/kdProv"
-                            android:layout_width="wrap_content"
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/kdProv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:textSize="14dp"
+                                    android:text="16"></com.google.android.material.textfield.TextInputEditText>
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/namaProv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:hint="SUMATERA SELATAN"
+                                    android:textSize="14dp"
+                                    android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"
+                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Kab/Kota"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <androidx.appcompat.widget.LinearLayoutCompat
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:layout_column="1">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/kdKab"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:textSize="14dp"
+                                    android:text="00"></com.google.android.material.textfield.TextInputEditText>
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/namaKab"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:enabled="false"
+                                    android:hint="Nama Kab"
+                                    android:textSize="14dp"
+                                    android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"
+                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="NKS"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/nks"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:textSize="14dp"
+                                android:text="nks">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="No Urut Ruta"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/nuRt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:textSize="14dp"
+                                android:text="0">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Nama KRT"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/namaKrt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:textSize="14dp"
+                                android:hint="Nama KRT">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Jumlah ART(R.301)"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/jmlArt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:textSize="14dp"
+                                android:hint="Jumlah ART">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Blok IV.3.2\nR.16 Kolom 5"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/rincian16.5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:hint="rincian16.5">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Blok IV.3.3\nR.8 Kolom 3"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/rincian8.3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:hint="rincian8.3">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Rincian 304"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/rincian304"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:hint="rincian304">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Rincian 305"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/rincian305"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:hint="rincian305">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Jumlah ART masih Sekolah"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/jmlArtSekolah"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:inputType="number"
+                                android:hint="jmlArtSekolah">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Jumlah ART yang\nMemiliki BPJS PBI"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/jmlArtBpjs"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:inputType="number"
+                                android:hint="jmlArtBpjs">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="16"></com.google.android.material.textfield.TextInputEditText>
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Ijazah Tertinggi KRT"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <Spinner
+                                android:id="@+id/spinnerIjazahKrt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="10dp"
+                                android:singleLine="false"
+                                android:spinnerMode="dialog"
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/namaProv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="5dp"
-                            android:enabled="false"
-                            android:hint="SUMATERA SELATAN"
-                            android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
+                                >
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Kab/Kota"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/kdKab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"></com.google.android.material.textfield.TextInputEditText>
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/namaKab"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginVertical="5dp"
-                            android:enabled="false"
-                            android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="NKS"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/nks"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:enabled="false"
-                        android:hint="NKS"
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="No Urut Ruta"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/nuRt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:enabled="false"
-                        android:hint="Nomor Urut Ruta"
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Nama KRT"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/namaKrt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint="Nama KRT"
-                        android:inputType="textCapWords"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                            </Spinner>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Kegiatan KRT Selama Seminggu"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <Spinner
+                                android:id="@+id/spinnerKegiatanKrt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="10dp"
+                                android:singleLine="false"
+                                android:spinnerMode="dialog"></Spinner>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Deskripsi Kegiatan KRT"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/deskripsiKegiatanKrt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:hint="deskripsiKegiatanKrt">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                        <TableRow
+                            android:gravity="center_vertical"                            >
+                            <TextView
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:text="Luas Lantai Bangunan Tempat Tinggal"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=":"
+                                android:textSize="14dp"
+                                android:textStyle="bold"
+                                android:layout_column="1"
+                                >
+                            </TextView>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/luasLantai"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14dp"
+                                android:inputType="number"
+                                android:hint="luasLantai">
+                            </com.google.android.material.textfield.TextInputEditText>
+                        </TableRow>
+                    </TableLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
+                    android:layout_marginVertical="5dp"
                     android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
+                    android:paddingVertical="10dp"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Jumlah ART (R.301)"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/jmlArt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint="Jumlah ART"
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Rincian Blok IV.3.2 Rincian 16 Kolom 5
-"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rincian16.5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Rincian Blok IV.3.3 Rincian 8 Kolom 3"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rincian8.3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Rincian 304"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rincian304"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Rincian 305"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rincian305"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Jumlah ART masih Sekolah"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/jmlArtSekolah"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Jumlah ART yang Memiliki BPJS PBI"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/jmlArtBpjs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Ijazah Tertinggi KRT"
-                        android:textSize="16dp"
-                        android:textStyle="bold">
-
-                    </TextView>
-
-                    <Spinner
-                        android:id="@+id/spinnerIjazahKrt"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginVertical="10dp"></Spinner>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Kegiatan Terbanyak KRT Selama Seminggu"
-                        android:textSize="16dp"
-                        android:textStyle="bold">
-
-                    </TextView>
-
-                    <Spinner
-                        android:id="@+id/spinnerKegiatanKrt"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginVertical="10dp"></Spinner>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Deskripsi Kegiatan Usaha"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/deskripsiKegiatanKrt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="text"
-                        android:maxLines="5"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="10dp"
-                    android:background="@drawable/bg_input_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:text="Luas Lantai Bangunan Tempat Tinggal"
-                        android:textSize="16dp"
-                        android:textStyle="bold"></TextView>
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/luasLantai"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:hint=""
-                        android:inputType="number"
-                        android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
-
-
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.core.widget.NestedScrollView>
-
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/btnContainer"
@@ -549,12 +590,10 @@
             android:orientation="vertical"
             android:paddingHorizontal="5dp">
 
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/batalPemeriksaanPclDsrt"
                     android:layout_width="120dp"
@@ -577,9 +616,7 @@
                     android:textColor="@color/white"></androidx.appcompat.widget.AppCompatButton>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

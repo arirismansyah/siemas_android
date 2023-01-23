@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.siemas.Adapter.Table1PmlAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class Tab1PmlFragment extends Fragment {
     private ViewModel viewModel;
     private RecyclerView recyclerView;
     private Table1PmlAdapter table1PmlAdapter;
-
+    private List<Periode> periodeList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,12 +54,12 @@ public class Tab1PmlFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ViewModel.class);
-
+        periodeList = viewModel.getPeriode();
         table1PmlAdapter = new Table1PmlAdapter(viewModel);
 
         recyclerView.setAdapter(table1PmlAdapter);
 
-        viewModel.getLiveDataDsbs().observe(getActivity(), new Observer<List<Dsbs>>() {
+        viewModel.getLiveDataDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 table1PmlAdapter.setListDsbs(dsbs);
