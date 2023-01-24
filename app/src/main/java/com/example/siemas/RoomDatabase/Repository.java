@@ -1679,7 +1679,7 @@ public class Repository {
         new updateJamSelesaiAsync(dsrtDao).execute(idDsrt, jamSelesai);
     }
 
-    public void getPeriodeFromAPI(){
+    public void getPeriodeFromAPI(Context context){
         InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
         Call<ResponseBody> call = interfaceApi.getPeriodeFromApi();
             call.enqueue(new Callback<ResponseBody>() {
@@ -1705,12 +1705,15 @@ public class Repository {
                         }
                         insertPeriodeList(periodes);
                     }
+                    Toast.makeText(context, "Periode Berhasil Disimpan", Toast.LENGTH_SHORT).show();
                 }catch (JSONException | IOException e){
                     e.printStackTrace();
                 }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -1812,5 +1815,106 @@ public class Repository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void getDsartPclFromAPI(Context context, String email, String token) {
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setMessage("Mengambil Data DSART");
+        pd.show();
+
+        InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
+        Call<ResponseBody> call = interfaceApi.getDsartPcl(email, "Bearer " + token);
+        call.enqueue(new Callback<ResponseBody>() {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    JSONObject jo = new JSONObject(result);
+                    String message = jo.getString("message");
+                    if (message.equals("success")) {
+                        JSONArray joArray = new JSONArray(jo.getString("body"));
+                        ArrayList<Dsart> dsarts = new ArrayList<Dsart>(joArray.length());
+                        for (int i = 0; i < joArray.length(); i++) {
+                            JSONObject ob = new JSONObject(joArray.get(i).toString());
+                            Dsart dsart = new Dsart(
+                                    ob.getString("id_bs"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
+                                    ob.getInt("nu_rt"),
+                                    ob.getInt("nu_art"),
+                                    ob.getString("nama_art"),
+                                    ob.getString("pekerjaan"),
+                                    ob.getString("pendapatan"),
+                                    ob.getString("pendidikan")
+                            );
+                            dsarts.add(dsart);
+                        }
+                        insertDsartList(dsarts);
+
+                    }
+                    Toast.makeText(context, "Dsart Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }catch (JSONException | IOException e){
+                    e.printStackTrace();
+                    pd.dismiss();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+            }
+        });
+    }
+
+    public void getDsartPmlFromAPI(Context context, String email, String token) {
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setMessage("Mengambil Data DSART");
+        pd.show();
+
+        InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
+        Call<ResponseBody> call = interfaceApi.getDsartPml(email, "Bearer " + token);
+        call.enqueue(new Callback<ResponseBody>() {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    JSONObject jo = new JSONObject(result);
+                    String message = jo.getString("message");
+                    if (message.equals("success")) {
+                        JSONArray joArray = new JSONArray(jo.getString("body"));
+                        ArrayList<Dsart> dsarts = new ArrayList<Dsart>(joArray.length());
+                        for (int i = 0; i < joArray.length(); i++) {
+                            JSONObject ob = new JSONObject(joArray.get(i).toString());
+                            Dsart dsart = new Dsart(
+                                    ob.getString("id_bs"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
+                                    ob.getInt("nu_rt"),
+                                    ob.getInt("nu_art"),
+                                    ob.getString("nama_art"),
+                                    ob.getString("pekerjaan"),
+                                    ob.getString("pendapatan"),
+                                    ob.getString("pendidikan")
+                            );
+                            dsarts.add(dsart);
+                        }
+                        insertDsartList(dsarts);
+                    }
+                    Toast.makeText(context, "Dsart Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    pd.dismiss();
+                }catch (JSONException | IOException e){
+                    e.printStackTrace();
+                    pd.dismiss();
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+            }
+        });
     }
 }

@@ -130,6 +130,7 @@ public class MainActivityPML extends AppCompatActivity {
                         mviewModel.getDsrtPmlFromApi(MainActivityPML.this, user.getEmail(), user.getToken());
                         mviewModel.getJadwalFromApi(MainActivityPML.this, user.getEmail(),user.getToken());
                         mviewModel.getLaporanFromApi(MainActivityPML.this, user.getEmail(),user.getToken());
+                        mviewModel.getDsartPmlFromApi(MainActivityPML.this, user.getEmail(),user.getToken());
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {

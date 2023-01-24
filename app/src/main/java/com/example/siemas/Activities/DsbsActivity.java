@@ -25,7 +25,7 @@ import java.util.List;
 public class DsbsActivity extends AppCompatActivity {
     TextView tvKdProv, tvKdKab, tvNamaProv, tvNamaKab;
     ViewModel viewModel;
-    Button syncDsbs, syncDsrt;
+    Button syncDsbs, syncDsrt, syncDsart;
     User user;
     RecyclerView recyclerView;
     TableDsbsAdapter adapter;
@@ -51,6 +51,7 @@ public class DsbsActivity extends AppCompatActivity {
         tvNamaKab = findViewById(R.id.tvNamakab);
         syncDsbs = findViewById(R.id.syncDsbs);
         syncDsrt = findViewById(R.id.syncDsrt);
+        syncDsart = findViewById(R.id.syncDsart);
         recyclerView = findViewById(R.id.recyclerTable);
 
 
@@ -90,8 +91,21 @@ public class DsbsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (user.getRole().equals("PENCACAH")){
                     viewModel.getDsrtPclFromApi(DsbsActivity.this, user.getEmail(), user.getToken());
+
                 }
 
+                if (user.getRole().equals("PENGAWAS")){
+
+                }
+            }
+        });
+
+        syncDsart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user.getRole().equals("PENCACAH")){
+                    viewModel.getDsartPclFromApi(DsbsActivity.this, user.getEmail(), user.getToken());
+                }
                 if (user.getRole().equals("PENGAWAS")){
 
                 }

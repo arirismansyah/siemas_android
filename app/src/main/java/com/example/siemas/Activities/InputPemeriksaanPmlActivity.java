@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.siemas.Adapter.InputPemeriksaanPCLAdapter;
+import com.example.siemas.Adapter.InputPemeriksaanPMLAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
@@ -37,9 +41,10 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
     private AppCompatButton batalBtn, simpanBtn;
     private ViewModel viewModel;
     private Dsrt dsrt;
-
+    private RecyclerView recyclerView;
     private List<Pendidikan> pendidikanList;
     private List<KegiatanUtama> kegiatanUtamaList;
+    private InputPemeriksaanPMLAdapter inputPemeriksaanPMLAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +82,7 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
 
         // define dsrt
         dsrt = viewModel.getDsrtById(Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT)));
-
+        recyclerView = findViewById(R.id.dssartrecycler);
         // setting toolbar
         if (dsrt.getStatus_pencacahan()<5){
             Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -184,6 +189,11 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
             tiLuasLantai.setText(luasLantaiVal);
         }
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        inputPemeriksaanPMLAdapter = new InputPemeriksaanPMLAdapter(viewModel, dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+        recyclerView.setAdapter(inputPemeriksaanPMLAdapter);
+
         // batal btn
         batalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,6 +274,8 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                                 Integer.parseInt(tiLuasLantai.getText().toString()),
                                 5
                         );
+
+                        inputPemeriksaanPMLAdapter.saveadapter(viewModel);
 
                         finish();
 

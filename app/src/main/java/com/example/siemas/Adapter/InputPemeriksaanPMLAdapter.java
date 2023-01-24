@@ -1,10 +1,7 @@
 package com.example.siemas.Adapter;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,52 +17,45 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeriksaanPCLAdapter.ViewHolder> {
-    private List<Dsart> dsartList = new ArrayList<>();
+public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeriksaanPMLAdapter.ViewHolder> {
+    List<Dsart> dsartList = new ArrayList<>();
     private ViewModel viewModel;
-
-    public InputPemeriksaanPCLAdapter(ViewModel viewModel, String id_bs, String tahun, int semester, int nu_rt) {
-        this.viewModel = viewModel;
-        this.dsartList = viewModel.getDsartbyId(id_bs, tahun, semester, nu_rt);
-    }
 
     public void saveadapter(ViewModel viewModel){
         viewModel.insertDsart(dsartList);
     }
+    public InputPemeriksaanPMLAdapter(ViewModel viewModel, String id_bs, String tahun, int semester, int nu_rt){
+        this.viewModel = viewModel;
+        this.dsartList = viewModel.getDsartbyId(id_bs, tahun, semester, nu_rt);
+    }
 
     @NonNull
     @Override
-    public InputPemeriksaanPCLAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_input_pemeriksaan_pcl_listitem, parent, false);
-        return new ViewHolder(itemView, new NamaArtTextListener(),
+    public InputPemeriksaanPMLAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_input_pemeriksaan_pml_listitem, parent,false);
+        return new ViewHolder(view, new NamaArtTextListener(),
                 new PendidikanArtTextListener(), new PekerjaanTextListener(), new PendapatanTextListener());
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InputPemeriksaanPCLAdapter.ViewHolder holder, int position) {
-            Dsart currentdsart = dsartList.get(position);
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getNu_art());
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getNama_art());
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getPendidikan());
-            holder.namaArtTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pendidikanArtTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pekerjaanTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pendapatanTextListener.updatePosition(holder.getAdapterPosition());
+    public void onBindViewHolder(@NonNull InputPemeriksaanPMLAdapter.ViewHolder holder, int position) {
+        Dsart currentdsart = dsartList.get(position);
 
-            holder.nuART.setText(Integer.toString(currentdsart.getNu_art()));
-            holder.namaART.setText(currentdsart.getNama_art());
-            holder.pendidikanART.setText(currentdsart.getPendidikan());
-            holder.pekerjaanART.setText(currentdsart.getPekerjaan());
-            holder.pendapatanART.setText(currentdsart.getPendapatan());
+        holder.namaArtTextListener.updatePosition(holder.getAdapterPosition());
+        holder.pendidikanArtTextListener.updatePosition(holder.getAdapterPosition());
+        holder.pekerjaanTextListener.updatePosition(holder.getAdapterPosition());
+        holder.pendapatanTextListener.updatePosition(holder.getAdapterPosition());
+
+        holder.nuART.setText(Integer.toString(currentdsart.getNu_art()));
+        holder.namaART.setText(currentdsart.getNama_art());
+        holder.pendidikanART.setText(currentdsart.getPendidikan());
+        holder.pekerjaanART.setText(currentdsart.getPekerjaan());
+        holder.pendapatanART.setText(currentdsart.getPendapatan());
     }
 
     @Override
     public int getItemCount() {
         return dsartList.size();
-    }
-    public void setListDsArt(List<Dsart> dsartList) {
-        this.dsartList = dsartList;
-        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -75,13 +65,9 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
         public PekerjaanTextListener pekerjaanTextListener;
         public PendapatanTextListener pendapatanTextListener;
 
-
-        public ViewHolder(@NonNull View itemView,
-                          NamaArtTextListener namaArtTextListener,
-                          PendidikanArtTextListener pendidikanArtTextListener,
-                          PekerjaanTextListener pekerjaanTextListener,
-                          PendapatanTextListener pendapatanTextListener) {
+        public ViewHolder(@NonNull View itemView, NamaArtTextListener namaArtTextListener, PendidikanArtTextListener pendidikanArtTextListener, PekerjaanTextListener pekerjaanTextListener, PendapatanTextListener pendapatanTextListener) {
             super(itemView);
+
             nuART = itemView.findViewById(R.id.nuART);
             namaART = itemView.findViewById(R.id.namaART);
             pendidikanART = itemView.findViewById(R.id.pendidikanART);
@@ -101,6 +87,7 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
             this.pendapatanART.addTextChangedListener(pendapatanTextListener);
         }
     }
+
     private class NamaArtTextListener implements TextWatcher {
         private int position;
         public void updatePosition(int position) {
@@ -176,4 +163,6 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
             dsartList.get(position).setPendapatan(s.toString());
         }
     }
+
+
 }

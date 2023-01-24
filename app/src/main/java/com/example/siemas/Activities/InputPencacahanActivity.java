@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
@@ -70,6 +71,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -388,15 +390,10 @@ public class InputPencacahanActivity extends AppCompatActivity {
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFotoDialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                String[] mimeTypes = {"image/jpeg", "image/png"};
-                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                startActivityForResult(intent, GALLERY_REQUEST_CODE);
+                openGallery();
+
             }
         });
-
 
         List<StatusRumah> statusRumahList = viewModel.getAllStatusRumah();
         spinnerStatusRumah = (Spinner) findViewById(R.id.spinnerStatusRumah);
@@ -408,13 +405,11 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaStatusRumah);
         spinnerStatusRumah.setAdapter(spinnerAdapter);
-
-
     }
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
@@ -428,17 +423,50 @@ public class InputPencacahanActivity extends AppCompatActivity {
         }
 
         if (requestCode == GALLERY_REQUEST_CODE) {
-            Uri selectedImage = data.getData();
+//            Uri selectedImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-                pictureFilePath = getRealPathFromURI2(tempUri);
-                imageUri = Uri.parse(new File(pictureFilePath).toString());
-                Glide.with(this).load(pictureFilePath).into(mImageView);
-                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
-            } catch (IOException e) {
+                checkAndRequestForPermission();
+                final Uri imageUri =  data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mImageView.setImageBitmap(selectedImage);
+
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
+//                Uri tempUri = getImageUri(gestApplicationContext(), bitmap);
+//                pictureFilePath = getRealPathFromURI2(tempUri);
+//                imageUri = Uri.parse(new File(pictureFilePath).toString());
+//                Glide.with(this).load(pictureFilePath).into(mImageView);
+                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+            } catch (FileNotFoundException  e) {
                 Log.i("TAG", "Some exception " + e);
             }
+        }
+    }
+        // Register the permissions callback, which handles the user's response to the
+        // system permissions dialog. Save the return value, an instance of
+        // ActivityResultLauncher, as an instance variable.
+
+    private void openGallery(){
+        getFotoDialog.dismiss();
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    private void checkAndRequestForPermission(){
+        if (ContextCompat.checkSelfPermission(
+                InputPencacahanActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+              Toast.makeText(this, "Permission Dinied", Toast.LENGTH_SHORT).show();
+            }else{
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+            }
+        }  else {
+         openGallery();
         }
     }
 

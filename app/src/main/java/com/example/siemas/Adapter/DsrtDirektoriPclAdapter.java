@@ -1,8 +1,13 @@
 package com.example.siemas.Adapter;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,13 +32,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.siemas.Activities.DirectoryDsrtActivity;
+import com.example.siemas.Activities.InputPencacahanActivity;
 import com.example.siemas.ImageResizer;
 import com.example.siemas.InterfaceApi;
 import com.example.siemas.R;
 import com.example.siemas.RetrofitClientInstance;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
@@ -196,30 +205,30 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();
                     } else {
-
                         boolean status_net = getConnectivityStatusString(itemView.getContext());
                         if (!status_net) {
                             Toast.makeText(itemView.getContext(), "Koneksi terputus, periksa koneksi internet anda.", Toast.LENGTH_SHORT).show();
                         } else {
                             // update data dsrt
                             ProgressDialog progressDialog = new ProgressDialog(itemView.getContext());
-                            progressDialog.setMessage("Mengirim Data");
+                            progressDialog.setMessage("Mengirim Data DSRT");
                             progressDialog.show();
-
                             user = viewModel.getUser().get(0);
                             JsonElement dsrtJson = new Gson().toJsonTree(dsrt);
-
                             String fileName = dsrt.getId_bs() + "_" + dsrt.getNks() + "_" + String.valueOf(dsrt.getNu_rt()) + "_" + String.valueOf(dsrt.getId()) + ".jpg";
+
+
                             String[] proj = {MediaStore.Images.Media.DATA};
                             Cursor cursorFile = itemView.getContext().getContentResolver().query(Uri.parse(dsrt.getFoto()), proj, null, null, null);
                             int column_index = cursorFile.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                             cursorFile.moveToFirst();
                             String filePath = cursorFile.getString(column_index);
+                            Log.d(TAG, "onClick: "+ filePath);
+
+                            checkAndRequestForPermission(itemView.getContext());
 
                             Bitmap fullSizeBitmap = BitmapFactory.decodeFile(filePath);
-
                             Bitmap reducedBitmap = ImageResizer.reduceBitmapSize(fullSizeBitmap, 2073600);
-
                             File reducedFile = getBitmapReduced(reducedBitmap, fileName, itemView.getContext());
 
                             RequestBody dsrtBody = RequestBody.create(dsrtJson.toString(), MediaType.parse("text/plain"));
@@ -239,7 +248,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                             String message = jo.getString("message");
                                             if (message.equals("success")) {
                                                 progressDialog.dismiss();
-                                                Toast.makeText(itemView.getContext(), "Data berhasil dikirim", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(itemView.getContext(), "Data RT berhasil dikirim", Toast.LENGTH_SHORT).show();
                                                 viewModel.updateStatusPencacahan(dsrt.getId(), 4);
                                             } else {
                                                 progressDialog.dismiss();
@@ -257,19 +266,60 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
                                     } else {
                                         progressDialog.dismiss();
-                                        Toast.makeText(itemView.getContext(), "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                                     progressDialog.dismiss();
-                                    Toast.makeText(itemView.getContext(), "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
 
+                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+
+                            for (Dsart dsart : dsartList) {
+                                progressDialog.setMessage("Mengirim Data ART");
+                                progressDialog.show();
+                                JsonElement dsartJson = new Gson().toJsonTree(dsart);
+                                Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(),"Bearer "+ user.getToken());
+                                calldsart.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                          if (response.code() == 200) {
+                                               try {
+                                                   String result = response.body().string();
+                                                   JSONObject jo = new JSONObject(result);
+                                                   String message = jo.getString("message");
+                                                   if (message.equals("success")) {
+                                                       progressDialog.dismiss();
+                                                       Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
+                                                       viewModel.updateStatusPencacahan(dsrt.getId(), 4);
+                                                   } else {
+                                                       progressDialog.dismiss();
+                                                       Toast toast = Toast.makeText(itemView.getContext(),
+                                                               jo.getString("message"),
+                                                               Toast.LENGTH_SHORT);
+                                                       toast.show();
+                                                   }
+                                               } catch (JSONException | IOException e) {
+                                                   progressDialog.dismiss();
+                                                   e.printStackTrace();
+                                               }
+                                           } else {
+                                               progressDialog.dismiss();
+                                               Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+                                           }
+                                   }
+                                   @Override
+                                   public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                       progressDialog.dismiss();
+                                       Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+
+                                   }
+                               });
+                            }
 //                            Call<ResponseBody> call = interfaceApi.updateDsrt(dsrtJson.toString(), "Bearer " + user.getToken());
 //                            call.enqueue(new Callback<ResponseBody>() {
 //                                @Override
@@ -363,17 +413,26 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 //                                    Toast.makeText(itemView.getContext(), "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
 //                                }
 //                            });
-
-
                         }
-
-
                     }
                 }
             });
         }
     }
 
+    private void checkAndRequestForPermission( Context context){
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale( (Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                Toast.makeText(context, "Permission Dennied", Toast.LENGTH_SHORT).show();
+            }else{
+                ActivityCompat.requestPermissions( (Activity) context, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
+        }  else {
+
+        }
+    }
     private File getBitmapReduced(Bitmap reducedFoto, String filename, Context context) {
         File imageStorage = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 

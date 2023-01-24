@@ -265,8 +265,8 @@ public class ViewModel extends AndroidViewModel {
         repository.updateJamSelesai(idDsrt, jamSelesai);
     }
 
-    public void getPeriodeFromServer(){
-         repository.getPeriodeFromAPI();
+    public void getPeriodeFromServer(Context context){
+         repository.getPeriodeFromAPI(context);
     }
 
     public List<Periode> getPeriode(){
@@ -282,5 +282,12 @@ public class ViewModel extends AndroidViewModel {
 
     public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
         return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
+    }
+
+    public void getDsartPclFromApi(Context context, String pencacah,String token){
+        repository.getDsartPclFromAPI(context, pencacah, token);
+    }
+    public void getDsartPmlFromApi(Context context, String pencacah,String token){
+        repository.getDsartPmlFromAPI(context, pencacah, token);
     }
 }

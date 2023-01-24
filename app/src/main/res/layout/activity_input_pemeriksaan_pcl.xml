@@ -352,7 +352,6 @@
                                 android:hint="rincian304">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
-
                         <TableRow
                             android:gravity="center_vertical"                            >
                             <TextView
@@ -463,12 +462,12 @@
                             </TextView>
                             <Spinner
                                 android:id="@+id/spinnerIjazahKrt"
-                                android:layout_width="match_parent"
+                                android:layout_width="fill_parent"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="10dp"
                                 android:singleLine="false"
                                 android:spinnerMode="dialog"
-
                                 >
 
                             </Spinner>
@@ -497,7 +496,8 @@
                             </TextView>
                             <Spinner
                                 android:id="@+id/spinnerKegiatanKrt"
-                                android:layout_width="match_parent"
+                                android:layout_width="fill_parent"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="10dp"
                                 android:singleLine="false"

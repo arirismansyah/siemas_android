@@ -75,7 +75,14 @@ public interface InterfaceApi {
     @GET("api/get_periode")
     Call<ResponseBody> getPeriodeFromApi();
 
+    @FormUrlEncoded
+    @POST("api/get_dsart_pcl")
+    Call<ResponseBody> getDsartPcl(@Field("pencacah") String pencacah, @Header("Authorization") String token);
+    @FormUrlEncoded
+    @POST("api/get_dsart_pml")
+    Call<ResponseBody> getDsartPml(@Field("pengawas") String pencacah, @Header("Authorization") String token);
 
-
-
+    @FormUrlEncoded
+    @POST("api/upload_dsart")
+    Call<ResponseBody> updateDsart(@Field("dsart") String dsart, @Header("Authorization") String token);
 }

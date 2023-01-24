@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 viewModel.insertUser(user);
                                 Log.d(TAG, "onResponse: "+user.getToken());
-                                viewModel.getPeriodeFromServer();
+                                viewModel.getPeriodeFromServer(LoginActivity.this);
                                 // intent to main
                                 Thread.sleep(5000);
                                 String role = objectRole.getString("name");
