@@ -3,6 +3,7 @@ package com.example.siemas.Activities;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -57,6 +58,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.siemas.R;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.ViewModel;
@@ -71,8 +73,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
@@ -299,7 +304,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                     }
 
                     String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
-
                     viewModel.updatePencacahan(
                             dsrt.getId(),
                             tiNamaKrt.getText().toString(),
@@ -319,8 +323,26 @@ public class InputPencacahanActivity extends AppCompatActivity {
                     viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
                     viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
 
-                    finish();
+                    List<Dsart> dsartList = new ArrayList<>();
+                    for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
+                        Dsart dsart = new Dsart(
+                                dsrt.getId_bs(),
+                                dsrt.getKd_kab(),
+                                dsrt.getNks(),
+                                dsrt.getTahun(),
+                                dsrt.getSemester(),
+                                dsrt.getNu_rt(),
+                                i,
+                                null,
+                                null,
+                                null,
+                                null
+                        );
+                        dsartList.add(dsart);
+                    }
+                    viewModel.insertDsart(dsartList);
 
+                    finish();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
                     alertDialogBuilder.setTitle("SIEMAS 2022");

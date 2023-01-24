@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.siemas.RoomDatabase.Dao.PendidikanDao;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Jadwal212;
@@ -270,5 +271,16 @@ public class ViewModel extends AndroidViewModel {
 
     public List<Periode> getPeriode(){
         return repository.getPeriode();
+    }
+
+    public void insertDsart(List<Dsart> list){
+        repository.insertDsartList(list);
+    }
+    public void nukeDsartbyId (String id_bs, String tahun, int semester, int nu_rt){
+        repository.nukeDsartbyId(id_bs, tahun, semester, nu_rt);
+    }
+
+    public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
+        return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
     }
 }

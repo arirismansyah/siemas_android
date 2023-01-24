@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_input_grey"
     android:paddingHorizontal="10dp"
     android:paddingVertical="15dp"
     android:layout_marginVertical="5dp"
     >
-    <TableRow>
+    <TableRow android:layout_width="match_parent">
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -27,12 +27,14 @@
         android:text=":">
          </TextView>
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:textSize="14dp"
             android:enabled="false"
             android:text="0"
+
             android:inputType="number"
             android:id="@+id/nuART"
             >
@@ -57,11 +59,12 @@
             android:text=":">
         </TextView>
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:textSize="14dp"
-            android:text="namaART"
+            android:hint="namaART"
             android:id="@+id/namaART"
             >
         </com.google.android.material.textfield.TextInputEditText>
@@ -86,11 +89,12 @@
             android:text=":">
         </TextView>
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:textSize="14dp"
-            android:text="pendidikanART"
+            android:hint="pendidikanART"
             android:id="@+id/pendidikanART"
             >
         </com.google.android.material.textfield.TextInputEditText>
@@ -116,11 +120,12 @@
             android:text=":">
         </TextView>
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:textSize="14dp"
-            android:text="pekerjaanART"
+            android:hint="pekerjaanART"
             android:id="@+id/pekerjaanART"
             >
         </com.google.android.material.textfield.TextInputEditText>
@@ -146,11 +151,12 @@
             android:text=":">
         </TextView>
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:textSize="14dp"
-            android:text="pendapatanART"
+            android:hint="pendapatanART"
             android:id="@+id/pendapatanART"
             >
         </com.google.android.material.textfield.TextInputEditText>

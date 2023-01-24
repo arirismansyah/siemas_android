@@ -1,15 +1,17 @@
 package com.example.siemas.RoomDatabase.Entities;
 
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = {@Index(value = {"id_bs", "tahun","semester","nu_rt", "nu_art"},unique = true)})
 
 public class Dsart {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
-
     @ColumnInfo(name = "id_bs")
     public String id_bs;
     @ColumnInfo(name = "kd_kab")
@@ -19,22 +21,27 @@ public class Dsart {
     @ColumnInfo(name = "tahun")
     public String tahun;
     @ColumnInfo(name = "semester")
-    public String semester;
+    public int semester;
     @ColumnInfo(name = "nu_rt")
-    public String nu_rt;
+    public int nu_rt;
     @ColumnInfo(name = "nu_art")
-    public String nu_art;
+    public int nu_art;
+    @Nullable
     @ColumnInfo(name = "nama_art")
     public String nama_art;
+    @Nullable
     @ColumnInfo(name = "pekerjaan")
     public String pekerjaan;
+    @Nullable
     @ColumnInfo(name = "pendapatan")
     public String pendapatan;
+
+    @Nullable
     @ColumnInfo(name = "pendidikan")
     public String pendidikan;
 
-    public Dsart(int id, String id_bs, String kd_kab, String nks, String tahun, String semester, String nu_rt, String nu_art, String nama_art, String pekerjaan, String pendapatan, String pendidikan) {
-        this.id = id;
+    public Dsart( String id_bs, String kd_kab, String nks, String tahun, int semester, int nu_rt, int nu_art, @Nullable String nama_art, @Nullable String pekerjaan, @Nullable String pendapatan, @Nullable String pendidikan) {
+
         this.id_bs = id_bs;
         this.kd_kab = kd_kab;
         this.nks = nks;
@@ -88,27 +95,27 @@ public class Dsart {
         this.tahun = tahun;
     }
 
-    public String getSemester() {
+    public int getSemester() {
         return semester;
     }
 
-    public void setSemester(String semester) {
+    public void setSemester(int semester) {
         this.semester = semester;
     }
 
-    public String getNu_rt() {
+    public int getNu_rt() {
         return nu_rt;
     }
 
-    public void setNu_rt(String nu_rt) {
+    public void setNu_rt(int nu_rt) {
         this.nu_rt = nu_rt;
     }
 
-    public String getNu_art() {
+    public int getNu_art() {
         return nu_art;
     }
 
-    public void setNu_art(String nu_art) {
+    public void setNu_art(int nu_art) {
         this.nu_art = nu_art;
     }
 

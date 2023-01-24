@@ -1150,7 +1150,6 @@ public class Repository {
         }
         return null;
     }
-
     // nuke status
     private static class nukeStatusRumahAsync extends AsyncTask<Void, Void, Integer> {
         private StatusRumahDao statusRumahDao;
@@ -1752,5 +1751,66 @@ public class Repository {
             return periodeDao.getPeriode();
         }
     }
-
+    public void insertDsartList(List<Dsart> dsartList) {
+        Dsart[] dsarts = new Dsart[dsartList.size()];
+        dsarts = dsartList.toArray(dsarts);
+        //asynctask
+        new insertDsartListAsync(dsartDao).execute(dsarts);
+    }
+    private static class insertDsartListAsync extends AsyncTask<Dsart, Void, Void> {
+        private DsartDao dsartDao;
+        public insertDsartListAsync(DsartDao dsartDao) {
+            this.dsartDao = dsartDao;
+        }
+        @Override
+        protected Void doInBackground(Dsart... dsarts) {
+            dsartDao.insert_listdsart(Arrays.asList(dsarts));
+            return null;
+        }
+    }
+    private static class nukeDsartbyIdAsync extends AsyncTask<Void, Void, Integer> {
+        private DsartDao dsartDao;
+        String id_bs, tahun;
+        int semester, nu_rt;
+        public nukeDsartbyIdAsync(DsartDao dsartDao, String id_bs, String tahun, int semester, int nu_rt) {
+            this.dsartDao = dsartDao;
+            this.id_bs=id_bs;
+            this.tahun =tahun;
+            this.semester = semester;
+            this.nu_rt = nu_rt;
+        }
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return dsartDao.nukeDsartbyid(id_bs, tahun, semester, nu_rt);
+        }
+    }
+    public void nukeDsartbyId(String id_bs, String tahun, int semester, int nu_rt) {
+        new nukeDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute();
+    }
+    private static class getDsartbyIdAsync extends AsyncTask<Void, Void, List<Dsart>>{
+        private DsartDao dsartDao;
+        String id_bs, tahun;
+        int semester, nu_rt;
+        public getDsartbyIdAsync(DsartDao dsartDao,String id_bs, String tahun, int semester, int nu_rt){
+            this.dsartDao = dsartDao;
+            this.id_bs=id_bs;
+            this.tahun =tahun;
+            this.semester = semester;
+            this.nu_rt = nu_rt;
+        }
+        @Override
+        protected List<Dsart> doInBackground(Void... voids) {
+            return dsartDao.getDsartListbyid(id_bs, tahun, semester, nu_rt);
+        }
+    }
+    public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
+        try {
+            return new getDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

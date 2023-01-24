@@ -12,26 +12,18 @@ public class Dsrt {
 
     @ColumnInfo(name = "kd_kab")
     public String kd_kab;
-
     @ColumnInfo(name = "nama_kab")
     public String nama_kab;
-
     @ColumnInfo(name = "kd_kec")
     public String kd_kec;
-
     @ColumnInfo(name = "nama_kec")
     public String nama_kec;
-
     @ColumnInfo(name = "kd_desa")
     public String kd_desa;
-
     @ColumnInfo(name = "nama_desa")
     public String nama_desa;
-
     @ColumnInfo(name = "id_bs")
     public String id_bs;
-
-
 
     @ColumnInfo(name = "nks")
     @Nullable
@@ -631,5 +623,13 @@ public class Dsrt {
 
     public void setSumber(@Nullable String sumber) {
         this.sumber = sumber;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
     }
 }

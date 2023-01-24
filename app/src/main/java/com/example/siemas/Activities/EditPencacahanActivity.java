@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.siemas.R;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.ViewModel;
@@ -275,7 +276,6 @@ public class EditPencacahanActivity extends AppCompatActivity {
                     }
 
                     String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
-
                     viewModel.updatePencacahan(
                             dsrt.getId(),
                             tiNamaKrt.getText().toString(),
@@ -291,8 +291,53 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             1
                     );
 
-                    finish();
+                    if(Integer.parseInt(tiJmlArt.getText().toString()) < dsrt.getJml_art2() ){
+                        viewModel.nukeDsartbyId(
+                                dsrt.getId_bs(),
+                                dsrt.getTahun(),
+                                dsrt.getSemester(),
+                                dsrt.getNu_rt()
+                        );
 
+                        List<Dsart> dsartList = new ArrayList<>();
+                        for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
+                            Dsart dsart = new Dsart(
+                                    dsrt.getId_bs(),
+                                    dsrt.getKd_kab(),
+                                    dsrt.getNks(),
+                                    dsrt.getTahun(),
+                                    dsrt.getSemester(),
+                                    dsrt.getNu_rt(),
+                                    i,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                            );
+                            dsartList.add(dsart);
+                        }
+                        viewModel.insertDsart(dsartList);
+                    } else if (Integer.parseInt(tiJmlArt.getText().toString()) > dsrt.getJml_art2()){
+                        List<Dsart> dsartList = new ArrayList<>();
+                        for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
+                            Dsart dsart = new Dsart(
+                                    dsrt.getId_bs(),
+                                    dsrt.getKd_kab(),
+                                    dsrt.getNks(),
+                                    dsrt.getTahun(),
+                                    dsrt.getSemester(),
+                                    dsrt.getNu_rt(),
+                                    i,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                            );
+                            dsartList.add(dsart);
+                        }
+                        viewModel.insertDsart(dsartList);
+                    }
+                    finish();
                 }
 
 

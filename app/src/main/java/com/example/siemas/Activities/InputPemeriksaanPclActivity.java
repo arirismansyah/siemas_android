@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.siemas.Adapter.DsrtPemeriksaanPclAdapter;
 import com.example.siemas.Adapter.InputPemeriksaanPCLAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
@@ -44,7 +47,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
     private List<Pendidikan> pendidikanList;
     private List<KegiatanUtama> kegiatanUtamaList;
-
+    private RecyclerView recyclerView;
     private InputPemeriksaanPCLAdapter inputPemeriksaanPCLAdapter;
 
     @Override
@@ -54,8 +57,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
         // disallowed dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-
         // setting viewmodel
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(com.example.siemas.RoomDatabase.ViewModel.class);
 
@@ -94,7 +95,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
             myToolbar.setTitle("EDIT PEMERIKSAAN - PCL");
             setSupportActionBar(myToolbar);
         }
-
 
         // mount spinner pendidikan
         pendidikanList = viewModel.getAllPendidikan();
@@ -192,6 +192,12 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
             tiLuasLantai.setText(luasLantaiVal);
         }
 
+        recyclerView = findViewById(R.id.dssartrecycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        inputPemeriksaanPCLAdapter = new InputPemeriksaanPCLAdapter(viewModel, dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+        recyclerView.setAdapter(inputPemeriksaanPCLAdapter);
+
         // batal btn
         batalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +280,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                                 Integer.parseInt(tiLuasLantai.getText().toString()),
                                 3
                         );
+                        inputPemeriksaanPCLAdapter.saveadapter(viewModel);
 
                         finish();
 
