@@ -20,6 +20,7 @@ public interface DsartDao {
 
     @Query("SELECT * FROM Dsart WHERE id_bs = :id_bs AND tahun = :tahun AND semester = :semester AND nu_rt = :nu_rt")
     List<Dsart> getDsartListbyid(String id_bs, String tahun, int semester, int nu_rt);
-
+    @Query("SELECT * FROM Dsart WHERE id_bs = :id_bs AND tahun = :tahun AND semester = :semester AND nu_rt = :nu_rt")
+    List<Dsart> getDsartListlamabyid(String id_bs, String tahun, int semester, int nu_rt);
 
 }

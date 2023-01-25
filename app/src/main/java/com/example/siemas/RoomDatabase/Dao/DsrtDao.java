@@ -91,8 +91,12 @@ public interface DsrtDao {
     @Query("UPDATE dsrt SET " +
             "nama_krt2 = :namaKrt, " +
             "jml_art2 = :jmlKrt, " +
+            "jml_komoditas_makanan = :jml_komoditas_makanan, " +
+            "jml_komoditas_nonmakanan = :jml_komoditas_nonmakanan, " +
             "makanan_sebulan = :makananSebulan, " +
             "nonmakanan_sebulan = :nonMakananSebulan, " +
+            "makanan_sebulan_bypml = :makanan_sebulan_bypml, " +
+            "nonmakanan_sebulan_bypml = :nonmakanan_sebulan_bypml, " +
             "transportasi = :transportasi," +
             "peliharaan = :peliharaan," +
             "art_sekolah = :artSekolah," +
@@ -106,8 +110,12 @@ public interface DsrtDao {
             int idDsrt,
             String namaKrt,
             int jmlKrt,
+            int jml_komoditas_makanan,
+            int jml_komoditas_nonmakanan,
             String makananSebulan,
             String nonMakananSebulan,
+            String makanan_sebulan_bypml,
+            String nonmakanan_sebulan_bypml,
             String transportasi,
             String peliharaan,
             int artSekolah,

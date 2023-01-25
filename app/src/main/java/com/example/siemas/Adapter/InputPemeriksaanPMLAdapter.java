@@ -1,10 +1,15 @@
 package com.example.siemas.Adapter;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +24,7 @@ import java.util.List;
 
 public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeriksaanPMLAdapter.ViewHolder> {
     List<Dsart> dsartList = new ArrayList<>();
+    List<Dsart> dsartListlama = new ArrayList<>();
     private ViewModel viewModel;
 
     public void saveadapter(ViewModel viewModel){
@@ -27,6 +33,12 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
     public InputPemeriksaanPMLAdapter(ViewModel viewModel, String id_bs, String tahun, int semester, int nu_rt){
         this.viewModel = viewModel;
         this.dsartList = viewModel.getDsartbyId(id_bs, tahun, semester, nu_rt);
+        String tahunlama = String.valueOf(Integer.parseInt(tahun)-1) ;
+        try{
+            this.dsartListlama = viewModel.getDsartbyId(id_bs,tahunlama,semester,nu_rt);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -51,6 +63,16 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
         holder.pendidikanART.setText(currentdsart.getPendidikan());
         holder.pekerjaanART.setText(currentdsart.getPekerjaan());
         holder.pendapatanART.setText(currentdsart.getPendapatan());
+
+        try {
+            Dsart currentdsartlama = dsartListlama.get(position);
+            holder.nuARTlama.setText(Integer.toString(currentdsartlama.getNu_art()));
+            holder.namaARTlama.setText(currentdsartlama.getNama_art());
+            holder.pendidikanARTlama.setText(currentdsartlama.getPendidikan());
+            holder.pekerjaanARTlama.setText(currentdsartlama.getPekerjaan());
+            holder.pendapatanARTlama.setText(currentdsartlama.getPendapatan());
+
+        }catch (Exception e){e.printStackTrace();}
     }
 
     @Override
@@ -60,6 +82,7 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextInputEditText nuART, namaART, pendidikanART, pekerjaanART,pendapatanART;
+        private TextView nuARTlama, namaARTlama, pendidikanARTlama, pekerjaanARTlama,pendapatanARTlama;
         public NamaArtTextListener namaArtTextListener;
         public PendidikanArtTextListener pendidikanArtTextListener;
         public PekerjaanTextListener pekerjaanTextListener;
@@ -73,6 +96,12 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
             pendidikanART = itemView.findViewById(R.id.pendidikanART);
             pekerjaanART = itemView.findViewById(R.id.pekerjaanART);
             pendapatanART = itemView.findViewById(R.id.pendapatanART);
+
+            nuARTlama = itemView.findViewById(R.id.nuARTlama);
+            namaARTlama = itemView.findViewById(R.id.namaARTlama);
+            pendidikanARTlama = itemView.findViewById(R.id.pendidikanARTlama);
+            pekerjaanARTlama = itemView.findViewById(R.id.pekerjaanARTlama);
+            pendapatanARTlama = itemView.findViewById(R.id.pendapatanARTlama);
 
             this.namaArtTextListener = namaArtTextListener;
             this.namaART.addTextChangedListener(namaArtTextListener);

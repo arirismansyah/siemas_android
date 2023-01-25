@@ -212,7 +212,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
-                        android:gravity="center_vertical"                            >
+                        android:gravity="center_vertical" >
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Blok IV.3.2\nR.16 Kolom 5"
+                            android:text="Jml Komoditas Makanan"
                             android:textSize="14dp"
                             android:textStyle="bold"
                             android:layout_column="1"
@@ -290,11 +290,12 @@
                             >
                         </TextView>
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/rincian16.5"
+                            android:id="@+id/jml_komoditas_makanan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:textSize="14dp"
-                            android:hint="rincian16.5">
+                            android:hint="jml_komoditas_makanan">
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
@@ -302,7 +303,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Blok IV.3.3\nR.8 Kolom 3"
+                            android:text="Jml Komoditas Nonmakanan"
                             android:textSize="14dp"
                             android:textStyle="bold"
                             android:layout_column="1"
@@ -318,11 +319,128 @@
                             >
                         </TextView>
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/rincian8.3"
+                            android:id="@+id/jml_komoditas_nonmakanan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:enabled="false"
+                            android:textSize="14dp"
+                            android:hint="jml_komoditas_nonmakanan">
+                        </com.google.android.material.textfield.TextInputEditText>
+                    </TableRow>
+                    <TableRow
+                        android:gravity="center_vertical"                            >
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Blok IV.3.2 R.16\nKol 5 by PCL"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rincian16_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14dp"
-                            android:hint="rincian8.3">
+                            android:hint="rincian16.5"
+                            android:enabled="false"
+                            >
+                        </com.google.android.material.textfield.TextInputEditText>
+                    </TableRow>
+                    <TableRow
+                        android:gravity="center_vertical"                            >
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Blok IV.3.3 R.8\nKol 3 by PCL"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rincian8_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:hint="rincian8.3"
+                            android:enabled="false"
+                            >
+                        </com.google.android.material.textfield.TextInputEditText>
+                    </TableRow>
+                    <TableRow
+                    android:gravity="center_vertical"                            >
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Blok IV.3.2 R.16\nKol 5 by PML"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        >
+                    </TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=":"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        android:layout_column="1"
+                        >
+                    </TextView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/rincian16_5_bypml"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:hint="rincian16_5_bypml">
+                    </com.google.android.material.textfield.TextInputEditText>
+                    </TableRow>
+                    <TableRow
+                        android:gravity="center_vertical"                            >
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="Blok IV.3.3 R.8\nKol 3 by PML"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            android:layout_column="1"
+                            >
+                        </TextView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/rincian8_3_bypml"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14dp"
+                            android:hint="rincian8_3_bypml">
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow

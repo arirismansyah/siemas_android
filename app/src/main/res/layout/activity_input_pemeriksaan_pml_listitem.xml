@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_input_grey"
     android:paddingHorizontal="10dp"
-    android:paddingVertical="15dp"
+    android:paddingVertical="5dp"
     android:layout_marginVertical="5dp"
     >
-    <TableRow android:layout_width="match_parent">
+    <TableRow android:layout_width="match_parent" >
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -16,6 +16,7 @@
             android:layout_column="1"
             android:textStyle="bold"
             android:text="No Urut ART"
+            android:layout_marginTop="10dp"
             >
         </TextView>
         <TextView
@@ -24,21 +25,35 @@
         android:textSize="14dp"
         android:layout_column="1"
         android:textStyle="bold"
+            android:layout_marginTop="10dp"
         android:text=":">
          </TextView>
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:textSize="14dp"
-            android:enabled="false"
-            android:text="0"
 
-            android:inputType="number"
-            android:id="@+id/nuART"
-            >
-        </com.google.android.material.textfield.TextInputEditText>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nuART"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="number"
+                android:text="0"
+                android:textSize="14dp"
+                android:background="@drawable/textedit_line"
+                ></com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:id="@+id/nuARTlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="''"
+                android:textSize="8dp">
+            </TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </TableRow>
     <TableRow>
         <TextView
@@ -48,6 +63,8 @@
             android:layout_column="1"
             android:textStyle="bold"
             android:text="Nama ART"
+
+            android:layout_marginTop="10dp"
             >
         </TextView>
         <TextView
@@ -56,28 +73,44 @@
             android:textSize="14dp"
             android:layout_column="1"
             android:textStyle="bold"
-            android:text=":">
+            android:text=":"
+            android:layout_marginTop="10dp">
         </TextView>
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="fill_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:textSize="14dp"
-            android:hint="namaART"
-            android:id="@+id/namaART"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp"
             >
-        </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/namaART"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="namaART"
+                android:textSize="14dp"
+                android:background="@drawable/textedit_line"
+                ></com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:id="@+id/namaARTlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="''"
+                android:textSize="8dp">
+            </TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </TableRow>
     <TableRow android:layout_height="wrap_content"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:layout_column="1"
             android:textStyle="bold"
-            android:text="Pendidikan ART (KP. Blok 5.A.)"
+            android:text="Pendidikan ART\n(KP. Blok 5.A.)"
             >
         </TextView>
         <TextView
@@ -88,16 +121,31 @@
             android:textStyle="bold"
             android:text=":">
         </TextView>
-        <com.google.android.material.textfield.TextInputEditText
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="fill_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:textSize="14dp"
-            android:hint="pendidikanART"
-            android:id="@+id/pendidikanART"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp"
             >
-        </com.google.android.material.textfield.TextInputEditText>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pendidikanART"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="pendidikanART"
+                android:background="@drawable/textedit_line"
+                android:textSize="14dp"></com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:id="@+id/pendidikanARTlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="''"
+                android:textSize="8dp">
+            </TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </TableRow>
     <TableRow
         android:layout_height="wrap_content"
@@ -105,10 +153,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:layout_column="1"
             android:textStyle="bold"
-            android:text="Pekerjaan ART (KP. Blok 5.A.3)"
+            android:text="Pekerjaan ART\n(KP. Blok 5.A.3)"
             >
         </TextView>
         <TextView
@@ -119,16 +167,31 @@
             android:textStyle="bold"
             android:text=":">
         </TextView>
-        <com.google.android.material.textfield.TextInputEditText
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="fill_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:textSize="14dp"
-            android:hint="pekerjaanART"
-            android:id="@+id/pekerjaanART"
-            >
-        </com.google.android.material.textfield.TextInputEditText>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pekerjaanART"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="pekerjaanART"
+                android:textSize="14dp"
+                android:background="@drawable/textedit_line"
+                ></com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:id="@+id/pekerjaanARTlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="''"
+                android:textSize="8dp">
+            </TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </TableRow>
     <TableRow
         android:layout_height="wrap_content"
@@ -136,7 +199,7 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:layout_column="1"
             android:textStyle="bold"
             android:text="Pendapatan ART\n(KP Blok5.A\nKol 5+6+7)"
@@ -150,15 +213,30 @@
             android:textStyle="bold"
             android:text=":">
         </TextView>
-        <com.google.android.material.textfield.TextInputEditText
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="fill_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:textSize="14dp"
-            android:hint="pendapatanART"
-            android:id="@+id/pendapatanART"
-            >
-        </com.google.android.material.textfield.TextInputEditText>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pendapatanART"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="pendapatanART"
+                android:textSize="14dp"
+                android:background="@drawable/textedit_line"
+                ></com.google.android.material.textfield.TextInputEditText>
+            <TextView
+                android:id="@+id/pendapatanARTlama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="''"
+                android:textSize="8dp">
+            </TextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </TableRow>
 </TableLayout>

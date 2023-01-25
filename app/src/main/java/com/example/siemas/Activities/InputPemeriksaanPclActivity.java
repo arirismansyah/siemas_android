@@ -39,7 +39,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
     public static final String EXTRA_ID_BS = "com.example.siemas.Activities.EXTRA_ID_BS";
     public static final String EXTRA_NU_RT = "com.example.siemas.Activities.EXTRA_NU_RT";
 
-    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiRincian16_5, tiRincian8_3, tiRincian304, tiRincian305, tiJmlArtSekolah, tiJmlArtBpjs, tiDeskripsiUsaha, tiLuasLantai;
+    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tijml_kom_makanan, tijml_kom_nonmakanan, tiRincian16_5, tiRincian8_3, tiRincian304, tiRincian305, tiJmlArtSekolah, tiJmlArtBpjs, tiDeskripsiUsaha, tiLuasLantai;
     private Spinner spinnerIjazahKrt, spinnerKegiatanKrt;
     private AppCompatButton batalBtn, simpanBtn;
     private ViewModel viewModel;
@@ -67,6 +67,8 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         tiNuRt = findViewById(R.id.nuRt);
         tiNamaKrt = findViewById(R.id.namaKrt);
         tiJmlArt = findViewById(R.id.jmlArt);
+        tijml_kom_makanan = findViewById(R.id.jml_komoditas_makanan);
+        tijml_kom_nonmakanan = findViewById(R.id.jml_komoditas_nonmakanan);
         tiRincian16_5 = findViewById(R.id.rincian16_5);
         tiRincian8_3 = findViewById(R.id.rincian8_3);
         tiRincian304 = findViewById(R.id.rincian304);
@@ -131,6 +133,10 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
         // set jumlah art
         tiJmlArt.setText(String.valueOf(dsrt.getJml_art2()));
+
+        tijml_kom_makanan.setText(String.valueOf(dsrt.getJml_komoditas_makanan()));
+
+        tijml_kom_nonmakanan.setText(String.valueOf(dsrt.getJml_komoditas_nonmakanan()));
 
         // set blok 16.5
         String makananVal = dsrt.getMakanan_sebulan();
@@ -217,6 +223,12 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(tiJmlArt.getText())) {
                     tiJmlArt.setError("Tidak boleh kosong");
                 }
+                if (TextUtils.isEmpty(tijml_kom_makanan.getText())) {
+                    tijml_kom_makanan.setError("Tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) {
+                    tijml_kom_nonmakanan.setError("Tidak boleh kosong");
+                }
                 if (TextUtils.isEmpty(tiRincian16_5.getText())) {
                     tiRincian16_5.setError("Tidak boleh kosong");
                 }
@@ -242,9 +254,10 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                     tiLuasLantai.setError("Tidak boleh kosong");
                 }
 
-                if (
-                        (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
+                if (           (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
+                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
+                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian304.getText())) &&
@@ -256,7 +269,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                                 (spinnerIjazahKrt != null) && (spinnerKegiatanKrt != null) &&
                                 (spinnerIjazahKrt.getSelectedItem() != null) && (spinnerKegiatanKrt.getSelectedItem()!=null)
                 ) {
-
                     String ijazah = spinnerIjazahKrt.getSelectedItem().toString();
                     String kegiatan = spinnerKegiatanKrt.getSelectedItem().toString();
                     String trasnportasi = tiRincian304.getText().toString();
@@ -268,8 +280,12 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                                 dsrt.getId(),
                                 tiNamaKrt.getText().toString(),
                                 Integer.parseInt(tiJmlArt.getText().toString()),
+                                Integer.parseInt(tijml_kom_makanan.getText().toString()),
+                                Integer.parseInt(tijml_kom_nonmakanan.getText().toString()),
                                 tiRincian16_5.getText().toString(),
                                 tiRincian8_3.getText().toString(),
+                                "null",
+                                "null",
                                 trasnportasi,
                                 peliharaan,
                                 Integer.parseInt(tiJmlArtSekolah.getText().toString()),

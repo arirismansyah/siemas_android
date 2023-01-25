@@ -119,8 +119,12 @@ public class ViewModel extends AndroidViewModel {
             int idDsrt,
             String namaKrt,
             int jmlArt,
+            int jml_komoditas_makanan,
+            int jml_komoditas_nonmakanan,
             String makananSebulan,
             String nonMakananSebulan,
+            String makananSebulanbypml,
+            String nonMakananSebulanbypml,
             String transportasi,
             String peliharaan,
             int artSekolah,
@@ -135,8 +139,12 @@ public class ViewModel extends AndroidViewModel {
                 idDsrt,
                 namaKrt,
                 jmlArt,
+                jml_komoditas_makanan,
+                jml_komoditas_nonmakanan,
                 makananSebulan,
                 nonMakananSebulan,
+                makananSebulanbypml,
+                nonMakananSebulanbypml,
                 transportasi,
                 peliharaan,
                 artSekolah,
@@ -281,6 +289,9 @@ public class ViewModel extends AndroidViewModel {
     }
 
     public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
+        return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
+    }
+    public List<Dsart> getDsarlamatbyId(String id_bs, String tahun, int semester, int nu_rt){
         return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
     }
 

@@ -36,7 +36,7 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
     public static final String EXTRA_ID_BS = "com.example.siemas.Activities.EXTRA_ID_BS";
     public static final String EXTRA_NU_RT = "com.example.siemas.Activities.EXTRA_NU_RT";
 
-    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiRincian16_5, tiRincian8_3, tiRincian304, tiRincian305, tiJmlArtSekolah, tiJmlArtBpjs, tiDeskripsiUsaha, tiLuasLantai;
+    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tijml_kom_makanan, tijml_kom_nonmakanan, tiRincian16_5, tiRincian8_3, tiRincian16_5_bypml, tiRincian8_3_bypml, tiRincian304, tiRincian305, tiJmlArtSekolah, tiJmlArtBpjs, tiDeskripsiUsaha, tiLuasLantai;
     private Spinner spinnerIjazahKrt, spinnerKegiatanKrt;
     private AppCompatButton batalBtn, simpanBtn;
     private ViewModel viewModel;
@@ -65,8 +65,12 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
         tiNuRt = findViewById(R.id.nuRt);
         tiNamaKrt = findViewById(R.id.namaKrt);
         tiJmlArt = findViewById(R.id.jmlArt);
+        tijml_kom_makanan = findViewById(R.id.jml_komoditas_makanan);
+        tijml_kom_nonmakanan = findViewById(R.id.jml_komoditas_nonmakanan);
         tiRincian16_5 = findViewById(R.id.rincian16_5);
         tiRincian8_3 = findViewById(R.id.rincian8_3);
+        tiRincian16_5_bypml = findViewById(R.id.rincian16_5_bypml);
+        tiRincian8_3_bypml = findViewById(R.id.rincian8_3_bypml);
         tiRincian304 = findViewById(R.id.rincian304);
         tiRincian305 = findViewById(R.id.rincian305);
         tiJmlArtSekolah = findViewById(R.id.jmlArtSekolah);
@@ -129,6 +133,9 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
         // set jumlah art
         tiJmlArt.setText(String.valueOf(dsrt.getJml_art2()));
 
+        tijml_kom_makanan.setText(String.valueOf(dsrt.getJml_komoditas_makanan()));
+
+        tijml_kom_nonmakanan.setText(String.valueOf(dsrt.getJml_komoditas_nonmakanan()));
         // set blok 16.5
         String makananVal = dsrt.getMakanan_sebulan();
         if (!makananVal.isEmpty() && !makananVal.equals("null")){
@@ -140,7 +147,16 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
         if(!nonMakananVal.isEmpty() && !nonMakananVal.equals("null")){
             tiRincian8_3.setText(nonMakananVal);
         }
+        String makanan_bypmlVal = dsrt.getMakanan_sebulan_bypml();
+        if (!makanan_bypmlVal.isEmpty() && !makanan_bypmlVal.equals("null")){
+            tiRincian16_5_bypml.setText(makanan_bypmlVal);
+        }
 
+        // set blok 8.3
+        String nonMakanan_bypmlVal = dsrt.getNonmakanan_sebulan_bypml();
+        if(!nonMakanan_bypmlVal.isEmpty() && !nonMakanan_bypmlVal.equals("null")){
+            tiRincian8_3_bypml.setText(nonMakanan_bypmlVal);
+        }
         // set rincian 304
         String transportasiVal = dsrt.getTransportasi();
         if (!transportasiVal.isEmpty() && !transportasiVal.equals("null")){
@@ -213,11 +229,23 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(tiJmlArt.getText())) {
                     tiJmlArt.setError("Tidak boleh kosong");
                 }
+                if (TextUtils.isEmpty(tijml_kom_makanan.getText())) {
+                    tijml_kom_makanan.setError("Tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) {
+                    tijml_kom_nonmakanan.setError("Tidak boleh kosong");
+                }
                 if (TextUtils.isEmpty(tiRincian16_5.getText())) {
                     tiRincian16_5.setError("Tidak boleh kosong");
                 }
                 if (TextUtils.isEmpty(tiRincian8_3.getText())) {
                     tiRincian8_3.setError("Tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(tiRincian16_5_bypml.getText())) {
+                    tiRincian16_5_bypml.setError("Tidak boleh kosong");
+                }
+                if (TextUtils.isEmpty(tiRincian8_3_bypml.getText())) {
+                    tiRincian8_3_bypml.setError("Tidak boleh kosong");
                 }
                 if (TextUtils.isEmpty(tiRincian304.getText())) {
                     tiRincian304.setError("Tidak boleh kosong");
@@ -241,8 +269,12 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                 if (
                         (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
+                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
+                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
+                                (!TextUtils.isEmpty(tiRincian16_5_bypml.getText())) &&
+                                (!TextUtils.isEmpty(tiRincian8_3_bypml.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian304.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian305.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArtSekolah.getText())) &&
@@ -262,8 +294,12 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                                 dsrt.getId(),
                                 tiNamaKrt.getText().toString(),
                                 Integer.parseInt(tiJmlArt.getText().toString()),
+                                Integer.parseInt(tijml_kom_makanan.getText().toString()),
+                                Integer.parseInt(tijml_kom_nonmakanan.getText().toString()),
                                 tiRincian16_5.getText().toString(),
                                 tiRincian8_3.getText().toString(),
+                                tiRincian16_5_bypml.getText().toString(),
+                                tiRincian8_3_bypml.getText().toString(),
                                 trasnportasi,
                                 peliharaan,
                                 Integer.parseInt(tiJmlArtSekolah.getText().toString()),

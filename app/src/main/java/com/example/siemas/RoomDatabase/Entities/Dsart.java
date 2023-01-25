@@ -16,6 +16,7 @@ public class Dsart {
     public String id_bs;
     @ColumnInfo(name = "kd_kab")
     public String kd_kab;
+    @Nullable
     @ColumnInfo(name = "nks")
     public String nks;
     @ColumnInfo(name = "tahun")
@@ -40,7 +41,7 @@ public class Dsart {
     @ColumnInfo(name = "pendidikan")
     public String pendidikan;
 
-    public Dsart( String id_bs, String kd_kab, String nks, String tahun, int semester, int nu_rt, int nu_art, @Nullable String nama_art, @Nullable String pekerjaan, @Nullable String pendapatan, @Nullable String pendidikan) {
+    public Dsart( String id_bs, String kd_kab, @Nullable String nks, String tahun, int semester, int nu_rt, int nu_art, @Nullable String nama_art, @Nullable String pekerjaan, @Nullable String pendapatan, @Nullable String pendidikan) {
 
         this.id_bs = id_bs;
         this.kd_kab = kd_kab;

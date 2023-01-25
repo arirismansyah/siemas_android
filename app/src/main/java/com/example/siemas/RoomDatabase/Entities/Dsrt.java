@@ -91,9 +91,9 @@ public class Dsrt {
     @Nullable
     public String makanan_sebulan_bypml;
 
-    @ColumnInfo(name = "nonmakanan_sebulan_by_pml")
+    @ColumnInfo(name = "nonmakanan_sebulan_bypml")
     @Nullable
-    public String nonmakanan_sebulan_by_pml;
+    public String nonmakanan_sebulan_bypml;
 
 
     @ColumnInfo(name = "transportasi")
@@ -182,7 +182,7 @@ public class Dsrt {
     @Nullable
     public String sumber;
 
-    public Dsrt(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_pencacahan, @Nullable String alamat, @Nullable String nuc1, @Nullable String nama_krt, int jml_art, @Nullable String nama_krt2, int jml_art2, @Nullable String status_rumah, @Nullable int jml_komoditas_makanan, @Nullable int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_by_pml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai,  int gsmp, @Nullable String foto, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas, @Nullable String sumber) {
+    public Dsrt(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_pencacahan, @Nullable String alamat, @Nullable String nuc1, @Nullable String nama_krt, int jml_art, @Nullable String nama_krt2, int jml_art2, @Nullable String status_rumah, @Nullable int jml_komoditas_makanan, @Nullable int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai,  int gsmp, @Nullable String foto, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas, @Nullable String sumber) {
         this.id = id;
         this.kd_kab = kd_kab;
         this.nama_kab = nama_kab;
@@ -207,7 +207,7 @@ public class Dsrt {
         this.makanan_sebulan = makanan_sebulan;
         this.nonmakanan_sebulan = nonmakanan_sebulan;
         this.makanan_sebulan_bypml = makanan_sebulan_bypml;
-        this.nonmakanan_sebulan_by_pml = nonmakanan_sebulan_by_pml;
+        this.nonmakanan_sebulan_bypml = nonmakanan_sebulan_bypml;
         this.transportasi = transportasi;
         this.peliharaan = peliharaan;
         this.art_sekolah = art_sekolah;
@@ -415,12 +415,12 @@ public class Dsrt {
     }
 
     @Nullable
-    public String getNonmakanan_sebulan_by_pml() {
-        return nonmakanan_sebulan_by_pml;
+    public String getNonmakanan_sebulan_bypml() {
+        return nonmakanan_sebulan_bypml;
     }
 
-    public void setNonmakanan_sebulan_by_pml(@Nullable String nonmakanan_sebulan_by_pml) {
-        this.nonmakanan_sebulan_by_pml = nonmakanan_sebulan_by_pml;
+    public void setNonmakanan_sebulan_bypml(@Nullable String nonmakanan_sebulan_bypml) {
+        this.nonmakanan_sebulan_bypml = nonmakanan_sebulan_bypml;
     }
 
     @Nullable

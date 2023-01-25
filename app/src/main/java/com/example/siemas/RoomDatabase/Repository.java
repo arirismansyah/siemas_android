@@ -1039,24 +1039,31 @@ public class Repository {
             int idDsrt = (int) objects[0];
             String namaKrt = (String) objects[1];
             int jmlArt = (int) objects[2];
-            String makananSebulan = (String) objects[3];
-            String nonMakananSebulan = (String) objects[4];
-            String transportasi = (String) objects[5];
-            String peliharaan = (String) objects[6];
-            int artSekolah = (int) objects[7];
-            int artBpjs = (int) objects[8];
-            String ijazahKrt = (String) objects[9];
-            String kegiatanKrt = (String) objects[10];
-            String deskripsiKegiatan = (String) objects[11];
-            int luasLantai = (int) objects[12];
-            int statusPencacahan = (int) objects[13];
-
+            int jml_komoditas_makanan = (int) objects[3];
+            int jml_komoditas_nonmkanan = (int) objects[4];
+            String makananSebulan = (String) objects[5];
+            String nonMakananSebulan = (String) objects[6];
+            String makananSebulanbypml = (String) objects[7];
+            String nonMakananSebulanbypml = (String) objects[8];
+            String transportasi = (String) objects[9];
+            String peliharaan = (String) objects[10];
+            int artSekolah = (int) objects[11];
+            int artBpjs = (int) objects[12];
+            String ijazahKrt = (String) objects[13];
+            String kegiatanKrt = (String) objects[14];
+            String deskripsiKegiatan = (String) objects[15];
+            int luasLantai = (int) objects[16];
+            int statusPencacahan = (int) objects[17];
             dsrtDao.updatePemeriksaan(
                     idDsrt,
                     namaKrt,
                     jmlArt,
+                    jml_komoditas_makanan,
+                    jml_komoditas_nonmkanan,
                     makananSebulan,
                     nonMakananSebulan,
+                    makananSebulanbypml,
+                    nonMakananSebulanbypml,
                     transportasi,
                     peliharaan,
                     artSekolah,
@@ -1075,8 +1082,12 @@ public class Repository {
             int idDsrt,
             String namaKrt,
             int jmlArt,
-            String makananSebulan,
-            String nonMakananSebulan,
+            int  jml_komoditas_makanan,
+            int jml_komoditas_nonmkanan,
+            String  makananSebulan,
+            String  nonMakananSebulan,
+            String makananSebulanbypml,
+            String nonMakananSebulanbypml,
             String transportasi,
             String peliharaan,
             int artSekolah,
@@ -1090,8 +1101,12 @@ public class Repository {
                 idDsrt,
                 namaKrt,
                 jmlArt,
+                jml_komoditas_makanan,
+                jml_komoditas_nonmkanan,
                 makananSebulan,
                 nonMakananSebulan,
+                makananSebulanbypml,
+                nonMakananSebulanbypml,
                 transportasi,
                 peliharaan,
                 artSekolah,
@@ -1816,6 +1831,34 @@ public class Repository {
         }
         return null;
     }
+
+    private static class getDsartlamabyIdAsync extends AsyncTask<Void, Void, List<Dsart>>{
+        private DsartDao dsartDao;
+        String id_bs, tahun;
+        int semester, nu_rt;
+        public getDsartlamabyIdAsync(DsartDao dsartDao,String id_bs, String tahun, int semester, int nu_rt){
+            this.dsartDao = dsartDao;
+            this.id_bs=id_bs;
+            this.tahun =tahun;
+            this.semester = semester;
+            this.nu_rt = nu_rt;
+        }
+        @Override
+        protected List<Dsart> doInBackground(Void... voids) {
+            return dsartDao.getDsartListbyid(id_bs, tahun, semester, nu_rt);
+        }
+    }
+    public List<Dsart> getDsartlamabyId(String id_bs, String tahun, int semester, int nu_rt){
+        try {
+            return new getDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public void getDsartPclFromAPI(Context context, String email, String token) {
         final ProgressDialog pd = new ProgressDialog(context);

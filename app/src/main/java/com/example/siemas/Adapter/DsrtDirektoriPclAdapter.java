@@ -214,27 +214,32 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                             progressDialog.setMessage("Mengirim Data DSRT");
                             progressDialog.show();
                             user = viewModel.getUser().get(0);
+                            Log.d(TAG, "onClick data dsrt: "+ dsrt.getMakanan_sebulan_bypml());
                             JsonElement dsrtJson = new Gson().toJsonTree(dsrt);
                             String fileName = dsrt.getId_bs() + "_" + dsrt.getNks() + "_" + String.valueOf(dsrt.getNu_rt()) + "_" + String.valueOf(dsrt.getId()) + ".jpg";
 
-
+                            checkAndRequestForPermission(itemView.getContext());
                             String[] proj = {MediaStore.Images.Media.DATA};
                             Cursor cursorFile = itemView.getContext().getContentResolver().query(Uri.parse(dsrt.getFoto()), proj, null, null, null);
-                            int column_index = cursorFile.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                            cursorFile.moveToFirst();
-                            String filePath = cursorFile.getString(column_index);
-                            Log.d(TAG, "onClick: "+ filePath);
+                            RequestBody file = RequestBody.create(MultipartBody.FORM,"");
+                            MultipartBody.Part body = MultipartBody.Part.createFormData("file","",file);
+                            try {
+                                cursorFile.moveToFirst();
+                                int column_index = cursorFile.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                                String filePath = cursorFile.getString(column_index);
+                                Log.d(TAG, "onClick: "+ filePath);
+                                checkAndRequestForPermission(itemView.getContext());
+                                Bitmap fullSizeBitmap = BitmapFactory.decodeFile(filePath);
+                                Bitmap reducedBitmap = ImageResizer.reduceBitmapSize(fullSizeBitmap, 2073600);
+                                File reducedFile = getBitmapReduced(reducedBitmap, fileName, itemView.getContext());
 
-                            checkAndRequestForPermission(itemView.getContext());
+                                RequestBody requestFile = RequestBody.create(reducedFile, MediaType.parse("image/*"));
+                                body = MultipartBody.Part.createFormData("file_foto", reducedFile.getName(), requestFile);
 
-                            Bitmap fullSizeBitmap = BitmapFactory.decodeFile(filePath);
-                            Bitmap reducedBitmap = ImageResizer.reduceBitmapSize(fullSizeBitmap, 2073600);
-                            File reducedFile = getBitmapReduced(reducedBitmap, fileName, itemView.getContext());
+                            }catch (Exception e)
+                            {e.printStackTrace();}
 
                             RequestBody dsrtBody = RequestBody.create(dsrtJson.toString(), MediaType.parse("text/plain"));
-                            RequestBody requestFile = RequestBody.create(reducedFile, MediaType.parse("image/*"));
-                            MultipartBody.Part body = MultipartBody.Part.createFormData("file_foto", reducedFile.getName(), requestFile);
-
                             InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
                             Call<ResponseBody> call = interfaceApi.upload_data("Bearer " + user.getToken(), body, dsrtBody);
 

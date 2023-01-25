@@ -28,6 +28,7 @@ import com.example.siemas.ImageResizer;
 import com.example.siemas.InterfaceApi;
 import com.example.siemas.R;
 import com.example.siemas.RetrofitClientInstance;
+import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
@@ -247,6 +248,49 @@ public class DsrtPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsrtPemeriks
                                     Toast.makeText(itemView.getContext(), "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+
+                            for (Dsart dsart : dsartList) {
+                                progressDialog.setMessage("Mengirim Data ART");
+                                progressDialog.show();
+                                JsonElement dsartJson = new Gson().toJsonTree(dsart);
+                                Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(),"Bearer "+ user.getToken());
+                                calldsart.enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.code() == 200) {
+                                            try {
+                                                String result = response.body().string();
+                                                JSONObject jo = new JSONObject(result);
+                                                String message = jo.getString("message");
+                                                if (message.equals("success")) {
+                                                    progressDialog.dismiss();
+                                                    Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
+
+                                                } else {
+                                                    progressDialog.dismiss();
+                                                    Toast toast = Toast.makeText(itemView.getContext(),
+                                                            jo.getString("message"),
+                                                            Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                }
+                                            } catch (JSONException | IOException e) {
+                                                progressDialog.dismiss();
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
                     }
                 }
