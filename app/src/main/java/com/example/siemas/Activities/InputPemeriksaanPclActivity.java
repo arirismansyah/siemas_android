@@ -1,5 +1,7 @@
 package com.example.siemas.Activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -10,8 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -27,8 +33,10 @@ import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class InputPemeriksaanPclActivity extends AppCompatActivity {
     public static final String EXTRA_ID_DSRT = "com.example.siemas.Activities.EXTRA_ID_DSRT";
@@ -49,7 +57,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
     private List<KegiatanUtama> kegiatanUtamaList;
     private RecyclerView recyclerView;
     private InputPemeriksaanPCLAdapter inputPemeriksaanPCLAdapter;
-
+    private String current = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +116,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
         ArrayAdapter<String> spinnerIjazahAdapter = new ArrayAdapter<String>(this , R.layout.multi_line_spinner_support,namaPendidikan);
         spinnerIjazahKrt.setAdapter(spinnerIjazahAdapter);
-
 
         // mount spinner kegiatan
         kegiatanUtamaList = viewModel.getAllKegiatan();
@@ -197,13 +204,109 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         if (!luasLantaiVal.isEmpty() && !luasLantaiVal.equals("null") && (dsrt.getLuas_lantai()>0)){
             tiLuasLantai.setText(luasLantaiVal);
         }
+        tiRincian16_5.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian16_5.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian16_5.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian16_5.setText(setEditRupiah);
+                    tiRincian16_5.setSelection(setEditRupiah.length());
+                    tiRincian16_5.addTextChangedListener( this);
+                }
+            }
+        });
+        tiRincian8_3.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian8_3.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian8_3.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian8_3.setText(setEditRupiah);
+                    tiRincian8_3.setSelection(setEditRupiah.length());
+                    tiRincian8_3.addTextChangedListener( this);
+                }
+            }
+        });
 
+
+        tiRincian304.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian304.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian304.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian304.setText(setEditRupiah);
+                    tiRincian304.setSelection(setEditRupiah.length());
+                    tiRincian304.addTextChangedListener( this);
+                }
+            }
+        });
+        tiRincian305.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian305.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian305.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian305.setText(setEditRupiah);
+                    tiRincian305.setSelection(setEditRupiah.length());
+                    tiRincian305.addTextChangedListener( this);
+                }
+            }
+        });
         recyclerView = findViewById(R.id.dssartrecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         inputPemeriksaanPCLAdapter = new InputPemeriksaanPCLAdapter(viewModel, dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
         recyclerView.setAdapter(inputPemeriksaanPCLAdapter);
-
         // batal btn
         batalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,7 +314,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         // simpan btn
         simpanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,20 +356,20 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                     tiLuasLantai.setError("Tidak boleh kosong");
                 }
 
-                if (           (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArt.getText())) &&
-                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
-                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian304.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian305.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArtSekolah.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArtBpjs.getText())) &&
-                                (!TextUtils.isEmpty(tiDeskripsiUsaha.getText())) &&
-                                (!TextUtils.isEmpty(tiLuasLantai.getText())) &&
-                                (spinnerIjazahKrt != null) && (spinnerKegiatanKrt != null) &&
-                                (spinnerIjazahKrt.getSelectedItem() != null) && (spinnerKegiatanKrt.getSelectedItem()!=null)
+                if ((!TextUtils.isEmpty(tiNamaKrt.getText())) &&
+                    (!TextUtils.isEmpty(tiJmlArt.getText())) &&
+                    (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
+                    (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
+                    (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
+                    (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
+                    (!TextUtils.isEmpty(tiRincian304.getText())) &&
+                    (!TextUtils.isEmpty(tiRincian305.getText())) &&
+                    (!TextUtils.isEmpty(tiJmlArtSekolah.getText())) &&
+                    (!TextUtils.isEmpty(tiJmlArtBpjs.getText())) &&
+                    (!TextUtils.isEmpty(tiDeskripsiUsaha.getText())) &&
+                    (!TextUtils.isEmpty(tiLuasLantai.getText())) &&
+                    (spinnerIjazahKrt != null) && (spinnerKegiatanKrt != null) &&
+                    (spinnerIjazahKrt.getSelectedItem() != null) && (spinnerKegiatanKrt.getSelectedItem()!=null)
                 ) {
                     String ijazah = spinnerIjazahKrt.getSelectedItem().toString();
                     String kegiatan = spinnerKegiatanKrt.getSelectedItem().toString();
@@ -275,7 +377,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                     String peliharaan = tiRincian305.getText().toString();
 
                     try {
-
                         viewModel.updatePemeriksaan(
                                 dsrt.getId(),
                                 tiNamaKrt.getText().toString(),
@@ -296,6 +397,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                                 Integer.parseInt(tiLuasLantai.getText().toString()),
                                 3
                         );
+
                         inputPemeriksaanPCLAdapter.saveadapter(viewModel);
 
                         finish();
@@ -325,6 +427,14 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private String formatrupiah(Double number){
+        Locale locale = new Locale("IND", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String formatrupiah = numberFormat.format(number);
+        String[] split = formatrupiah.split(",");
+        int length = split[0].length();
+        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
 }

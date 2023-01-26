@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -24,8 +26,10 @@ import com.example.siemas.RoomDatabase.Entities.Pendidikan;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class InputPemeriksaanPmlActivity extends AppCompatActivity {
     public static final String EXTRA_ID_DSRT = "com.example.siemas.Activities.EXTRA_ID_DSRT";
@@ -118,6 +122,104 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerKegiatanAdapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, namaKegiatan);
         spinnerKegiatanKrt.setAdapter(spinnerKegiatanAdapter);
 
+        tiRincian16_5_bypml.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian16_5_bypml.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian16_5_bypml.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian16_5_bypml.setText(setEditRupiah);
+                    tiRincian16_5_bypml.setSelection(setEditRupiah.length());
+                    tiRincian16_5_bypml.addTextChangedListener( this);
+                }
+            }
+        });
+        tiRincian8_3_bypml.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian8_3_bypml.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian8_3_bypml.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian8_3_bypml.setText(setEditRupiah);
+                    tiRincian8_3_bypml.setSelection(setEditRupiah.length());
+                    tiRincian8_3_bypml.addTextChangedListener( this);
+                }
+            }
+        });
+
+
+        tiRincian304.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian304.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian304.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian304.setText(setEditRupiah);
+                    tiRincian304.setSelection(setEditRupiah.length());
+                    tiRincian304.addTextChangedListener( this);
+                }
+            }
+        });
+        tiRincian305.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiRincian305.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiRincian305.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiRincian305.setText(setEditRupiah);
+                    tiRincian305.setSelection(setEditRupiah.length());
+                    tiRincian305.addTextChangedListener( this);
+                }
+            }
+        });
         // set input value
         tiKdKab.setText(dsrt.getKd_kab());
         tinamaKab.setText(dsrt.getNama_kab());
@@ -326,7 +428,14 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    private String formatrupiah(Double number){
+        Locale locale = new Locale("IND", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String formatrupiah = numberFormat.format(number);
+        String[] split = formatrupiah.split(",");
+        int length = split[0].length();
+        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
 }

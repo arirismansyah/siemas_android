@@ -633,11 +633,11 @@ public class Repository {
                             }
                             int jml_komoditas_makanan = 0 ;
                             if (!ob.getString("jml_komoditas_makanan").equals("null")) {
-                                gsmp = ob.getInt("jml_komoditas_makanan");
+                                jml_komoditas_makanan = ob.getInt("jml_komoditas_makanan");
                             }
                             int jml_komoditas_nonmakanan = 0 ;
                             if (!ob.getString("jml_komoditas_nonmakanan").equals("null")) {
-                                gsmp = ob.getInt("jml_komoditas_nonmakanan");
+                                jml_komoditas_nonmakanan = ob.getInt("jml_komoditas_nonmakanan");
                             }
 
 
@@ -1720,7 +1720,7 @@ public class Repository {
                         }
                         insertPeriodeList(periodes);
                     }
-                    Toast.makeText(context, "Periode Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Sync Periode Success", Toast.LENGTH_SHORT).show();
                 }catch (JSONException | IOException e){
                     e.printStackTrace();
                 }
@@ -1896,7 +1896,7 @@ public class Repository {
                         insertDsartList(dsarts);
 
                     }
-                    Toast.makeText(context, "Dsart Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Sync DSART Success", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                 }catch (JSONException | IOException e){
                     e.printStackTrace();
@@ -1946,7 +1946,7 @@ public class Repository {
                         }
                         insertDsartList(dsarts);
                     }
-                    Toast.makeText(context, "Dsart Berhasil Disimpan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Sync DSART Success", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                 }catch (JSONException | IOException e){
                     e.printStackTrace();

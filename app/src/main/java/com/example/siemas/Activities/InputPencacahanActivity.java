@@ -1,5 +1,7 @@
 package com.example.siemas.Activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -45,7 +47,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +76,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -144,12 +149,9 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private String stringJamMulai, stringJamSelesai;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // disallowed dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_input_pencacahan);
@@ -157,8 +159,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //        handler = new Handler();
 //        tStart = SystemClock.uptimeMillis();
 //        handler.postDelayed(runnable, 0);
-
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle("INPUT PENCACAHAN");
         setSupportActionBar(myToolbar);
@@ -196,9 +196,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         dateMulai = calendar.getTime();
         stringJamMulai = dateFormatTime.format(dateMulai);
         jamMulai.setText("Mulai: "+stringJamMulai);
-
-
-
         if (!dsrt.getNama_krt2().isEmpty() && !dsrt.getNama_krt2().equals("null")){
             tiNamaKrt.setText(dsrt.getNama_krt2());
         } else {
@@ -208,6 +205,56 @@ public class InputPencacahanActivity extends AppCompatActivity {
         if (!dsrt.getFoto().isEmpty() && !dsrt.getFoto().equals("null")) {
             mImageView.setImageURI(Uri.parse(dsrt.getFoto()));
         }
+
+        tiMakananSebulan.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiMakananSebulan.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiMakananSebulan.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiMakananSebulan.setText(setEditRupiah);
+                    tiMakananSebulan.setSelection(setEditRupiah.length());
+                    tiMakananSebulan.addTextChangedListener( this);
+                }
+            }
+        });
+
+        tiNonMakananSebulan.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiNonMakananSebulan.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiNonMakananSebulan.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiNonMakananSebulan.setText(setEditRupiah);
+                    tiNonMakananSebulan.setSelection(setEditRupiah.length());
+                    tiNonMakananSebulan.addTextChangedListener( this);
+                }
+            }
+        });
 
         // get foto dialog
         getFotoDialog = new Dialog(InputPencacahanActivity.this);
@@ -240,7 +287,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         simpanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // check is empty
                 if (TextUtils.isEmpty(tiNamaKrt.getText())) {
                     tiNamaKrt.setError("Tidak boleh kosong");
@@ -421,7 +467,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
             }
         }
-
         if (requestCode == GALLERY_REQUEST_CODE) {
 //            Uri selectedImage = data.getData();
             try {
@@ -430,7 +475,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 mImageView.setImageBitmap(selectedImage);
-
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
 //                Uri tempUri = getImageUri(gestApplicationContext(), bitmap);
 //                pictureFilePath = getRealPathFromURI2(tempUri);
@@ -454,14 +498,12 @@ public class InputPencacahanActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
-
     private void checkAndRequestForPermission(){
         if (ContextCompat.checkSelfPermission(
                 InputPencacahanActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-              Toast.makeText(this, "Permission Dinied", Toast.LENGTH_SHORT).show();
+              Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }else{
                 ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
             }
@@ -473,19 +515,15 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private Uri saveImageToExternalStorage(String imageName) {
         Uri imageCollection = null;
         ContentResolver resolver = getContentResolver();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
         } else {
             imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
-
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.Images.Media.TITLE, imageName + ".jpg");
         contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg");
         contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-
         Uri finalImageUri = resolver.insert(imageCollection, contentValues);
         imageUri = finalImageUri;
         return finalImageUri;
@@ -563,8 +601,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
         return builder.toString();
     }
-
-
     protected synchronized String getInstallationIdentifier() {
         if (deviceIdentifier == null) {
             SharedPreferences sharedPrefs = this.getSharedPreferences(
@@ -768,5 +804,14 @@ public class InputPencacahanActivity extends AppCompatActivity {
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
+    }
+
+    private String formatrupiah(Double number){
+        Locale locale = new Locale("IND", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String formatrupiah = numberFormat.format(number);
+        String[] split = formatrupiah.split(",");
+        int length = split[0].length();
+        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
 }

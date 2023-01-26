@@ -32,7 +32,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,8 +58,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class EditPencacahanActivity extends AppCompatActivity {
@@ -178,13 +182,58 @@ public class EditPencacahanActivity extends AppCompatActivity {
         if (!statusRumah.isEmpty() && !statusRumah.equals("null")){
             spinnerStatusRumah.setSelection(spinnerAdapter.getPosition(statusRumah));
         }
-
-
         // set makanan sebulan
         tiMakananSebulan.setText(dsrt.getMakanan_sebulan());
-
         // set non makanan sebulan
         tiNonMakananSebulan.setText(dsrt.getNonmakanan_sebulan());
+        tiMakananSebulan.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiMakananSebulan.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiMakananSebulan.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiMakananSebulan.setText(setEditRupiah);
+                    tiMakananSebulan.setSelection(setEditRupiah.length());
+                    tiMakananSebulan.addTextChangedListener( this);
+                }
+            }
+        });
+        tiNonMakananSebulan.addTextChangedListener(new TextWatcher() {
+            private String setEditRupiah = tiNonMakananSebulan.getText().toString().trim();
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(setEditRupiah)) {
+                    tiNonMakananSebulan.removeTextChangedListener(this);
+                    String replace = s.toString().replaceAll("[Rp. ]", "");
+                    if (!replace.isEmpty()){
+                        setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                    }else{
+                        setEditRupiah = "";
+                    }
+                    tiNonMakananSebulan.setText(setEditRupiah);
+                    tiNonMakananSebulan.setSelection(setEditRupiah.length());
+                    tiNonMakananSebulan.addTextChangedListener( this);
+                }
+            }
+        });
 
         // set gsmp
         int gsmpVal = dsrt.getGsmp();
@@ -684,5 +733,14 @@ public class EditPencacahanActivity extends AppCompatActivity {
         cursor.moveToFirst();
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
+    }
+
+    private String formatrupiah(Double number){
+        Locale locale = new Locale("IND", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String formatrupiah = numberFormat.format(number);
+        String[] split = formatrupiah.split(",");
+        int length = split[0].length();
+        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
 }

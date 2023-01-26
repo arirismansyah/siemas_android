@@ -2,27 +2,42 @@ package com.example.siemas.Adapter;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.annotation.SuppressLint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsart;
+import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
+import com.example.siemas.RoomDatabase.Entities.Pendidikan;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeriksaanPCLAdapter.ViewHolder> {
     private List<Dsart> dsartList = new ArrayList<>();
     private ViewModel viewModel;
+
+    private List<Pendidikan> pendidikanList;
+    private List<KegiatanUtama> kegiatanUtamaList;
+    ArrayAdapter<String> spinnerIjazahAdapter;
+    ArrayAdapter<String> spinnerKegiatanAdapter;
+    public int pos;
 
     public InputPemeriksaanPCLAdapter(ViewModel viewModel, String id_bs, String tahun, int semester, int nu_rt) {
         this.viewModel = viewModel;
@@ -37,26 +52,64 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
     @Override
     public InputPemeriksaanPCLAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_input_pemeriksaan_pcl_listitem, parent, false);
-        return new ViewHolder(itemView, new NamaArtTextListener(),
-                new PendidikanArtTextListener(), new PekerjaanTextListener(), new PendapatanTextListener());
+        return new ViewHolder(itemView, new NamaArtTextListener());
     }
 
     @Override
     public void onBindViewHolder(@NonNull InputPemeriksaanPCLAdapter.ViewHolder holder, int position) {
             Dsart currentdsart = dsartList.get(position);
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getNu_art());
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getNama_art());
-            Log.d(TAG, "onBindViewHolder: "+ currentdsart.getPendidikan());
             holder.namaArtTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pendidikanArtTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pekerjaanTextListener.updatePosition(holder.getAdapterPosition());
-            holder.pendapatanTextListener.updatePosition(holder.getAdapterPosition());
-
+//            holder.pendapatanTextListener.updatePosition(holder.getAdapterPosition());
+            holder.pendapatanART.addTextChangedListener(new TextWatcher() {
+                private String setEditRupiah = holder.pendapatanART.getText().toString().trim();
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!s.toString().equals(setEditRupiah)) {
+                        holder.pendapatanART.removeTextChangedListener(this);
+                        String replace = s.toString().replaceAll("[Rp. ]", "");
+                        if (!replace.isEmpty()){
+                            setEditRupiah = formatrupiah(Double.parseDouble(replace));
+                        }else{
+                            setEditRupiah = "";
+                        }
+                        holder.pendapatanART.setText(setEditRupiah);
+                        holder.pendapatanART.setSelection(setEditRupiah.length());
+                        holder.pendapatanART.addTextChangedListener( this);
+                        dsartList.get(holder.getAdapterPosition()).setPendapatan(s.toString());
+                    }
+                }
+            });
             holder.nuART.setText(Integer.toString(currentdsart.getNu_art()));
             holder.namaART.setText(currentdsart.getNama_art());
-            holder.pendidikanART.setText(currentdsart.getPendidikan());
-            holder.pekerjaanART.setText(currentdsart.getPekerjaan());
+            holder.pendidikanART.setSelection(spinnerIjazahAdapter.getPosition(currentdsart.getPendidikan()));
+            holder.pekerjaanART.setSelection(spinnerKegiatanAdapter.getPosition(currentdsart.getPekerjaan()));
             holder.pendapatanART.setText(currentdsart.getPendapatan());
+
+//            this.pos = holder.getAdapterPosition();
+            holder.pendidikanART.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    currentdsart.setPendidikan(holder.pendidikanART.getSelectedItem().toString());
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            holder.pekerjaanART.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        currentdsart.setPekerjaan( holder.pekerjaanART.getSelectedItem().toString());
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+            });
     }
 
     @Override
@@ -69,36 +122,74 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextInputEditText nuART, namaART, pendidikanART, pekerjaanART,pendapatanART;
+        private TextInputEditText nuART, namaART, pendapatanART;
+        private Spinner pendidikanART, pekerjaanART;
         public NamaArtTextListener namaArtTextListener;
-        public PendidikanArtTextListener pendidikanArtTextListener;
-        public PekerjaanTextListener pekerjaanTextListener;
         public PendapatanTextListener pendapatanTextListener;
 
 
         public ViewHolder(@NonNull View itemView,
-                          NamaArtTextListener namaArtTextListener,
-                          PendidikanArtTextListener pendidikanArtTextListener,
-                          PekerjaanTextListener pekerjaanTextListener,
-                          PendapatanTextListener pendapatanTextListener) {
+                          NamaArtTextListener namaArtTextListener) {
             super(itemView);
             nuART = itemView.findViewById(R.id.nuART);
             namaART = itemView.findViewById(R.id.namaART);
-            pendidikanART = itemView.findViewById(R.id.pendidikanART);
-            pekerjaanART = itemView.findViewById(R.id.pekerjaanART);
+//            pendidikanART = itemView.findViewById(R.id.pendidikanART);
+//            pekerjaanART = itemView.findViewById(R.id.pekerjaanART);
             pendapatanART = itemView.findViewById(R.id.pendapatanART);
-
+            pendidikanART = (Spinner) itemView.findViewById(R.id.pendidikanART);
+            pekerjaanART = (Spinner) itemView.findViewById(R.id.pekerjaanART);
             this.namaArtTextListener = namaArtTextListener;
             this.namaART.addTextChangedListener(namaArtTextListener);
+//            this.pendapatanTextListener = pendapatanTextListener;
+//            this.pendapatanART.addTextChangedListener(pendapatanTextListener);
 
-            this.pendidikanArtTextListener = pendidikanArtTextListener;
-            this.pendidikanART.addTextChangedListener(pendidikanArtTextListener);
 
-            this.pekerjaanTextListener = pekerjaanTextListener;
-            this.pekerjaanART.addTextChangedListener(pekerjaanTextListener);
+//            this.pendapatanART.addTextChangedListener(new TextWatcher() {
+//                private String setEditRupiah = pendapatanART.getText().toString().trim();
+//                private int position;
+//                public void updateposition(int pos){
+//                    this.position = pos;
+//                }
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                }
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                }
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    if (!s.toString().equals(setEditRupiah)) {
+//                        pendapatanART.removeTextChangedListener(this);
+//                        String replace = s.toString().replaceAll("[Rp. ]", "");
+//                        if (!replace.isEmpty()){
+//                            setEditRupiah = formatrupiah(Double.parseDouble(replace));
+//                        }else{
+//                            setEditRupiah = "";
+//                        }
+//                        pendapatanART.setText(setEditRupiah);
+//                        pendapatanART.setSelection(setEditRupiah.length());
+//                        pendapatanART.addTextChangedListener( this);
+//                        dsartList.get(pos).setPendapatan(s.toString());
+//                    }
+//                }
+//            });
 
-            this.pendapatanTextListener = pendapatanTextListener;
-            this.pendapatanART.addTextChangedListener(pendapatanTextListener);
+            pendidikanList = viewModel.getAllPendidikan();
+            List<String> namaPendidikan = new ArrayList<String>();
+            for (int i = 0; i < pendidikanList.size(); i++) {
+                namaPendidikan.add(pendidikanList.get(i).getPendidikan());
+            }
+            spinnerIjazahAdapter = new ArrayAdapter<String>(itemView.getContext(), R.layout.multi_line_spinner_support, namaPendidikan);
+            pendidikanART.setAdapter(spinnerIjazahAdapter);
+
+            kegiatanUtamaList = viewModel.getAllKegiatan();
+            List<String> namaKegiatan = new ArrayList<>();
+            for (int i = 0; i < kegiatanUtamaList.size(); i++) {
+                namaKegiatan.add(kegiatanUtamaList.get(i).getKegiatan_utama());
+            }
+            spinnerKegiatanAdapter = new ArrayAdapter<String>(itemView.getContext(), R.layout.spinner_textview, namaKegiatan);
+            pekerjaanART.setAdapter(spinnerKegiatanAdapter);
+
         }
     }
     private class NamaArtTextListener implements TextWatcher {
@@ -158,22 +249,31 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
 
     private class PendapatanTextListener implements TextWatcher{
         private int position;
+        private String setEditRupiah;
+
+//        setEditRupiah = editText.getText().toString().trim();
         public void updatePosition(int position) {
             this.position = position;
         }
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
         }
-
         @Override
         public void afterTextChanged(Editable s) {
             dsartList.get(position).setPendapatan(s.toString());
         }
+
+    }
+
+    private String formatrupiah(Double number){
+        Locale locale = new Locale("IND", "ID");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+        String formatrupiah = numberFormat.format(number);
+        String[] split = formatrupiah.split(",");
+        int length = split[0].length();
+        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
 }

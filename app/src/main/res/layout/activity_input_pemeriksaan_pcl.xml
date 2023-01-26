@@ -63,7 +63,7 @@
                             android:gravity="center_vertical"
                             >
                             <TextView
-                                android:layout_width="120dp"
+                                android:layout_width="130dp"
                                 android:layout_height="wrap_content"
                                 android:text="Provinsi"
                                 android:textSize="14dp"
@@ -244,7 +244,7 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Jumlah ART(R.301)"
+                                android:text="Jumlah ART\n(K Blok.III R.301)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
@@ -265,6 +265,7 @@
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="Jumlah ART">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -273,8 +274,8 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Jml Komoditas Makanan"
-                                android:textSize="14dp"
+                                android:text="Jml Komo Makanan\n(KP Blok.IV.1)"
+                                android:textSize="13dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -293,6 +294,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="jml_komoditas_makanan">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -301,8 +303,8 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Jml Komoditas Nonmakanan"
-                                android:textSize="14dp"
+                                android:text="Jml Komo Nonmakanan\n(KP Blok.IV.2)"
+                                android:textSize="13dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -321,16 +323,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="jml_komoditas_nonmakanan">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
                         <TableRow
                             android:gravity="center_vertical"                            >
                             <TextView
-                                android:layout_width="120dp"
+                                android:layout_width="130dp"
                                 android:layout_height="wrap_content"
-                                android:text="Blok IV.3.2\nR.16 Kolom 5"
-                                android:textSize="14dp"
+                                android:text="P. Makanan Sebulan\n(KP Blok IV.3.2 R.16 Kolom 5)"
+                                android:textSize="11dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -349,6 +352,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="rincian16.5">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -357,8 +361,8 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Blok IV.3.3\nR.8 Kolom 3"
-                                android:textSize="14dp"
+                                android:text="P. Nonmakanan Sebulan\n(KP Blok IV.3.3 R.8 Kolom 3)"
+                                android:textSize="11dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -377,6 +381,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="rincian8.3">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -385,7 +390,7 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Rincian 304"
+                                android:text="P. Transportasi\n(KP R.304)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
@@ -405,6 +410,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="rincian304">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -413,7 +419,7 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Rincian 305"
+                                android:text="P. Peliharaan\n(KP R.305)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
@@ -433,6 +439,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="14dp"
+                                android:inputType="number"
                                 android:hint="rincian305">
                             </com.google.android.material.textfield.TextInputEditText>
                         </TableRow>
@@ -441,7 +448,7 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Jumlah ART masih Sekolah"
+                                android:text="Jumlah ART masih Sekolah (K Blok.VI)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
@@ -470,8 +477,8 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Jumlah ART yang\nMemiliki BPJS PBI"
-                                android:textSize="14dp"
+                                android:text="Jumlah ART yang memiliki BPJS PBI (K Blok.XI R.1101)"
+                                android:textSize="11dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -497,11 +504,11 @@
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"                            >
+                            android:gravity="center_vertical" >
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Ijazah Tertinggi KRT"
+                                android:text="Ijazah Tertinggi KRT\n(K Blok.VI R.612)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
@@ -533,10 +540,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" >
                             <TextView
-                                android:layout_width="120dp"
+                                android:layout_width="130dp"
                                 android:layout_height="wrap_content"
-                                android:text="Kegiatan KRT Selama Seminggu"
-                                android:textSize="14dp"
+                                android:text="Kegiatan KRT Selama Seminggu (K Blok.VII R.706)"
+                                android:textSize="11dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
                                 >
@@ -564,7 +571,7 @@
                             <TextView
                                 android:layout_width="120dp"
                                 android:layout_height="wrap_content"
-                                android:text="Deskripsi Kegiatan KRT"
+                                android:text="Deskripsi Kegiatan KRT (K Blok.VII R.706)"
                                 android:textSize="14dp"
                                 android:textStyle="bold"
                                 android:layout_column="1"
