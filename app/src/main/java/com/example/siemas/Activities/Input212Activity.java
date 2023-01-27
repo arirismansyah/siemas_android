@@ -1,5 +1,7 @@
 package com.example.siemas.Activities;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
@@ -15,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +85,7 @@ public class Input212Activity extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                     emptyContainer.setVisibility(View.VISIBLE);
                 }
+                Log.d(TAG, "onChanged: laporan212List"+laporan212List);
                 dsrtLaporanAdapter.setListLaporan(laporan212List);
             }
         });

@@ -29,7 +29,7 @@ public interface DsrtDao {
     Dsrt getDsrtByIdBSNksNuRt(String idBS, String nks, int nu_rt);
 
     @Query("Select * FROM dsrt WHERE id_bs = :idBS AND nu_rt = :nu_rt AND tahun = :tahun AND semester = :semester  ")
-    Dsrt getDsrtByIdBSNuRt(String idBS, int nu_rt, String tahun, int semester);
+    Dsrt getDsrtByIdBSNuRt(String idBS,  String tahun, int semester, int nu_rt);
 
     @Query("Select * FROM dsrt WHERE pencacah = :pencacah")
     Dsrt getDsrtPcl(String pencacah);

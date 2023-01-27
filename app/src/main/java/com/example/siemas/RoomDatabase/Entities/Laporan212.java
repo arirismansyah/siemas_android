@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-@Entity(primaryKeys = {"id_bs", "nu_rt"})
+@Entity(primaryKeys = {"id_bs","tahun" ,"semester","nu_rt"})
 public class Laporan212 {
     @NonNull
     @ColumnInfo(name = "id_bs")
@@ -16,9 +16,16 @@ public class Laporan212 {
     public String nks;
 
     @NonNull
+    @ColumnInfo(name = "tahun")
+    public String tahun;
+
+    @NonNull
+    @ColumnInfo(name = "semester")
+    public int semester;
+
+    @NonNull
     @ColumnInfo(name = "nu_rt")
     public int nu_rt;
-
     @Nullable
     @ColumnInfo(name = "nama_krt")
     public String nama_krt;
@@ -35,14 +42,34 @@ public class Laporan212 {
     @ColumnInfo(name = "status")
     public int status;
 
-    public Laporan212(@NonNull String id_bs, @Nullable String nks, int nu_rt, @Nullable String nama_krt, @Nullable String pengawas, @Nullable String tanggal, int status) {
+
+    public Laporan212(@NonNull String id_bs, @Nullable String nks, @NonNull String tahun, int semester, int nu_rt, @Nullable String nama_krt, @Nullable String pengawas, @Nullable String tanggal, int status) {
         this.id_bs = id_bs;
         this.nks = nks;
+        this.tahun = tahun;
+        this.semester = semester;
         this.nu_rt = nu_rt;
         this.nama_krt = nama_krt;
         this.pengawas = pengawas;
         this.tanggal = tanggal;
         this.status = status;
+    }
+
+    @NonNull
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(@NonNull String tahun) {
+        this.tahun = tahun;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
 
     @NonNull

@@ -1,5 +1,7 @@
 package com.example.siemas.Adapter;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,11 +141,11 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
                         ProgressDialog progressDialog = new ProgressDialog(itemView.getContext());
                         progressDialog.setMessage("Mengirim Data");
                         progressDialog.show();
-
+                        Log.d(TAG, "onClick: tahun "+ laporan212.getTahun());
                         user = viewModel.getUser().get(0);
                         JsonElement laporanJson = new Gson().toJsonTree(laporan212);
+                        Log.d(TAG, "onClick: json"+laporanJson.toString());
                         InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
-
                         Call<ResponseBody> call = interfaceApi.insertLaporan(laporanJson.toString(), "Bearer " + user.getToken());
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override

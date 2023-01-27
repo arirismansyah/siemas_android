@@ -110,7 +110,7 @@ public class FormInput212Activity extends AppCompatActivity {
                 nuRtString = nuRtString.replace("]","");
                 int nuRT = Integer.parseInt(nuRtString);
                 tiNamaKrt.setText(arrayStr[1]);
-                dsrtSelected = viewModel.getDsrtByIdBsNuRt(idBs, nuRT);
+                dsrtSelected = viewModel.getDsrtByIdBsNuRt(idBs, periodeList.get(0). getTahun(), periodeList.get(0).getSemester(),  nuRT);
             }
 
             @Override
@@ -135,6 +135,8 @@ public class FormInput212Activity extends AppCompatActivity {
                 Laporan212 laporan212 = new Laporan212(
                         dsrtSelected.getId_bs(),
                         dsrtSelected.getNks(),
+                        dsrtSelected.getTahun(),
+                        dsrtSelected.getSemester(),
                         dsrtSelected.getNu_rt(),
                         dsrtSelected.getNama_krt2(),
                         user.getEmail(),

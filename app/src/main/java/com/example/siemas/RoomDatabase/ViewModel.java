@@ -224,8 +224,8 @@ public class ViewModel extends AndroidViewModel {
         return repository.getJadwalByTanggal(tanggal);
     }
 
-    public Dsrt getDsrtByIdBsNuRt(String idBs, int nuRT){
-        return repository.getDsrtByIdBsNuRt(idBs, nuRT);
+    public Dsrt getDsrtByIdBsNuRt(String idBs, String tahun, int semester, int nuRT){
+        return repository.getDsrtByIdBsNuRt(idBs,tahun,semester, nuRT);
     }
 
     public void insertLaporan(Laporan212 laporan212){

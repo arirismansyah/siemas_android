@@ -929,20 +929,19 @@ public class Repository {
             this.dsrtDao = dsrtDao;
         }
 
-
         @Override
         protected Dsrt doInBackground(Object... objects) {
             String idBs = (String) objects[0];
-            int nuRt = (int) objects[1];
-            String tahun = (String) objects[2];
-            int semester = (int) objects[3] ;
-            return dsrtDao.getDsrtByIdBSNuRt(idBs, nuRt, tahun, semester);
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2] ;
+            int nuRt = (int) objects[3];
+            return dsrtDao.getDsrtByIdBSNuRt(idBs,  tahun, semester , nuRt);
         }
     }
 
-    public Dsrt getDsrtByIdBsNuRt(String idBs, int nuRt) {
+    public Dsrt getDsrtByIdBsNuRt(String idBs, String tahun, int semester, int nuRt) {
         try {
-            return new getDsrtByIdBsNuRTAsync(dsrtDao).execute(idBs, nuRt).get();
+            return new getDsrtByIdBsNuRTAsync(dsrtDao).execute(idBs, tahun, semester, nuRt).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -1553,6 +1552,8 @@ public class Repository {
                             Laporan212 laporan212 = new Laporan212(
                                     ob.getString("id_bs"),
                                     ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
                                     ob.getInt("nu_rt"),
                                     ob.getString("nama_krt"),
                                     ob.getString("pengawas"),
