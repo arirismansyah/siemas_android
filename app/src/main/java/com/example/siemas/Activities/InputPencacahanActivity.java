@@ -107,7 +107,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private boolean isCameraPermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
     ActivityResultLauncher<Intent> mGetImage;
-    Uri imageUri;
+    public Uri imageUri;
 
     public static final int CAMERA = 1;
     static final int GALLERY_REQUEST_CODE = 2;
@@ -127,7 +127,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private double currentLongitude, doneLongitude;
     private String lokasi = "";
 
-    private TextInputEditText  tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat;
+    private TextInputEditText  tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk;
 
     private TextView tiKdKab, tinamaKab, tiNks, tiNuRt;
     private Spinner spinnerStatusRumah;
@@ -178,6 +178,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
         rgGsmp = findViewById(R.id.rgGsmp);
         rbGsmpYa = findViewById(R.id.radioBtnGsmpYa);
         rbGsmpNo = findViewById(R.id.radioBtnGsmpNo);
+        tigsmpdesk = findViewById(R.id.input_gsmp_desk);
         simpanBtn = findViewById(R.id.simpanPencacahanDsrt);
         getLocationBtn = findViewById(R.id.getLocationBtn);
         tiKoordinat = findViewById(R.id.inputLocation);
@@ -360,6 +361,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                             tiMakananSebulan.getText().toString(),
                             tiNonMakananSebulan.getText().toString(),
                             gsmp,
+                            tigsmpdesk.getText().toString(),
                             String.valueOf(currentLatitude),
                             String.valueOf(currentLongitude),
                             timerText.getText().toString(),
@@ -436,8 +438,13 @@ public class InputPencacahanActivity extends AppCompatActivity {
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallery();
-
+//                openGallery();
+                getFotoDialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                String[] mimeTypes = {"image/jpeg", "image/png"};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+                startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
 
@@ -468,20 +475,21 @@ public class InputPencacahanActivity extends AppCompatActivity {
             }
         }
         if (requestCode == GALLERY_REQUEST_CODE) {
-//            Uri selectedImage = data.getData();
+            Uri selectedImage = data.getData();
             try {
-                checkAndRequestForPermission();
-                final Uri imageUri =  data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mImageView.setImageBitmap(selectedImage);
+//                checkAndRequestForPermission();
+//                Uri imageUri =  data.getData();
+//                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                mImageView.setImageBitmap(selectedImage);
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-//                Uri tempUri = getImageUri(gestApplicationContext(), bitmap);
-//                pictureFilePath = getRealPathFromURI2(tempUri);
-//                imageUri = Uri.parse(new File(pictureFilePath).toString());
-//                Glide.with(this).load(pictureFilePath).into(mImageView);
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-            } catch (FileNotFoundException  e) {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
+                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+                pictureFilePath = getRealPathFromURI2(tempUri);
+                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
+                Glide.with(this).load(pictureFilePath).into(mImageView);
+                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
+            } catch (IOException  e) {
                 Log.i("TAG", "Some exception " + e);
             }
         }

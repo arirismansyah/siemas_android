@@ -534,6 +534,7 @@ public class Repository {
                                     ob.getString("deskripsi_kegiatan"),
                                     luas_lantai,
                                     gsmp,
+                                    ob.getString("gsmp_desk"),
                                     ob.getString("foto"),
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
@@ -677,6 +678,7 @@ public class Repository {
                                     ob.getString("deskripsi_kegiatan"),
                                     luas_lantai,
                                     gsmp,
+                                    ob.getString("gsmp_desk"),
                                     ob.getString("foto"),
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
@@ -1009,20 +1011,20 @@ public class Repository {
             String makananSebulan = (String) objects[4];
             String nonMakananSebulan = (String) objects[5];
             int gsmp = (int) objects[6];
-            String latitude = (String) objects[7];
-            String longitude = (String) objects[8];
-            String durasi = (String) objects[9];
-            String fileFoto = (String) objects[10];
-            int statusPencacahan = (int) objects[11];
-
-            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, latitude, longitude, durasi, fileFoto, statusPencacahan);
+            String gsmp_desk = (String) objects[7];
+            String latitude = (String) objects[8];
+            String longitude = (String) objects[9];
+            String durasi = (String) objects[10];
+            String fileFoto = (String) objects[11];
+            int statusPencacahan = (int) objects[12];
+            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
             return null;
         }
     }
 
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
-        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, latitude, longitude, durasi, fileFoto, statusPencacahan);
+            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
+        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
     }
 
     // update pemeriksaan pcl

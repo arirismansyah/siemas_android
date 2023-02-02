@@ -68,12 +68,13 @@ public interface DsrtDao {
             "makanan_sebulan = :makananSebulan, " +
             "nonmakanan_sebulan = :nonMakananSebulan, " +
             "gsmp = :gsmp," +
+            "gsmp_desk = :gsmp_desk," +
             "latitude = :latitude," +
             "longitude = :longitude," +
             "durasi_pencachan = :durasi," +
             "foto = :fileFoto," +
             "status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
-    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan);
+    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan);
 
     @Query("UPDATE dsrt SET " +
             "latitude_selesai = :latitudea_selesai, " +

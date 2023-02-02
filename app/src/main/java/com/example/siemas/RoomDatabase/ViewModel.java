@@ -110,8 +110,8 @@ public class ViewModel extends AndroidViewModel {
 
     // update pencacahan
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
-        repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, latitude, longitude, durasi, fileFoto, statusPencacahan);
+            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
+        repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
     }
 
     // update pemeriksaan

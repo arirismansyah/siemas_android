@@ -101,7 +101,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
     private double currentLongitude;
     private String lokasi = "";
 
-    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat;
+    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk;
     private Spinner spinnerStatusRumah;
     private RadioButton rbGsmpYa, rbGsmpNo;
     private RadioGroup rgGsmp;
@@ -146,6 +146,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
         getFotoBtn = findViewById(R.id.getFotoBtn);
         batalBtn = findViewById(R.id.batalPencacahanDsrt);
         mImageView = findViewById(R.id.ivFotoRumah);
+        tigsmpdesk = findViewById(R.id.input_gsmp_desk);
 
         iddsrt = Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT));
 
@@ -244,6 +245,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
             rbGsmpYa.setChecked(true);
             rbGsmpNo.setChecked(false);
         }
+        tigsmpdesk.setText(dsrt.getGsmp_desk());
 
         // set koordinat
         currentLatitude = Double.parseDouble(dsrt.getLatitude());
@@ -333,6 +335,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             tiMakananSebulan.getText().toString(),
                             tiNonMakananSebulan.getText().toString(),
                             gsmp,
+                            tigsmpdesk.getText().toString(),
                             String.valueOf(currentLatitude),
                             String.valueOf(currentLongitude),
                             dsrt.getDurasi_pencacahan(),
