@@ -23,11 +23,12 @@
         android:required="true" />
 
     <application
+        android:hardwareAccelerated="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/siemas"
-        android:label="Siemas 2022"
+        android:label="Siemas SUMSEL"
         android:roundIcon="@drawable/siemas"
         android:supportsRtl="true"
         android:theme="@style/Theme.Siemas"

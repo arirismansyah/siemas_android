@@ -23,9 +23,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -149,6 +151,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private String stringJamMulai, stringJamSelesai;
 
+    String currentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -265,7 +269,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         galleryBtn = getFotoDialog.findViewById(R.id.galleryBtn);
         cameraBtn = getFotoDialog.findViewById(R.id.cameraBtn);
 
-
         // get location
         getLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -283,7 +286,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         // simpan btn
         simpanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -411,7 +413,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
             }
         });
-
         // get foto btn
         getFotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,13 +425,35 @@ public class InputPencacahanActivity extends AppCompatActivity {
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFotoDialog.dismiss();
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
-                String imageName = "ssn22_" + idDsrt + "_" + String.valueOf(System.currentTimeMillis());
-                Uri imagePath = saveImageToExternalStorage(imageName);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
-                startActivityForResult(cameraIntent, CAMERA);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    getFotoDialog.dismiss();
+                    startActivityForResult(takePictureIntent, CAMERA);
+                } catch (ActivityNotFoundException e) {
+                    // display error state to the user
+                }
+
+//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
+//                String imageName = "ssn22_" + idDsrt + "_" + String.valueOf(System.currentTimeMillis());
+//                Uri imagePath = saveImageToExternalStorage(imageName);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
+//                startActivityForResult(cameraIntent, CAMERA);
+//                String file = dir+DateFormat.format("yyyy-MM-dd_hhmmss", new Date()).toString()+".jpg";
+//                File newfile = new File(file);
+//                try {
+//                    newfile.createNewFile();
+//                } catch (IOException e) {}
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                Uri outputFileUri = Uri.fromFile(newfile);
+//                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+//                startActivityForResult(cameraIntent, CAMERA);
+
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                File f = new File(Environment.getExternalStorageDirectory(), "dsrt.jpg");
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+//                imageUri = Uri.fromFile(f);
+//                startActivityForResult(intent, CAMERA);
             }
         });
 
@@ -451,11 +474,9 @@ public class InputPencacahanActivity extends AppCompatActivity {
         List<StatusRumah> statusRumahList = viewModel.getAllStatusRumah();
         spinnerStatusRumah = (Spinner) findViewById(R.id.spinnerStatusRumah);
         List<String> namaStatusRumah = new ArrayList<String>();
-
         for (int i = 0; i < statusRumahList.size(); i++) {
             namaStatusRumah.add(statusRumahList.get(i).getStatus_rumah());
         }
-
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaStatusRumah);
         spinnerStatusRumah.setAdapter(spinnerAdapter);
     }
@@ -466,16 +487,52 @@ public class InputPencacahanActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
-                mImageView.setImageURI(imageUri);
-                Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
-                int imageNameFileIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                returnCursor.moveToFirst();
-                String imageFileName = returnCursor.getString(imageNameFileIndex);
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//                mImageView.setImageURI(imageUri);
+//                Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
+//                int imageNameFileIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//                returnCursor.moveToFirst();
+//                String imageFileName = returnCursor.getString(imageNameFileIndex);
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                Uri imageUri = data.getData();
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//                mImageView.setImageBitmap(photo);
+
+//                if(imageUri != null){
+//                    Uri selectedImage = imageUri;
+//                    getContentResolver().notifyChange(selectedImage, null);
+//                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+//                    if(bitmap != null){
+//                        mImageView.setImageBitmap(bitmap);
+//                    }
+//                    viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//                }
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 300, bytes);
+                currentPhotoPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "Title", null);
+                mImageView.setImageBitmap(imageBitmap);
+                imageUri = Uri.parse(currentPhotoPath);
+                viewModel.updateFotoRumah(dsrt.getId(),  imageUri.toString());
+
             }
+
+//            if (resultCode == Activity.RESULT_OK) {
+////                Bundle extras = data.getExtras();
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                Uri imageUri = data.getData();
+//                mImageView.setImageBitmap(photo);
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//            } else if (resultCode == Activity.RESULT_CANCELED)  {
+//                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
+//            }
+
+
         }
         if (requestCode == GALLERY_REQUEST_CODE) {
-            Uri selectedImage = data.getData();
+//            Uri selectedImage = data.getData();
             try {
 //                checkAndRequestForPermission();
 //                Uri imageUri =  data.getData();
@@ -483,11 +540,17 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 //                mImageView.setImageBitmap(selectedImage);
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-                pictureFilePath = getRealPathFromURI2(tempUri);
-                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
-                Glide.with(this).load(pictureFilePath).into(mImageView);
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
+//                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+//                pictureFilePath = getRealPathFromURI2(tempUri);
+//                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
+//                Glide.with(this).load(pictureFilePath).into(mImageView);
+
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mImageView.setImageBitmap(selectedImage);
+
                 viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
             } catch (IOException  e) {
                 Log.i("TAG", "Some exception " + e);
@@ -535,6 +598,96 @@ public class InputPencacahanActivity extends AppCompatActivity {
         Uri finalImageUri = resolver.insert(imageCollection, contentValues);
         imageUri = finalImageUri;
         return finalImageUri;
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath=new File(directory,idDsrt);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            Toast.makeText(this, ex.toString(),Toast.LENGTH_SHORT).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA );
+            }
+        }
+    }
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        mImageView.setImageBitmap(bitmap);
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 //    public Runnable runnable = new Runnable() {

@@ -57,14 +57,13 @@
                             >
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="Provinsi"
                                 android:textStyle="bold"></TextView>
                             <TextView
+                                android:layout_width="match_parent"
                                 android:id="@+id/kdProv"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="16"
@@ -75,20 +74,18 @@
                             android:layout_width="match_parent">
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="Kabkot"
                                 android:textStyle="bold"></TextView>
                             <LinearLayout
-                                android:layout_column="1"
                                 android:orientation="horizontal"
+                                android:layout_width="match_parent"
                                 >
                                 <TextView
                                     android:layout_height="wrap_content"
                                     android:layout_width="wrap_content"
                                     android:id="@+id/kdKab"
-                                    android:layout_column="1"
                                     android:gravity="left"
                                     android:padding="3dp"
                                     android:text="00">
@@ -96,12 +93,12 @@
                                 </TextView>
                                 <TextView
                                     android:id="@+id/namaKab"
-                                    android:layout_column="1"
                                     android:gravity="left"
                                     android:padding="3dp"
                                     android:text="Nama Kab"
                                     android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content">
+                                    android:layout_width="match_parent"
+                                    >
                                 </TextView>
                             </LinearLayout>
 
@@ -110,17 +107,15 @@
                             android:layout_width="match_parent">
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="NKS"
                                 android:textStyle="bold"></TextView>
                             <TextView
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:id="@+id/nks"
                                 android:text="00000"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"></TextView>
                         </TableRow>
@@ -128,7 +123,6 @@
                             android:layout_width="match_parent">
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="No Urut Ruta"
@@ -136,10 +130,9 @@
 
                             <TextView
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:id="@+id/nuRt"
                                 android:text="1"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp" />
                         </TableRow>
@@ -148,7 +141,6 @@
                             android:layout_width="match_parent">
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="Nama KRT"
@@ -156,10 +148,9 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:id="@+id/namaKrt"
                                 android:hint="Nama KRT"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp" >
                             </com.google.android.material.textfield.TextInputEditText>
@@ -170,7 +161,6 @@
                             android:layout_width="match_parent">
                             <TextView
                                 android:layout_width="120dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="Jumlah ART"
@@ -178,10 +168,9 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:id="@+id/jmlArt"
                                 android:hint="Jumlah ART"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:inputType="number"
                                 android:padding="3dp" >
@@ -194,15 +183,16 @@
                             >
                             <TextView
                                 android:layout_width="150dp"
-                                android:layout_column="1"
                                 android:gravity="left"
                                 android:padding="3dp"
                                 android:text="Status Kepemilikan Bangunan yang Ditempati (R.1082)"
                                 android:textStyle="bold"></TextView>
                             <Spinner
                                 android:id="@+id/spinnerStatusRumah"
-                                android:layout_width="match_parent"
-                                android:layout_column="1"></Spinner>
+                                android:layout_width="fill_parent"
+                                android:background="@android:drawable/btn_dropdown"
+                                >
+                            </Spinner>
                         </TableRow>
                     </TableLayout>
 

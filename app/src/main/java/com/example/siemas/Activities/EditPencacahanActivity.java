@@ -25,6 +25,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,6 +36,7 @@ import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -254,8 +256,16 @@ public class EditPencacahanActivity extends AppCompatActivity {
         tiKoordinat.setText(lokasi);
 
         // set foto
-        if (!dsrt.getFoto().isEmpty() && !dsrt.getFoto().equals("null")) {
-            mImageView.setImageURI(Uri.parse(dsrt.getFoto()));
+//        Log.d("Dsrt Foto", dsrt.getFoto().toString());
+        if (dsrt.getFoto()!=null && !dsrt.getFoto().equals("null")) {
+            try {
+                imageUri = Uri.parse(dsrt.getFoto());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                mImageView.setImageBitmap(bitmap);
+            }catch (Exception e){
+                Log.d("Failed Load Image", "Failed Load Image" );
+            }
+
         }
 
         // get foto dialog
@@ -430,10 +440,23 @@ public class EditPencacahanActivity extends AppCompatActivity {
                 startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
-
-
-
     }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }
+        catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+// second solution is you can set the path inside decodeFile function
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

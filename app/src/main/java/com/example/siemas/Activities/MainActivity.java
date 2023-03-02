@@ -48,23 +48,15 @@ public class MainActivity extends AppCompatActivity {
         mviewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
         logoutBtn = findViewById(R.id.logout_btn);
         tvVersion = findViewById(R.id.textVersion);
-
-
-
         // disallowed dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         if (mviewModel.getUser() == null && mviewModel.getUser().size()==0) {
             Toast toast = Toast.makeText(getApplicationContext(), "Login Terlebih Dahulu", Toast.LENGTH_SHORT);
             toast.show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
-
         tvVersion.setText("Version: "+ BuildConfig.VERSION_NAME);
-
-
-
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
         // MENU PROFILE
         CardView profileMenu = findViewById(R.id.profileMenu);
         profileMenu.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         // MENU DSBS
         CardView dsbsMenu = findViewById(R.id.dsbsMenu);
         dsbsMenu.setOnClickListener(new View.OnClickListener() {
