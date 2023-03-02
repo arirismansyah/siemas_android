@@ -207,8 +207,15 @@ public class InputPencacahanActivity extends AppCompatActivity {
             tiNamaKrt.setText(dsrt.getNama_krt());
         }
 
-        if (!dsrt.getFoto().isEmpty() && !dsrt.getFoto().equals("null")) {
-            mImageView.setImageURI(Uri.parse(dsrt.getFoto()));
+        if (dsrt.getFoto()!=null && !dsrt.getFoto().equals("null")) {
+            try {
+                imageUri = Uri.parse(dsrt.getFoto());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                mImageView.setImageBitmap(bitmap);
+            }catch (Exception e){
+                Log.d("Failed Load Image", "Failed Load Image" );
+            }
+
         }
 
         tiMakananSebulan.addTextChangedListener(new TextWatcher() {
@@ -511,7 +518,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 300, bytes);
+//                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 currentPhotoPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "Title", null);
                 mImageView.setImageBitmap(imageBitmap);
                 imageUri = Uri.parse(currentPhotoPath);
@@ -599,7 +606,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         imageUri = finalImageUri;
         return finalImageUri;
     }
-
     private String saveToInternalStorage(Bitmap bitmapImage){
         String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
