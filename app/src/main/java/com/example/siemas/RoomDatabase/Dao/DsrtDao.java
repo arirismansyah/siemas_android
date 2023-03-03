@@ -89,6 +89,9 @@ public interface DsrtDao {
             "jam_selesai = :jamSelesai WHERE id = :idDsrt")
     void updateJamSelesai(int idDsrt, String jamSelesai);
 
+    @Query("UPDATE dsrt Set durasi_pencachan = :durasi WHERE id = :idDsrt")
+    void updateDurasiPencacahan(int idDsrt, String durasi);
+
     @Query("UPDATE dsrt SET " +
             "nama_krt2 = :namaKrt, " +
             "jml_art2 = :jmlKrt, " +

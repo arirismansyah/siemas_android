@@ -272,6 +272,9 @@ public class ViewModel extends AndroidViewModel {
     public void updateJamSelesai(int idDsrt, String jamSelesai){
         repository.updateJamSelesai(idDsrt, jamSelesai);
     }
+    public void updateDurasiPencacahan(int idDsrt, String durasi){
+        repository.updateDurasiPencacahan(idDsrt, durasi);
+    }
 
     public void getPeriodeFromServer(Context context){
          repository.getPeriodeFromAPI(context);

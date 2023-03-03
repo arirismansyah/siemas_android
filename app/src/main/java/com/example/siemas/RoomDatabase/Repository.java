@@ -1655,6 +1655,24 @@ public class Repository {
         new updateLokasiSelesaiAsync(dsrtDao).execute(idDsrt, latitudeSelesai, longitudeSelesai);
     }
 
+    private  static class updateDurasiPencacahanAsycn extends AsyncTask<Object, Void, Void>{
+        private DsrtDao dsrtdao;
+        public updateDurasiPencacahanAsycn(DsrtDao dsrtDao){
+            this.dsrtdao = dsrtDao;
+        }
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            int idDsrt = (int) objects[0];
+            String durasi = (String) objects[1];
+            dsrtdao.updateDurasiPencacahan(idDsrt, durasi);
+            return null;
+        }
+    }
+    public void updateDurasiPencacahan(int idDsrt, String durasi){
+        new updateDurasiPencacahanAsycn(dsrtDao).execute(idDsrt, durasi);
+    }
+
     // update jam mulai
     private static class updateJamMulaiAsync extends AsyncTask<Object, Void, Void>{
         private DsrtDao dsrtDao;

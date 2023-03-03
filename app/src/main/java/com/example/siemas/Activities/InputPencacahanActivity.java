@@ -56,6 +56,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -146,6 +147,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private Dialog getFotoDialog;
     private AppCompatButton galleryBtn, cameraBtn;
 
+    private Button waktu_mulaiBtn, waktu_selesaiBtn;
     private Calendar calendar;
     private Date dateMulai, dateSelesai, dateDurasi;
     private SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -160,12 +162,10 @@ public class InputPencacahanActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_input_pencacahan);
         mContext = InputPencacahanActivity.this;
-//        handler = new Handler();
-//        tStart = SystemClock.uptimeMillis();
-//        handler.postDelayed(runnable, 0);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         myToolbar.setTitle("INPUT PENCACAHAN");
         setSupportActionBar(myToolbar);
+
         timerText = findViewById(R.id.timerText);
         jamMulai = findViewById(R.id.jamMulai);
         jamSelesai = findViewById(R.id.jamSelesai);
@@ -189,6 +189,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
         getFotoBtn = findViewById(R.id.getFotoBtn);
         batalBtn = findViewById(R.id.batalPencacahanDsrt);
         mImageView = findViewById(R.id.ivFotoRumah);
+        waktu_mulaiBtn = findViewById(R.id.waktu_mulai_btn);
+        waktu_selesaiBtn = findViewById(R.id.waktu_selesai_btn);
 
         dsrt = viewModel.getDsrtById(Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT)));
         tiKdKab.setText(dsrt.getKd_kab());
@@ -196,11 +198,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         tiNks.setText(dsrt.getNks());
         tiNuRt.setText(String.valueOf(dsrt.getNu_rt()));
 
-        calendar = Calendar.getInstance();
-
-        dateMulai = calendar.getTime();
-        stringJamMulai = dateFormatTime.format(dateMulai);
-        jamMulai.setText("Mulai: "+stringJamMulai);
         if (!dsrt.getNama_krt2().isEmpty() && !dsrt.getNama_krt2().equals("null")){
             tiNamaKrt.setText(dsrt.getNama_krt2());
         } else {
@@ -215,7 +212,15 @@ public class InputPencacahanActivity extends AppCompatActivity {
             }catch (Exception e){
                 Log.d("Failed Load Image", "Failed Load Image" );
             }
-
+        }
+        if(dsrt.getJam_mulai()!=null && !dsrt.getJam_mulai().equals("null")){
+            jamMulai.setText(dsrt.getJam_mulai());
+        }
+        if(dsrt.getJam_selesai()!=null && !dsrt.getJam_selesai().equals("null")){
+            jamSelesai.setText(dsrt.getJam_selesai());
+        }
+        if(dsrt.getDurasi_pencacahan()!=null && !dsrt.getDurasi_pencacahan().equals("null")){
+            timerText.setText(dsrt.getDurasi_pencacahan());
         }
 
         tiMakananSebulan.addTextChangedListener(new TextWatcher() {
@@ -242,7 +247,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 }
             }
         });
-
         tiNonMakananSebulan.addTextChangedListener(new TextWatcher() {
             private String setEditRupiah = tiNonMakananSebulan.getText().toString().trim();
             @Override
@@ -272,11 +276,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
         getFotoDialog = new Dialog(InputPencacahanActivity.this);
         getFotoDialog.setContentView(R.layout.getfoto_dialog);
         getFotoDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
         galleryBtn = getFotoDialog.findViewById(R.id.galleryBtn);
         cameraBtn = getFotoDialog.findViewById(R.id.cameraBtn);
-
-        // get location
         getLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,18 +287,15 @@ public class InputPencacahanActivity extends AppCompatActivity {
             }
         });
 
-        // batal btn
         batalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        // simpan btn
         simpanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // check is empty
                 if (TextUtils.isEmpty(tiNamaKrt.getText())) {
                     tiNamaKrt.setError("Tidak boleh kosong");
                 }
@@ -316,51 +314,45 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 if (rgGsmp.getCheckedRadioButtonId() == -1) {
                     rbGsmpNo.setError("Harus dipilih");
                 }
-
-                if (
-                        (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArt.getText())) &&
-                                (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
-                                (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
-                                (!TextUtils.isEmpty(tiKoordinat.getText())) &&
-                                (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
-                                ((spinnerStatusRumah!=null)) &&
-                                (spinnerStatusRumah.getSelectedItem() != null)
+                if ((!TextUtils.isEmpty(tiNamaKrt.getText())) &&
+                        (!TextUtils.isEmpty(tiJmlArt.getText())) &&
+                        (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
+                        (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
+                        (!TextUtils.isEmpty(tiKoordinat.getText())) &&
+                        (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
+                        ((spinnerStatusRumah!=null)) &&
+                        (spinnerStatusRumah.getSelectedItem() != null)
                 ) {
-
                     // lokasi selesai
                     getDoneLocation();
-
                     // jam selesai
-                    calendar = Calendar.getInstance();
-                    dateSelesai = calendar.getTime();
-                    stringJamSelesai = dateFormatTime.format(dateSelesai);
-                    jamSelesai.setText("Selesai: "+stringJamSelesai);
+//                    calendar = Calendar.getInstance();
+//                    dateSelesai = calendar.getTime();
+//                    stringJamSelesai = dateFormatTime.format(dateSelesai);
+//                    jamSelesai.setText("Selesai: "+stringJamSelesai);
 
-                    long longDurasi = dateSelesai.getTime() - dateMulai.getTime();
-                    long difference_In_Seconds
-                            = (longDurasi
-                            / 1000)
-                            % 60;
-
-                    long difference_In_Minutes
-                            = (longDurasi
-                            / (1000 * 60))
-                            % 60;
-
-                    long difference_In_Hours
-                            = (longDurasi
-                            / (1000 * 60 * 60))
-                            % 24;
-
-                    String stringDurasi = difference_In_Hours+":"+difference_In_Minutes+":"+difference_In_Seconds;
-                    timerText.setText(stringDurasi);
-
+//                    long longDurasi = dateSelesai.getTime() - dateMulai.getTime();
+//                    long difference_In_Seconds
+//                            = (longDurasi
+//                            / 1000)
+//                            % 60;
+//
+//                    long difference_In_Minutes
+//                            = (longDurasi
+//                            / (1000 * 60))
+//                            % 60;
+//
+//                    long difference_In_Hours
+//                            = (longDurasi
+//                            / (1000 * 60 * 60))
+//                            % 24;
+//
+//                    String stringDurasi = difference_In_Hours+":"+difference_In_Minutes+":"+difference_In_Seconds;
+//                    timerText.setText(stringDurasi);
                     int gsmp = 0;
                     if (rbGsmpYa.isChecked()) {
                         gsmp = 1;
                     }
-
                     String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
                     viewModel.updatePencacahan(
                             dsrt.getId(),
@@ -379,8 +371,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
                     );
 
                     viewModel.updateLokasiSelesai(dsrt.getId(), String.valueOf(doneLatitude), String.valueOf(doneLongitude));
-                    viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
-                    viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
+//                    viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
+//                    viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
 
                     List<Dsart> dsartList = new ArrayList<>();
                     for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
@@ -400,7 +392,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
                         dsartList.add(dsart);
                     }
                     viewModel.insertDsart(dsartList);
-
                     finish();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
@@ -416,19 +407,15 @@ public class InputPencacahanActivity extends AppCompatActivity {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                 }
-
-
             }
         });
-        // get foto btn
+
         getFotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getFotoDialog.show();
             }
         });
-
-        // get foto by camera
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -463,8 +450,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                startActivityForResult(intent, CAMERA);
             }
         });
-
-        // get foto by gallery
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -478,6 +463,46 @@ public class InputPencacahanActivity extends AppCompatActivity {
             }
         });
 
+        waktu_mulaiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar = Calendar.getInstance();
+                dateMulai = calendar.getTime();
+                stringJamMulai = dateFormatTime.format(dateMulai);
+                jamMulai.setText("Mulai: "+stringJamMulai);
+                viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
+            }
+        });
+        waktu_selesaiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar = Calendar.getInstance();
+                dateSelesai = calendar.getTime();
+                stringJamSelesai = dateFormatTime.format(dateSelesai);
+                jamSelesai.setText("Selesai: "+stringJamSelesai);
+                viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
+
+                long longDurasi = dateSelesai.getTime() - dateMulai.getTime();
+                long difference_In_Seconds
+                        = (longDurasi
+                        / 1000)
+                        % 60;
+
+                long difference_In_Minutes
+                        = (longDurasi
+                        / (1000 * 60))
+                        % 60;
+
+                long difference_In_Hours
+                        = (longDurasi
+                        / (1000 * 60 * 60))
+                        % 24;
+                String stringDurasi = difference_In_Hours+":"+difference_In_Minutes+":"+difference_In_Seconds;
+                viewModel.updateDurasiPencacahan(dsrt.getId(),stringDurasi);
+                timerText.setText(stringDurasi);
+            }
+        });
+
         List<StatusRumah> statusRumahList = viewModel.getAllStatusRumah();
         spinnerStatusRumah = (Spinner) findViewById(R.id.spinnerStatusRumah);
         List<String> namaStatusRumah = new ArrayList<String>();
@@ -487,7 +512,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaStatusRumah);
         spinnerStatusRumah.setAdapter(spinnerAdapter);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -500,21 +524,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                returnCursor.moveToFirst();
 //                String imageFileName = returnCursor.getString(imageNameFileIndex);
 //                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                Uri imageUri = data.getData();
-//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-//                mImageView.setImageBitmap(photo);
-
-//                if(imageUri != null){
-//                    Uri selectedImage = imageUri;
-//                    getContentResolver().notifyChange(selectedImage, null);
-//                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//                    if(bitmap != null){
-//                        mImageView.setImageBitmap(bitmap);
-//                    }
-//                    viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-//                }
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -523,20 +532,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 mImageView.setImageBitmap(imageBitmap);
                 imageUri = Uri.parse(currentPhotoPath);
                 viewModel.updateFotoRumah(dsrt.getId(),  imageUri.toString());
-
             }
-
-//            if (resultCode == Activity.RESULT_OK) {
-////                Bundle extras = data.getExtras();
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                Uri imageUri = data.getData();
-//                mImageView.setImageBitmap(photo);
-//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-//            } else if (resultCode == Activity.RESULT_CANCELED)  {
-//                Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
-//            }
-
-
         }
         if (requestCode == GALLERY_REQUEST_CODE) {
 //            Uri selectedImage = data.getData();
@@ -552,165 +548,16 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                pictureFilePath = getRealPathFromURI2(tempUri);
 //                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
 //                Glide.with(this).load(pictureFilePath).into(mImageView);
-
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 mImageView.setImageBitmap(selectedImage);
-
                 viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
             } catch (IOException  e) {
                 Log.i("TAG", "Some exception " + e);
             }
         }
     }
-        // Register the permissions callback, which handles the user's response to the
-        // system permissions dialog. Save the return value, an instance of
-        // ActivityResultLauncher, as an instance variable.
-
-    private void openGallery(){
-        getFotoDialog.dismiss();
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        String[] mimeTypes = {"image/jpeg", "image/png"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        startActivityForResult(intent, GALLERY_REQUEST_CODE);
-    }
-    private void checkAndRequestForPermission(){
-        if (ContextCompat.checkSelfPermission(
-                InputPencacahanActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-              Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
-            }else{
-                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
-            }
-        }  else {
-         openGallery();
-        }
-    }
-
-    private Uri saveImageToExternalStorage(String imageName) {
-        Uri imageCollection = null;
-        ContentResolver resolver = getContentResolver();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
-        } else {
-            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        }
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE, imageName + ".jpg");
-        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg");
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        Uri finalImageUri = resolver.insert(imageCollection, contentValues);
-        imageUri = finalImageUri;
-        return finalImageUri;
-    }
-    private String saveToInternalStorage(Bitmap bitmapImage){
-        String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
-        ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File mypath=new File(directory,idDsrt);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(mypath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return directory.getAbsolutePath();
-    }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            Toast.makeText(this, ex.toString(),Toast.LENGTH_SHORT).show();
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA );
-            }
-        }
-    }
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-        mImageView.setImageBitmap(bitmap);
-    }
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-//    public Runnable runnable = new Runnable() {
-//        @Override
-//        public void run() {
-//            tMilisec = SystemClock.uptimeMillis() - tStart;
-//            tUpdate = tBuff + tMilisec;
-//            sec = (int) (tUpdate / 1000);
-//            min = (int) (sec / 60);
-//            hour = (int) (min / 60);
-//            sec = sec % 60;
-//            timerText.setText(String.format("%02d", hour) + " : " + String.format("%02d", min) + " : " + String.format("%02d", sec));
-//            handler.postDelayed(this, 60);
-//
-//        }
-//    };
-
 
     public void getLocation() {
         gpsTracker = new GpsTracker(mContext);
@@ -768,210 +615,6 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
         return builder.toString();
     }
-    protected synchronized String getInstallationIdentifier() {
-        if (deviceIdentifier == null) {
-            SharedPreferences sharedPrefs = this.getSharedPreferences(
-                    "DEVICE_ID", Context.MODE_PRIVATE);
-            deviceIdentifier = sharedPrefs.getString("DEVICE_ID", null);
-            if (deviceIdentifier == null) {
-                deviceIdentifier = UUID.randomUUID().toString();
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putString("DEVICE_ID", deviceIdentifier);
-                editor.commit();
-            }
-        }
-        return deviceIdentifier;
-    }
-
-    public String compressImage(String imageUri, String idresponden) {
-
-        String filePath = getRealPathFromURI(imageUri);
-        Bitmap scaledBitmap = null;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-//      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
-//      you try the use the bitmap here, you will get null.
-        options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
-
-        int actualHeight = options.outHeight;
-        int actualWidth = options.outWidth;
-
-//      max Height and width values of the compressed image is taken as 816x612
-
-        float maxHeight = 816.0f;
-        float maxWidth = 612.0f;
-        float imgRatio = actualWidth / actualHeight;
-        float maxRatio = maxWidth / maxHeight;
-
-//      width and height values are set maintaining the aspect ratio of the image
-
-        if (actualHeight > maxHeight || actualWidth > maxWidth) {
-            if (imgRatio < maxRatio) {
-                imgRatio = maxHeight / actualHeight;
-                actualWidth = (int) (imgRatio * actualWidth);
-                actualHeight = (int) maxHeight;
-            } else if (imgRatio > maxRatio) {
-                imgRatio = maxWidth / actualWidth;
-                actualHeight = (int) (imgRatio * actualHeight);
-                actualWidth = (int) maxWidth;
-            } else {
-                actualHeight = (int) maxHeight;
-                actualWidth = (int) maxWidth;
-
-            }
-        }
-
-//      setting inSampleSize value allows to load a scaled down version of the original image
-
-        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
-
-//      inJustDecodeBounds set to false to load the actual bitmap
-        options.inJustDecodeBounds = false;
-
-//      this options allow android to claim the bitmap memory if it runs low on memory
-        options.inPurgeable = true;
-        options.inInputShareable = true;
-        options.inTempStorage = new byte[16 * 1024];
-
-        try {
-//          load the bitmap from its path
-            bmp = BitmapFactory.decodeFile(filePath, options);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-
-        }
-        try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-        }
-
-        float ratioX = actualWidth / (float) options.outWidth;
-        float ratioY = actualHeight / (float) options.outHeight;
-        float middleX = actualWidth / 2.0f;
-        float middleY = actualHeight / 2.0f;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-
-//      check the rotation of the image and display it properly
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(filePath);
-
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, 0);
-            Log.d("EXIF", "Exif: " + orientation);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-                Log.d("EXIF", "Exif: " + orientation);
-            } else if (orientation == 3) {
-                matrix.postRotate(180);
-                Log.d("EXIF", "Exif: " + orientation);
-            } else if (orientation == 8) {
-                matrix.postRotate(270);
-                Log.d("EXIF", "Exif: " + orientation);
-            }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
-                    true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        FileOutputStream out = null;
-        String filename = getFilename(idresponden);
-        try {
-            out = new FileOutputStream(filename);
-
-//          write the compressed bitmap at the destination specified by filename.
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return filename;
-
-    }
-
-    public String getFilename(String idresponden) {
-        String FileFotoRumah = "SSN_" + idresponden;
-        // make sure your target location folder exists!
-        File storageDir = new File(Environment.getExternalStorageDirectory(), "SSN1600");
-        File targetLocation = new File(storageDir + "/" + FileFotoRumah + ".jpg");
-        String uriSting = (targetLocation.getAbsolutePath());
-        return uriSting;
-
-    }
-
-    private String getRealPathFromURI(String contentURI) {
-        Uri contentUri = Uri.parse(contentURI);
-        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
-        if (cursor == null) {
-            return contentUri.getPath();
-        } else {
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
-        }
-    }
-
-    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        final float totalPixels = width * height;
-        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-            inSampleSize++;
-        }
-
-        return inSampleSize;
-    }
-
-    private void hapus_foto_sementara() {
-        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File[] files = dir.listFiles();
-
-        for (File file : files) {
-            if (file.getName().startsWith("TEMP")) {
-                // it's a match, call your function
-                file.delete();
-            }
-        }
-    }
-
-    private void kompress_file_foto(String idresponden) {
-        compressImage(pictureFilePath, idresponden);
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI2(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
 
     private String formatrupiah(Double number){
         Locale locale = new Locale("IND", "ID");
@@ -981,4 +624,344 @@ public class InputPencacahanActivity extends AppCompatActivity {
         int length = split[0].length();
         return split[0].substring(0,2)+". "+split[0]. substring(2,length);
     }
+
+//    private void openGallery(){
+//        getFotoDialog.dismiss();
+//        Intent intent = new Intent(Intent.ACTION_PICK);
+//        intent.setType("image/*");
+//        String[] mimeTypes = {"image/jpeg", "image/png"};
+//        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+//        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+//    }
+//    private File createImageFile() throws IOException {
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File image = File.createTempFile(
+//                imageFileName,  /* prefix */
+//                ".jpg",         /* suffix */
+//                storageDir      /* directory */
+//        );
+//        // Save a file: path for use with ACTION_VIEW intents
+//        currentPhotoPath = image.getAbsolutePath();
+//        return image;
+//    }
+//    private void checkAndRequestForPermission(){
+//        if (ContextCompat.checkSelfPermission(
+//                InputPencacahanActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+//                PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+//            }else{
+//                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+//            }
+//        }  else {
+//            openGallery();
+//        }
+//    }
+//    private Uri saveImageToExternalStorage(String imageName) {
+//        Uri imageCollection = null;
+//        ContentResolver resolver = getContentResolver();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+//        } else {
+//            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+//        }
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(MediaStore.Images.Media.TITLE, imageName + ".jpg");
+//        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg");
+//        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+//        Uri finalImageUri = resolver.insert(imageCollection, contentValues);
+//        imageUri = finalImageUri;
+//        return finalImageUri;
+//    }
+//    private String saveToInternalStorage(Bitmap bitmapImage){
+//        String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
+//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+//        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+//        File mypath=new File(directory,idDsrt);
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(mypath);
+//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                fos.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return directory.getAbsolutePath();
+//    }
+//    private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//                Toast.makeText(this, ex.toString(),Toast.LENGTH_SHORT).show();
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        "com.example.android.fileprovider",
+//                        photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, CAMERA );
+//            }
+//        }
+//    }
+//    private void galleryAddPic() {
+//        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        File f = new File(currentPhotoPath);
+//        Uri contentUri = Uri.fromFile(f);
+//        mediaScanIntent.setData(contentUri);
+//        this.sendBroadcast(mediaScanIntent);
+//    }
+//    private void setPic() {
+//        // Get the dimensions of the View
+//        int targetW = mImageView.getWidth();
+//        int targetH = mImageView.getHeight();
+//
+//        // Get the dimensions of the bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//
+//        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+//
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Determine how much to scale down the image
+//        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        bmOptions.inPurgeable = true;
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+//        mImageView.setImageBitmap(bitmap);
+//    }
+//    public Runnable runnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            tMilisec = SystemClock.uptimeMillis() - tStart;
+//            tUpdate = tBuff + tMilisec;
+//            sec = (int) (tUpdate / 1000);
+//            min = (int) (sec / 60);
+//            hour = (int) (min / 60);
+//            sec = sec % 60;
+//            timerText.setText(String.format("%02d", hour) + " : " + String.format("%02d", min) + " : " + String.format("%02d", sec));
+//            handler.postDelayed(this, 60);
+//
+//        }
+//    };
+//    protected synchronized String getInstallationIdentifier() {
+//        if (deviceIdentifier == null) {
+//            SharedPreferences sharedPrefs = this.getSharedPreferences(
+//                    "DEVICE_ID", Context.MODE_PRIVATE);
+//            deviceIdentifier = sharedPrefs.getString("DEVICE_ID", null);
+//            if (deviceIdentifier == null) {
+//                deviceIdentifier = UUID.randomUUID().toString();
+//                SharedPreferences.Editor editor = sharedPrefs.edit();
+//                editor.putString("DEVICE_ID", deviceIdentifier);
+//                editor.commit();
+//            }
+//        }
+//        return deviceIdentifier;
+//    }
+//    public String compressImage(String imageUri, String idresponden) {
+//
+//        String filePath = getRealPathFromURI(imageUri);
+//        Bitmap scaledBitmap = null;
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//
+////      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
+////      you try the use the bitmap here, you will get null.
+//        options.inJustDecodeBounds = true;
+//        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+//
+//        int actualHeight = options.outHeight;
+//        int actualWidth = options.outWidth;
+//
+////      max Height and width values of the compressed image is taken as 816x612
+//
+//        float maxHeight = 816.0f;
+//        float maxWidth = 612.0f;
+//        float imgRatio = actualWidth / actualHeight;
+//        float maxRatio = maxWidth / maxHeight;
+//
+////      width and height values are set maintaining the aspect ratio of the image
+//
+//        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+//            if (imgRatio < maxRatio) {
+//                imgRatio = maxHeight / actualHeight;
+//                actualWidth = (int) (imgRatio * actualWidth);
+//                actualHeight = (int) maxHeight;
+//            } else if (imgRatio > maxRatio) {
+//                imgRatio = maxWidth / actualWidth;
+//                actualHeight = (int) (imgRatio * actualHeight);
+//                actualWidth = (int) maxWidth;
+//            } else {
+//                actualHeight = (int) maxHeight;
+//                actualWidth = (int) maxWidth;
+//
+//            }
+//        }
+//
+////      setting inSampleSize value allows to load a scaled down version of the original image
+//
+//        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+//
+////      inJustDecodeBounds set to false to load the actual bitmap
+//        options.inJustDecodeBounds = false;
+//
+////      this options allow android to claim the bitmap memory if it runs low on memory
+//        options.inPurgeable = true;
+//        options.inInputShareable = true;
+//        options.inTempStorage = new byte[16 * 1024];
+//
+//        try {
+////          load the bitmap from its path
+//            bmp = BitmapFactory.decodeFile(filePath, options);
+//        } catch (OutOfMemoryError exception) {
+//            exception.printStackTrace();
+//
+//        }
+//        try {
+//            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+//        } catch (OutOfMemoryError exception) {
+//            exception.printStackTrace();
+//        }
+//
+//        float ratioX = actualWidth / (float) options.outWidth;
+//        float ratioY = actualHeight / (float) options.outHeight;
+//        float middleX = actualWidth / 2.0f;
+//        float middleY = actualHeight / 2.0f;
+//
+//        Matrix scaleMatrix = new Matrix();
+//        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+//
+//        Canvas canvas = new Canvas(scaledBitmap);
+//        canvas.setMatrix(scaleMatrix);
+//        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+//
+////      check the rotation of the image and display it properly
+//        ExifInterface exif;
+//        try {
+//            exif = new ExifInterface(filePath);
+//
+//            int orientation = exif.getAttributeInt(
+//                    ExifInterface.TAG_ORIENTATION, 0);
+//            Log.d("EXIF", "Exif: " + orientation);
+//            Matrix matrix = new Matrix();
+//            if (orientation == 6) {
+//                matrix.postRotate(90);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            } else if (orientation == 3) {
+//                matrix.postRotate(180);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            } else if (orientation == 8) {
+//                matrix.postRotate(270);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            }
+//            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+//                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
+//                    true);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        FileOutputStream out = null;
+//        String filename = getFilename(idresponden);
+//        try {
+//            out = new FileOutputStream(filename);
+//
+////          write the compressed bitmap at the destination specified by filename.
+//            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return filename;
+//
+//    }
+//    public String getFilename(String idresponden) {
+//        String FileFotoRumah = "SSN_" + idresponden;
+//        // make sure your target location folder exists!
+//        File storageDir = new File(Environment.getExternalStorageDirectory(), "SSN1600");
+//        File targetLocation = new File(storageDir + "/" + FileFotoRumah + ".jpg");
+//        String uriSting = (targetLocation.getAbsolutePath());
+//        return uriSting;
+//
+//    }
+//    private String getRealPathFromURI(String contentURI) {
+//        Uri contentUri = Uri.parse(contentURI);
+//        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+//        if (cursor == null) {
+//            return contentUri.getPath();
+//        } else {
+//            cursor.moveToFirst();
+//            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            return cursor.getString(index);
+//        }
+//    }
+//    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//            final int heightRatio = Math.round((float) height / (float) reqHeight);
+//            final int widthRatio = Math.round((float) width / (float) reqWidth);
+//            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+//        }
+//        final float totalPixels = width * height;
+//        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+//        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+//            inSampleSize++;
+//        }
+//
+//        return inSampleSize;
+//    }
+//    private void hapus_foto_sementara() {
+//        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File[] files = dir.listFiles();
+//
+//        for (File file : files) {
+//            if (file.getName().startsWith("TEMP")) {
+//                // it's a match, call your function
+//                file.delete();
+//            }
+//        }
+//    }
+//
+//    private void kompress_file_foto(String idresponden) {
+//        compressImage(pictureFilePath, idresponden);
+//    }
+//
+//    public Uri getImageUri(Context inContext, Bitmap inImage) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+//    }
+//
+//    public String getRealPathFromURI2(Uri uri) {
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//        cursor.moveToFirst();
+//        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//        return cursor.getString(idx);
+//    }
+
 }
