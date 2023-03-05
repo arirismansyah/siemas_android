@@ -416,6 +416,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 getFotoDialog.show();
             }
         });
+
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -548,11 +549,11 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                pictureFilePath = getRealPathFromURI2(tempUri);
 //                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
 //                Glide.with(this).load(pictureFilePath).into(mImageView);
-                final Uri imageUri = data.getData();
+                imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 mImageView.setImageBitmap(selectedImage);
-                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
+                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
             } catch (IOException  e) {
                 Log.i("TAG", "Some exception " + e);
             }

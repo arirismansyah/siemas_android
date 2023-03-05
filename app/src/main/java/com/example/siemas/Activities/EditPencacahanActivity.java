@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -60,6 +61,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +115,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
     Handler handler;
     long tMilisec, tStart, tBuff, tUpdate = 0L;
     int sec, min, hour;
-
+    String currentPhotoPath;
     int iddsrt;
 
     private Dsrt dsrt;
@@ -153,6 +155,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
         iddsrt = Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT));
 
         dsrt = viewModel.getDsrtById(Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT)));
+
         tiKdKab.setText(dsrt.getKd_kab());
         tinamaKab.setText(dsrt.getNama_kab());
         tiNks.setText(dsrt.getNks());
@@ -161,7 +164,6 @@ public class EditPencacahanActivity extends AppCompatActivity {
         List<StatusRumah> statusRumahList = viewModel.getAllStatusRumah();
         spinnerStatusRumah = (Spinner) findViewById(R.id.spinnerStatusRumah);
         List<String> namaStatusRumah = new ArrayList<String>();
-
         for (int i = 0; i < statusRumahList.size(); i++) {
             namaStatusRumah.add(statusRumahList.get(i).getStatus_rumah());
         }
@@ -171,7 +173,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
 
         // setting value
         // set nama krt
-        if (!dsrt.getNama_krt2().isEmpty() && !dsrt.getNama_krt2().equals("null")){
+        if (!dsrt.getNama_krt2().isEmpty() && !dsrt.getNama_krt2().equals("null")) {
             tiNamaKrt.setText(dsrt.getNama_krt2());
         } else {
             tiNamaKrt.setText(dsrt.getNama_krt());
@@ -182,65 +184,76 @@ public class EditPencacahanActivity extends AppCompatActivity {
 
         // set status rumah
         String statusRumah = dsrt.getStatus_rumah();
-        if (!statusRumah.isEmpty() && !statusRumah.equals("null")){
+        if (!statusRumah.isEmpty() && !statusRumah.equals("null")) {
             spinnerStatusRumah.setSelection(spinnerAdapter.getPosition(statusRumah));
         }
         // set makanan sebulan
-        tiMakananSebulan.setText(dsrt.getMakanan_sebulan());
+        if (!dsrt.getMakanan_sebulan().isEmpty() && !dsrt.getMakanan_sebulan().equals("null")) {
+            tiMakananSebulan.setText(dsrt.getMakanan_sebulan());
+        }
+
         // set non makanan sebulan
-        tiNonMakananSebulan.setText(dsrt.getNonmakanan_sebulan());
+        if (!dsrt.getMakanan_sebulan().isEmpty() && !dsrt.getMakanan_sebulan().equals("null")) {
+            tiNonMakananSebulan.setText(dsrt.getNonmakanan_sebulan());
+        }
+
         tiMakananSebulan.addTextChangedListener(new TextWatcher() {
             private String setEditRupiah = tiMakananSebulan.getText().toString().trim();
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals(setEditRupiah)) {
                     tiMakananSebulan.removeTextChangedListener(this);
                     String replace = s.toString().replaceAll("[Rp. ]", "");
-                    if (!replace.isEmpty()){
+                    if (!replace.isEmpty()) {
                         setEditRupiah = formatrupiah(Double.parseDouble(replace));
-                    }else{
+                    } else {
                         setEditRupiah = "";
                     }
                     tiMakananSebulan.setText(setEditRupiah);
                     tiMakananSebulan.setSelection(setEditRupiah.length());
-                    tiMakananSebulan.addTextChangedListener( this);
+                    tiMakananSebulan.addTextChangedListener(this);
                 }
             }
         });
         tiNonMakananSebulan.addTextChangedListener(new TextWatcher() {
             private String setEditRupiah = tiNonMakananSebulan.getText().toString().trim();
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals(setEditRupiah)) {
                     tiNonMakananSebulan.removeTextChangedListener(this);
                     String replace = s.toString().replaceAll("[Rp. ]", "");
-                    if (!replace.isEmpty()){
+                    if (!replace.isEmpty()) {
                         setEditRupiah = formatrupiah(Double.parseDouble(replace));
-                    }else{
+                    } else {
                         setEditRupiah = "";
                     }
                     tiNonMakananSebulan.setText(setEditRupiah);
                     tiNonMakananSebulan.setSelection(setEditRupiah.length());
-                    tiNonMakananSebulan.addTextChangedListener( this);
+                    tiNonMakananSebulan.addTextChangedListener(this);
                 }
             }
         });
-
         // set gsmp
         int gsmpVal = dsrt.getGsmp();
-        if (gsmpVal==0){
+        if (gsmpVal == 0) {
             rbGsmpNo.setChecked(true);
             rbGsmpYa.setChecked(false);
         } else {
@@ -250,22 +263,23 @@ public class EditPencacahanActivity extends AppCompatActivity {
         tigsmpdesk.setText(dsrt.getGsmp_desk());
 
         // set koordinat
-        currentLatitude = Double.parseDouble(dsrt.getLatitude());
-        currentLongitude = Double.parseDouble(dsrt.getLongitude());
-        lokasi = convert(currentLatitude, currentLongitude);
-        tiKoordinat.setText(lokasi);
+        if (dsrt.getLatitude() != null && !dsrt.getLatitude().equals("null")) {
+            currentLatitude = Double.parseDouble(dsrt.getLatitude());
+            currentLongitude = Double.parseDouble(dsrt.getLongitude());
+            lokasi = convert(currentLatitude, currentLongitude);
+            tiKoordinat.setText(lokasi);
+        }
 
         // set foto
 //        Log.d("Dsrt Foto", dsrt.getFoto().toString());
-        if (dsrt.getFoto()!=null && !dsrt.getFoto().equals("null")) {
+        if (dsrt.getFoto() != null && !dsrt.getFoto().equals("null")) {
             try {
                 imageUri = Uri.parse(dsrt.getFoto());
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                 mImageView.setImageBitmap(bitmap);
-            }catch (Exception e){
-                Log.d("Failed Load Image", "Failed Load Image" );
+            } catch (Exception e) {
+                Log.d("Failed Load Image", "Failed Load Image");
             }
-
         }
 
         // get foto dialog
@@ -299,8 +313,6 @@ public class EditPencacahanActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dsrt = viewModel.getDsrtById(iddsrt);
-
-
                 // check is empty
                 if (TextUtils.isEmpty(tiNamaKrt.getText())) {
                     tiNamaKrt.setError("Tidak boleh kosong");
@@ -320,7 +332,6 @@ public class EditPencacahanActivity extends AppCompatActivity {
                 if (rgGsmp.getCheckedRadioButtonId() == -1) {
                     rbGsmpNo.setError("Harus dipilih");
                 }
-
                 if (
                         (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
@@ -329,13 +340,10 @@ public class EditPencacahanActivity extends AppCompatActivity {
                                 (!TextUtils.isEmpty(tiKoordinat.getText())) &&
                                 (!(rgGsmp.getCheckedRadioButtonId() == -1))
                 ) {
-
-
                     int gsmp = 0;
                     if (rbGsmpYa.isChecked()) {
                         gsmp = 1;
                     }
-
                     String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
                     viewModel.updatePencacahan(
                             dsrt.getId(),
@@ -353,16 +361,14 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             1
                     );
 
-                    if(Integer.parseInt(tiJmlArt.getText().toString()) < dsrt.getJml_art2() ){
+                    if (Integer.parseInt(tiJmlArt.getText().toString()) < dsrt.getJml_art2()) {
                         viewModel.nukeDsartbyId(
                                 dsrt.getId_bs(),
                                 dsrt.getTahun(),
                                 dsrt.getSemester(),
-                                dsrt.getNu_rt()
-                        );
-
+                                dsrt.getNu_rt());
                         List<Dsart> dsartList = new ArrayList<>();
-                        for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
+                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
                             Dsart dsart = new Dsart(
                                     dsrt.getId_bs(),
                                     dsrt.getKd_kab(),
@@ -379,9 +385,9 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             dsartList.add(dsart);
                         }
                         viewModel.insertDsart(dsartList);
-                    } else if (Integer.parseInt(tiJmlArt.getText().toString()) > dsrt.getJml_art2()){
+                    } else if (Integer.parseInt(tiJmlArt.getText().toString()) > dsrt.getJml_art2()) {
                         List<Dsart> dsartList = new ArrayList<>();
-                        for (int i = 1; i<= Integer.parseInt(tiJmlArt.getText().toString()); i++){
+                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
                             Dsart dsart = new Dsart(
                                     dsrt.getId_bs(),
                                     dsrt.getKd_kab(),
@@ -401,8 +407,6 @@ public class EditPencacahanActivity extends AppCompatActivity {
                     }
                     finish();
                 }
-
-
             }
         });
 
@@ -418,13 +422,13 @@ public class EditPencacahanActivity extends AppCompatActivity {
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFotoDialog.dismiss();
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                String idDsrt = dsrt.getId_bs() + "_" + dsrt.getNks();
-                String imageName = "ssn22_" + idDsrt + "_" + String.valueOf(System.currentTimeMillis());
-                Uri imagePath = saveImageToExternalStorage(imageName);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imagePath);
-                startActivityForResult(cameraIntent, CAMERA);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    getFotoDialog.dismiss();
+                    startActivityForResult(takePictureIntent, CAMERA);
+                } catch (ActivityNotFoundException e) {
+                    // display error state to the user
+                }
             }
         });
 
@@ -442,70 +446,39 @@ public class EditPencacahanActivity extends AppCompatActivity {
         });
     }
 
-    public Bitmap StringToBitMap(String encodedString){
-        try{
-            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }
-        catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-
-// second solution is you can set the path inside decodeFile function
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA) {
             if (resultCode == Activity.RESULT_OK) {
-                mImageView.setImageURI(imageUri);
-                Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
-                int imageNameFileIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                returnCursor.moveToFirst();
-                String imageFileName = returnCursor.getString(imageNameFileIndex);
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                currentPhotoPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "Title", null);
+                mImageView.setImageBitmap(imageBitmap);
+                imageUri = Uri.parse(currentPhotoPath);
+                viewModel.updateFotoRumah(dsrt.getId(),  imageUri.toString());
             }
         }
-
         if (requestCode == GALLERY_REQUEST_CODE) {
-            Uri selectedImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-                pictureFilePath = getRealPathFromURI2(tempUri);
-                imageUri = Uri.parse(new File(pictureFilePath).toString());
-                Glide.with(this).load(pictureFilePath).into(mImageView);
-                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
+//                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
+//                pictureFilePath = getRealPathFromURI2(tempUri);
+//                imageUri = Uri.parse(new File(pictureFilePath).toString());
+//                Glide.with(this).load(pictureFilePath).into(mImageView);
+//                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
+
+                imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                mImageView.setImageBitmap(selectedImage);
+                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
             } catch (IOException e) {
                 Log.i("TAG", "Some exception " + e);
             }
         }
-    }
-
-    private Uri saveImageToExternalStorage(String imageName) {
-        Uri imageCollection = null;
-        ContentResolver resolver = getContentResolver();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
-        } else {
-            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        }
-
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE, imageName + ".jpg");
-        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg");
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-
-        Uri finalImageUri = resolver.insert(imageCollection, contentValues);
-        imageUri = finalImageUri;
-        return finalImageUri;
     }
 
     public void getLocation() {
@@ -555,218 +528,249 @@ public class EditPencacahanActivity extends AppCompatActivity {
         return builder.toString();
     }
 
-
-    protected synchronized String getInstallationIdentifier() {
-        if (deviceIdentifier == null) {
-            SharedPreferences sharedPrefs = this.getSharedPreferences(
-                    "DEVICE_ID", Context.MODE_PRIVATE);
-            deviceIdentifier = sharedPrefs.getString("DEVICE_ID", null);
-            if (deviceIdentifier == null) {
-                deviceIdentifier = UUID.randomUUID().toString();
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putString("DEVICE_ID", deviceIdentifier);
-                editor.commit();
-            }
-        }
-        return deviceIdentifier;
-    }
-
-    public String compressImage(String imageUri, String idresponden) {
-
-        String filePath = getRealPathFromURI(imageUri);
-        Bitmap scaledBitmap = null;
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-//      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
-//      you try the use the bitmap here, you will get null.
-        options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
-
-        int actualHeight = options.outHeight;
-        int actualWidth = options.outWidth;
-
-//      max Height and width values of the compressed image is taken as 816x612
-
-        float maxHeight = 816.0f;
-        float maxWidth = 612.0f;
-        float imgRatio = actualWidth / actualHeight;
-        float maxRatio = maxWidth / maxHeight;
-
-//      width and height values are set maintaining the aspect ratio of the image
-
-        if (actualHeight > maxHeight || actualWidth > maxWidth) {
-            if (imgRatio < maxRatio) {
-                imgRatio = maxHeight / actualHeight;
-                actualWidth = (int) (imgRatio * actualWidth);
-                actualHeight = (int) maxHeight;
-            } else if (imgRatio > maxRatio) {
-                imgRatio = maxWidth / actualWidth;
-                actualHeight = (int) (imgRatio * actualHeight);
-                actualWidth = (int) maxWidth;
-            } else {
-                actualHeight = (int) maxHeight;
-                actualWidth = (int) maxWidth;
-
-            }
-        }
-
-//      setting inSampleSize value allows to load a scaled down version of the original image
-
-        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
-
-//      inJustDecodeBounds set to false to load the actual bitmap
-        options.inJustDecodeBounds = false;
-
-//      this options allow android to claim the bitmap memory if it runs low on memory
-        options.inPurgeable = true;
-        options.inInputShareable = true;
-        options.inTempStorage = new byte[16 * 1024];
-
-        try {
-//          load the bitmap from its path
-            bmp = BitmapFactory.decodeFile(filePath, options);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-
-        }
-        try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-        }
-
-        float ratioX = actualWidth / (float) options.outWidth;
-        float ratioY = actualHeight / (float) options.outHeight;
-        float middleX = actualWidth / 2.0f;
-        float middleY = actualHeight / 2.0f;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-
-//      check the rotation of the image and display it properly
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(filePath);
-
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION, 0);
-            Log.d("EXIF", "Exif: " + orientation);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-                Log.d("EXIF", "Exif: " + orientation);
-            } else if (orientation == 3) {
-                matrix.postRotate(180);
-                Log.d("EXIF", "Exif: " + orientation);
-            } else if (orientation == 8) {
-                matrix.postRotate(270);
-                Log.d("EXIF", "Exif: " + orientation);
-            }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
-                    true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        FileOutputStream out = null;
-        String filename = getFilename(idresponden);
-        try {
-            out = new FileOutputStream(filename);
-
-//          write the compressed bitmap at the destination specified by filename.
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return filename;
-
-    }
-
-    public String getFilename(String idresponden) {
-        String FileFotoRumah = "SSN_" + idresponden;
-        // make sure your target location folder exists!
-        File storageDir = new File(Environment.getExternalStorageDirectory(), "SSN1600");
-        File targetLocation = new File(storageDir + "/" + FileFotoRumah + ".jpg");
-        String uriSting = (targetLocation.getAbsolutePath());
-        return uriSting;
-
-    }
-
-    private String getRealPathFromURI(String contentURI) {
-        Uri contentUri = Uri.parse(contentURI);
-        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
-        if (cursor == null) {
-            return contentUri.getPath();
-        } else {
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
-        }
-    }
-
-    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        final float totalPixels = width * height;
-        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-            inSampleSize++;
-        }
-
-        return inSampleSize;
-    }
-
-    private void hapus_foto_sementara() {
-        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File[] files = dir.listFiles();
-
-        for (File file : files) {
-            if (file.getName().startsWith("TEMP")) {
-                // it's a match, call your function
-                file.delete();
-            }
-        }
-    }
-
-    private void kompress_file_foto(String idresponden) {
-        compressImage(pictureFilePath, idresponden);
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI2(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
-
-    private String formatrupiah(Double number){
+    private String formatrupiah(Double number) {
         Locale locale = new Locale("IND", "ID");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
         String formatrupiah = numberFormat.format(number);
         String[] split = formatrupiah.split(",");
         int length = split[0].length();
-        return split[0].substring(0,2)+". "+split[0]. substring(2,length);
+        return split[0].substring(0, 2) + ". " + split[0].substring(2, length);
     }
+
+//    public Bitmap StringToBitMap(String encodedString) {
+//        try {
+//            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+//            return bitmap;
+//        } catch (Exception e) {
+//            e.getMessage();
+//            return null;
+//        }
+//    }
+//    protected synchronized String getInstallationIdentifier() {
+//        if (deviceIdentifier == null) {
+//            SharedPreferences sharedPrefs = this.getSharedPreferences(
+//                    "DEVICE_ID", Context.MODE_PRIVATE);
+//            deviceIdentifier = sharedPrefs.getString("DEVICE_ID", null);
+//            if (deviceIdentifier == null) {
+//                deviceIdentifier = UUID.randomUUID().toString();
+//                SharedPreferences.Editor editor = sharedPrefs.edit();
+//                editor.putString("DEVICE_ID", deviceIdentifier);
+//                editor.commit();
+//            }
+//        }
+//        return deviceIdentifier;
+//    }
+
+//    public String compressImage(String imageUri, String idresponden) {
+//
+//        String filePath = getRealPathFromURI(imageUri);
+//        Bitmap scaledBitmap = null;
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//
+////      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
+////      you try the use the bitmap here, you will get null.
+//        options.inJustDecodeBounds = true;
+//        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+//
+//        int actualHeight = options.outHeight;
+//        int actualWidth = options.outWidth;
+//
+////      max Height and width values of the compressed image is taken as 816x612
+//
+//        float maxHeight = 816.0f;
+//        float maxWidth = 612.0f;
+//        float imgRatio = actualWidth / actualHeight;
+//        float maxRatio = maxWidth / maxHeight;
+//
+////      width and height values are set maintaining the aspect ratio of the image
+//
+//        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+//            if (imgRatio < maxRatio) {
+//                imgRatio = maxHeight / actualHeight;
+//                actualWidth = (int) (imgRatio * actualWidth);
+//                actualHeight = (int) maxHeight;
+//            } else if (imgRatio > maxRatio) {
+//                imgRatio = maxWidth / actualWidth;
+//                actualHeight = (int) (imgRatio * actualHeight);
+//                actualWidth = (int) maxWidth;
+//            } else {
+//                actualHeight = (int) maxHeight;
+//                actualWidth = (int) maxWidth;
+//
+//            }
+//        }
+//
+////      setting inSampleSize value allows to load a scaled down version of the original image
+//
+//        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+//
+////      inJustDecodeBounds set to false to load the actual bitmap
+//        options.inJustDecodeBounds = false;
+//
+////      this options allow android to claim the bitmap memory if it runs low on memory
+//        options.inPurgeable = true;
+//        options.inInputShareable = true;
+//        options.inTempStorage = new byte[16 * 1024];
+//
+//        try {
+////          load the bitmap from its path
+//            bmp = BitmapFactory.decodeFile(filePath, options);
+//        } catch (OutOfMemoryError exception) {
+//            exception.printStackTrace();
+//
+//        }
+//        try {
+//            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+//        } catch (OutOfMemoryError exception) {
+//            exception.printStackTrace();
+//        }
+//
+//        float ratioX = actualWidth / (float) options.outWidth;
+//        float ratioY = actualHeight / (float) options.outHeight;
+//        float middleX = actualWidth / 2.0f;
+//        float middleY = actualHeight / 2.0f;
+//
+//        Matrix scaleMatrix = new Matrix();
+//        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+//
+//        Canvas canvas = new Canvas(scaledBitmap);
+//        canvas.setMatrix(scaleMatrix);
+//        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+//
+////      check the rotation of the image and display it properly
+//        ExifInterface exif;
+//        try {
+//            exif = new ExifInterface(filePath);
+//
+//            int orientation = exif.getAttributeInt(
+//                    ExifInterface.TAG_ORIENTATION, 0);
+//            Log.d("EXIF", "Exif: " + orientation);
+//            Matrix matrix = new Matrix();
+//            if (orientation == 6) {
+//                matrix.postRotate(90);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            } else if (orientation == 3) {
+//                matrix.postRotate(180);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            } else if (orientation == 8) {
+//                matrix.postRotate(270);
+//                Log.d("EXIF", "Exif: " + orientation);
+//            }
+//            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+//                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
+//                    true);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        FileOutputStream out = null;
+//        String filename = getFilename(idresponden);
+//        try {
+//            out = new FileOutputStream(filename);
+//
+////          write the compressed bitmap at the destination specified by filename.
+//            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return filename;
+//
+//    }
+//
+//    private Uri saveImageToExternalStorage(String imageName) {
+//        Uri imageCollection = null;
+//        ContentResolver resolver = getContentResolver();
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+//        } else {
+//            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+//        }
+//
+//
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(MediaStore.Images.Media.TITLE, imageName + ".jpg");
+//        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName + ".jpg");
+//        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+//
+//        Uri finalImageUri = resolver.insert(imageCollection, contentValues);
+//        imageUri = finalImageUri;
+//        return finalImageUri;
+//    }
+
+
+//    public String getFilename(String idresponden) {
+//        String FileFotoRumah = "SSN_" + idresponden;
+//        // make sure your target location folder exists!
+//        File storageDir = new File(Environment.getExternalStorageDirectory(), "SSN1600");
+//        File targetLocation = new File(storageDir + "/" + FileFotoRumah + ".jpg");
+//        String uriSting = (targetLocation.getAbsolutePath());
+//        return uriSting;
+//
+//    }
+//
+//    private String getRealPathFromURI(String contentURI) {
+//        Uri contentUri = Uri.parse(contentURI);
+//        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+//        if (cursor == null) {
+//            return contentUri.getPath();
+//        } else {
+//            cursor.moveToFirst();
+//            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//            return cursor.getString(index);
+//        }
+//    }
+//
+//    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//            final int heightRatio = Math.round((float) height / (float) reqHeight);
+//            final int widthRatio = Math.round((float) width / (float) reqWidth);
+//            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+//        }
+//        final float totalPixels = width * height;
+//        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+//        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+//            inSampleSize++;
+//        }
+//
+//        return inSampleSize;
+//    }
+//
+//    private void hapus_foto_sementara() {
+//        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File[] files = dir.listFiles();
+//
+//        for (File file : files) {
+//            if (file.getName().startsWith("TEMP")) {
+//                // it's a match, call your function
+//                file.delete();
+//            }
+//        }
+//    }
+
+//    private void kompress_file_foto(String idresponden) {
+//        compressImage(pictureFilePath, idresponden);
+//    }
+//
+//    public Uri getImageUri(Context inContext, Bitmap inImage) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+//        return Uri.parse(path);
+//    }
+//
+//    public String getRealPathFromURI2(Uri uri) {
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//        cursor.moveToFirst();
+//        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+//        return cursor.getString(idx);
+//    }
 }

@@ -68,7 +68,6 @@ public abstract class LocalDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateStatusAsync(localDatabase).execute();
-
         }
     };
 

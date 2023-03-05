@@ -6,11 +6,11 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.bpssumsel.siemas"
+        applicationId "com.npssumsel.siemas"
         minSdk 21
         targetSdk 32
-        versionCode 6
-        versionName "2023.2"
+        versionCode 7
+        versionName "2023.2b"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

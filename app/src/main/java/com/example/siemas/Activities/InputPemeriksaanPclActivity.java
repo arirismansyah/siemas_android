@@ -141,9 +141,15 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         // set jumlah art
         tiJmlArt.setText(String.valueOf(dsrt.getJml_art2()));
 
-        tijml_kom_makanan.setText(String.valueOf(dsrt.getJml_komoditas_makanan()));
+        String jml_komMakananval = String.valueOf(dsrt.getJml_komoditas_makanan());
+        if (!jml_komMakananval.isEmpty() && !jml_komMakananval.equals("null") && (dsrt.getJml_komoditas_makanan()>0)){
+            tijml_kom_makanan.setText(jml_komMakananval);
+        }
 
-        tijml_kom_nonmakanan.setText(String.valueOf(dsrt.getJml_komoditas_nonmakanan()));
+        String jml_komNonMakananval = String.valueOf(dsrt.getJml_komoditas_nonmakanan());
+        if (!jml_komNonMakananval.isEmpty() && !jml_komNonMakananval.equals("null") && (dsrt.getJml_komoditas_nonmakanan()>0)){
+            tijml_kom_nonmakanan.setText(jml_komNonMakananval);
+        }
 
         // set blok 16.5
         String makananVal = dsrt.getMakanan_sebulan();
@@ -252,8 +258,6 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         tiRincian304.addTextChangedListener(new TextWatcher() {
             private String setEditRupiah = tiRincian304.getText().toString().trim();
             @Override
@@ -302,6 +306,8 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
                 }
             }
         });
+
+
         recyclerView = findViewById(R.id.dssartrecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);

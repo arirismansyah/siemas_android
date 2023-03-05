@@ -54,6 +54,7 @@ public class ViewModel extends AndroidViewModel {
     public void getJadwalFromApi(Context context, String email, String token) {
         repository.getJadwal212FromApi(context, email, token);
     }
+
     public List<Dsbs> getDsbs(String tahun, int semester) {
         return repository.getDsbs(tahun, semester);
     }
@@ -66,7 +67,7 @@ public class ViewModel extends AndroidViewModel {
         repository.getDsrtPmlFromApi(context, pengawas, token);
     }
 
-    public LiveData<List<Dsrt>> getLiveDataDsrt(String tahun, int semester){
+    public LiveData<List<Dsrt>> getLiveDataDsrt(String tahun, int semester) {
         return repository.getLiveDataDsrt(tahun, semester);
     }
 
@@ -74,11 +75,11 @@ public class ViewModel extends AndroidViewModel {
         return repository.getDsrt(tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester ){
-        return repository.getListDsrtByIdBs(idBs , tahun,  semester );
+    public List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester) {
+        return repository.getListDsrtByIdBs(idBs, tahun, semester);
     }
 
-    public Dsrt getDsrtById(Integer idDsrt){
+    public Dsrt getDsrtById(Integer idDsrt) {
         return repository.getDsrtById(idDsrt);
     }
 
@@ -90,28 +91,31 @@ public class ViewModel extends AndroidViewModel {
         return repository.getLiveDataDsrtByIdBs(idBs, tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status, String tahun, int semester){
+    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status, String tahun, int semester) {
         return repository.getListDsrtByIdBsStatusLw(idBs, status, tahun, semester);
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status, String tahun, int semester){
+    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status, String tahun, int semester) {
         return repository.getListDsrtByIdBsStatusUp(idBs, status, tahun, semester);
     }
 
     // update foto
-    public void updateFotoRumah(int idDsrt, String fileFoto){
+    public void updateFotoRumah(int idDsrt, String fileFoto) {
         repository.updateFotoRumah(idDsrt, fileFoto);
     }
 
     // update status pencacahan
-    public void updateStatusPencacahan(int idDsrt, int statusPencacahan){
+    public void updateStatusPencacahan(int idDsrt, int statusPencacahan) {
         repository.updateStatusPencacahan(idDsrt, statusPencacahan);
     }
 
     // update pencacahan
-    public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
-        repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
+    public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah,
+                                 String makananSebulan, String nonMakananSebulan,
+                                 int gsmp, String gsmp_desk, String latitude, String longitude,
+                                 String durasi, String fileFoto, int statusPencacahan) {
+        repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan,
+                nonMakananSebulan, gsmp, gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
     }
 
     // update pemeriksaan
@@ -134,7 +138,7 @@ public class ViewModel extends AndroidViewModel {
             String deskripsiKegiatan,
             int luasLantai,
             int statusPencacahan
-    ){
+    ) {
         repository.updatePemeriksaan(
                 idDsrt,
                 namaKrt,
@@ -215,42 +219,48 @@ public class ViewModel extends AndroidViewModel {
     public void nukeDsbs() {
         repository.nukeDsbs();
     }
+
     public void nukeDsrt() {
         repository.nukeDsrt();
     }
 
-    public List<Jadwal212> getListJadwal(){return repository.getListJadwal();}
-    public Jadwal212 getJadwalByTanggal(String tanggal){
+    public List<Jadwal212> getListJadwal() {
+        return repository.getListJadwal();
+    }
+
+    public Jadwal212 getJadwalByTanggal(String tanggal) {
         return repository.getJadwalByTanggal(tanggal);
     }
 
-    public Dsrt getDsrtByIdBsNuRt(String idBs, String tahun, int semester, int nuRT){
-        return repository.getDsrtByIdBsNuRt(idBs,tahun,semester, nuRT);
+    public Dsrt getDsrtByIdBsNuRt(String idBs, String tahun, int semester, int nuRT) {
+        return repository.getDsrtByIdBsNuRt(idBs, tahun, semester, nuRT);
     }
 
-    public void insertLaporan(Laporan212 laporan212){
+    public void insertLaporan(Laporan212 laporan212) {
         repository.insertLaporan(laporan212);
     }
 
-    public LiveData<List<Laporan212>> getLiveDataLaporan(){
+    public LiveData<List<Laporan212>> getLiveDataLaporan() {
         return repository.getLiveDataLaporan();
     }
 
-    public void deleteLaporan(String idBs, int nuRt){
+    public void deleteLaporan(String idBs, int nuRt) {
         repository.deleteLaporan(idBs, nuRt);
     }
 
-    public void nukeLaporan(){
+    public void nukeLaporan() {
         repository.nukeLaporan();
     }
 
-    public void updateStatusLaporan(String idBs, int nuRt, int status){repository.updateStatusLaporan(idBs, nuRt, status);}
+    public void updateStatusLaporan(String idBs, int nuRt, int status) {
+        repository.updateStatusLaporan(idBs, nuRt, status);
+    }
 
-    public List<Laporan212> getListLaporanByIdBsStatus(String idBs, int status){
+    public List<Laporan212> getListLaporanByIdBsStatus(String idBs, int status) {
         return repository.getLaporanByIdBsStatus(idBs, status);
     }
 
-    public List<Laporan212> getListLaporanByIdBsStatusUp(String idBs, int status){
+    public List<Laporan212> getListLaporanByIdBsStatusUp(String idBs, int status) {
         return repository.getLaporanByIdBsStatusUp(idBs, status);
     }
 
@@ -259,49 +269,53 @@ public class ViewModel extends AndroidViewModel {
     }
 
     // update lokasi selesai
-    public void updateLokasiSelesai(int idDsrt, String latitudeSelesai, String longitudeSelesai){
+    public void updateLokasiSelesai(int idDsrt, String latitudeSelesai, String longitudeSelesai) {
         repository.updateLokasiSelesai(idDsrt, latitudeSelesai, longitudeSelesai);
     }
 
     // update jam mulai
-    public void updateJamMulai(int idDsrt, String jamMulai){
+    public void updateJamMulai(int idDsrt, String jamMulai) {
         repository.updateJamMulai(idDsrt, jamMulai);
     }
 
     // update jam selesai
-    public void updateJamSelesai(int idDsrt, String jamSelesai){
+    public void updateJamSelesai(int idDsrt, String jamSelesai) {
         repository.updateJamSelesai(idDsrt, jamSelesai);
     }
-    public void updateDurasiPencacahan(int idDsrt, String durasi){
+
+    public void updateDurasiPencacahan(int idDsrt, String durasi) {
         repository.updateDurasiPencacahan(idDsrt, durasi);
     }
 
-    public void getPeriodeFromServer(Context context){
-         repository.getPeriodeFromAPI(context);
+    public void getPeriodeFromServer(Context context) {
+        repository.getPeriodeFromAPI(context);
     }
 
-    public List<Periode> getPeriode(){
+    public List<Periode> getPeriode() {
         return repository.getPeriode();
     }
 
-    public void insertDsart(List<Dsart> list){
+    public void insertDsart(List<Dsart> list) {
         repository.insertDsartList(list);
     }
-    public void nukeDsartbyId (String id_bs, String tahun, int semester, int nu_rt){
+
+    public void nukeDsartbyId(String id_bs, String tahun, int semester, int nu_rt) {
         repository.nukeDsartbyId(id_bs, tahun, semester, nu_rt);
     }
 
-    public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
-        return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
-    }
-    public List<Dsart> getDsarlamatbyId(String id_bs, String tahun, int semester, int nu_rt){
-        return  repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
+    public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt) {
+        return repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
     }
 
-    public void getDsartPclFromApi(Context context, String pencacah,String token){
+    public List<Dsart> getDsarlamatbyId(String id_bs, String tahun, int semester, int nu_rt) {
+        return repository.getDsartbyId(id_bs, tahun, semester, nu_rt);
+    }
+
+    public void getDsartPclFromApi(Context context, String pencacah, String token) {
         repository.getDsartPclFromAPI(context, pencacah, token);
     }
-    public void getDsartPmlFromApi(Context context, String pencacah,String token){
+
+    public void getDsartPmlFromApi(Context context, String pencacah, String token) {
         repository.getDsartPmlFromAPI(context, pencacah, token);
     }
 }

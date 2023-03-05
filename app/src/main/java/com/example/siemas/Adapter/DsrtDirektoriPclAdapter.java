@@ -105,7 +105,6 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
             holder.ivRumah.setImageResource(R.drawable.ic_home);
         }
 
-
         if (!currentDsrt.getLatitude().isEmpty() && !currentDsrt.getLatitude().equals("null")) {
             Double latitude = Double.parseDouble(currentDsrt.getLatitude());
             Double longitude = Double.parseDouble(currentDsrt.getLongitude());
@@ -194,7 +193,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                     if (dsrt.getStatus_pencacahan() < 3) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
                         alertDialogBuilder.setTitle("SIEMAS 2022");
-                        alertDialogBuilder.setMessage("Untuk dapat melakukan upload elesaikan input pencacahan & pemeriksaan terlebih dulu!");
+                        alertDialogBuilder.setMessage("Untuk dapat melakukan upload selesaikan input pencacahan & pemeriksaan terlebih dulu!");
                         alertDialogBuilder.setCancelable(false);
                         alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -220,6 +219,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
                             checkAndRequestForPermission(itemView.getContext());
                             String[] proj = {MediaStore.Images.Media.DATA};
+
                             Cursor cursorFile = itemView.getContext().getContentResolver().query(Uri.parse(dsrt.getFoto()), proj, null, null, null);
                             RequestBody file = RequestBody.create(MultipartBody.FORM,"");
                             MultipartBody.Part body = MultipartBody.Part.createFormData("file","",file);
