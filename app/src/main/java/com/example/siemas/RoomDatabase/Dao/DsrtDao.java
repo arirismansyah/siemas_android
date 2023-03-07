@@ -22,7 +22,7 @@ public interface DsrtDao {
     LiveData<List<Dsrt>> getDsrtLive(String tahun, int semester);
     @Query("Select * FROM dsrt WHERE id = :idDsrt")
     Dsrt getDsrtById(int idDsrt);
-    @Query("Select * FROM dsrt  WHERE tahun = :tahun AND semester = :semester ")
+    @Query("Select * FROM dsrt  WHERE tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     List<Dsrt> getDsrtList(String tahun, int semester);
 
     @Query("Select * FROM dsrt WHERE id_bs = :idBS AND nks = :nks AND nu_rt = :nu_rt")
@@ -49,10 +49,10 @@ public interface DsrtDao {
     @Query("Select * FROM dsrt WHERE status_pencacahan > :status_pencacahan AND id_bs = :idBs AND tahun = :tahun AND semester = :semester")
     List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status_pencacahan, String tahun, int semester );
 
-    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester")
+    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     LiveData<List<Dsrt>> getLiveDsrtByIdBs(String idBs, String tahun, int semester );
 
-    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester")
+    @Query("Select * FROM dsrt WHERE id_bs= :idBs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester );
 
     @Query("UPDATE dsrt SET foto = :fileFoto WHERE id = :idDsrt")

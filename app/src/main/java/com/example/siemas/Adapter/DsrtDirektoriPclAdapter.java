@@ -94,13 +94,21 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
             holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt());
         }
         holder.tvNuRt.setText("No Urut Ruta: " + String.valueOf(currentDsrt.getNu_rt()));
+
         holder.tvNks.setText("NKS: " + currentDsrt.getNks());
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
         String fotoRumahPath = currentDsrt.getFoto();
 
         if (!fotoRumahPath.isEmpty() && !fotoRumahPath.equals("null")) {
-            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
+//            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
+            try {
+                Uri imageUri = Uri.parse(currentDsrt.getFoto());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+                holder.ivRumah.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                Log.d("Failed Load Image", "Failed Load Image");
+            }
         } else {
             holder.ivRumah.setImageResource(R.drawable.ic_home);
         }
@@ -438,6 +446,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
         }
     }
+
     private File getBitmapReduced(Bitmap reducedFoto, String filename, Context context) {
         File imageStorage = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
@@ -492,7 +501,6 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
     private String convert(double latitude, double longitude) {
         StringBuilder builder = new StringBuilder();
-
         if (latitude < 0) {
             builder.append("S ");
         } else {

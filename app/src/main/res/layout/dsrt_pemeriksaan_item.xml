@@ -25,7 +25,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/mapIcon"
+                    android:id="@+id/ivRumah"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginVertical="10dp"
@@ -43,7 +43,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_toEndOf="@+id/mapIcon"
+                    android:layout_toEndOf="@+id/ivRumah"
                     android:orientation="vertical">
 
                     <TextView

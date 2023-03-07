@@ -1,6 +1,10 @@
 package com.example.siemas.Adapter;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +44,19 @@ public class DsrtPencacahanAdapter extends RecyclerView.Adapter<DsrtPencacahanAd
         }
         holder.tvNuRt.setText("No Urut Ruta: "+String.valueOf(currentDsrt.getNu_rt()));
         holder.tvNks.setText("NKS: "+currentDsrt.getNks());
+        String fotoRumahPath = currentDsrt.getFoto();
+        if (!fotoRumahPath.isEmpty() && !fotoRumahPath.equals("null")) {
+//            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
+            try {
+                Uri imageUri = Uri.parse(currentDsrt.getFoto());
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+                holder.ivRumah.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                Log.d("Failed Load Image", "Failed Load Image");
+            }
+        } else {
+            holder.ivRumah.setImageResource(R.drawable.ic_home);
+        }
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
 
@@ -74,7 +91,7 @@ public class DsrtPencacahanAdapter extends RecyclerView.Adapter<DsrtPencacahanAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNks, tvNuRt, tvNamaKrt, tvStatusPencacahan;
-        private ImageView statusDsrt;
+        private ImageView statusDsrt, ivRumah;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +99,7 @@ public class DsrtPencacahanAdapter extends RecyclerView.Adapter<DsrtPencacahanAd
             tvNuRt = itemView.findViewById(R.id.nuRt);
             tvNamaKrt = itemView.findViewById(R.id.namaKrt);
             statusDsrt = itemView.findViewById(R.id.tagStatusDsrt);
+            ivRumah = itemView.findViewById(R.id.ivRumah);
             tvStatusPencacahan = itemView.findViewById(R.id.tvStatusPencacahan);
 
             itemView.setOnClickListener(new View.OnClickListener() {

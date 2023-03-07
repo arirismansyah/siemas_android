@@ -69,7 +69,13 @@ public abstract class LocalDatabase extends RoomDatabase {
             super.onCreate(db);
             new PopulateStatusAsync(localDatabase).execute();
         }
+        @Override
+        public void onDestructiveMigration(@NonNull SupportSQLiteDatabase db) {
+            super.onDestructiveMigration(db);
+            new PopulateStatusAsync(localDatabase).execute();
+        }
     };
+
 
 
     private static class PopulateStatusAsync extends AsyncTask<Void, Void, Void> {
