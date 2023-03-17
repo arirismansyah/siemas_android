@@ -573,7 +573,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="wrap_content"
-                            android:text="Ijazah Tertinggi KRT \n(K Blok.VI R.612)"
+                            android:text="Ijazah Tertinggi KRT \n(K Blok.VI R.614)"
                             android:textSize="14dp"
                             android:textStyle="bold"
                             android:layout_column="1"

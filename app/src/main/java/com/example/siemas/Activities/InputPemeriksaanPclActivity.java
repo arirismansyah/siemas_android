@@ -142,12 +142,12 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         tiJmlArt.setText(String.valueOf(dsrt.getJml_art2()));
 
         String jml_komMakananval = String.valueOf(dsrt.getJml_komoditas_makanan());
-        if (!jml_komMakananval.isEmpty() && !jml_komMakananval.equals("null") && (dsrt.getJml_komoditas_makanan()>0)){
+        if (!jml_komMakananval.isEmpty() && !jml_komMakananval.equals("null")){
             tijml_kom_makanan.setText(jml_komMakananval);
         }
 
         String jml_komNonMakananval = String.valueOf(dsrt.getJml_komoditas_nonmakanan());
-        if (!jml_komNonMakananval.isEmpty() && !jml_komNonMakananval.equals("null") && (dsrt.getJml_komoditas_nonmakanan()>0)){
+        if (!jml_komNonMakananval.isEmpty() && !jml_komNonMakananval.equals("null")){
             tijml_kom_nonmakanan.setText(jml_komNonMakananval);
         }
 
@@ -177,13 +177,13 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
         // set art sekolah
         String artSekolahVal = String.valueOf(dsrt.getArt_sekolah());
-        if (!artSekolahVal.isEmpty() && !artSekolahVal.equals("null") && (dsrt.getArt_sekolah()>0)){
+        if (!artSekolahVal.isEmpty() && !artSekolahVal.equals("null")){
             tiJmlArtSekolah.setText(artSekolahVal);
         }
 
         // set art bpjs
         String artBpjsVal = String.valueOf(dsrt.getArt_bpjs());
-        if (!artBpjsVal.isEmpty() && !artBpjsVal.equals("null") && (dsrt.getArt_bpjs()>0)){
+        if (!artBpjsVal.isEmpty() && !artBpjsVal.equals("null") ){
             tiJmlArtBpjs.setText(artBpjsVal);
         }
 

@@ -205,7 +205,7 @@
             android:textSize="13dp"
             android:layout_column="1"
             android:textStyle="bold"
-            android:text="Pendapatan ART\n(KP Blok.V.A\nKol 5+6+7)"
+            android:text="Pendapatan ART(KP\n Blok V.A Kol 5+6+7 \n Blok V.B Kol 7)"
             >
         </TextView>
         <TextView

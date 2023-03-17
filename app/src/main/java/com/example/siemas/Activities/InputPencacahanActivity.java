@@ -1,5 +1,6 @@
 package com.example.siemas.Activities;
 
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -21,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -32,6 +34,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -68,6 +71,7 @@ import com.bumptech.glide.Glide;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.RealPathUtil;
 import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -456,11 +460,22 @@ public class InputPencacahanActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                openGallery();
                 getFotoDialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_PICK);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 intent.setType("image/*");
                 String[] mimeTypes = {"image/jpeg", "image/png"};
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
                 startActivityForResult(intent, GALLERY_REQUEST_CODE);
+
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+//                for (ResolveInfo resolveInfo : resInfoList) {
+//                    String packageName = resolveInfo.activityInfo.packageName;
+//                    grantUriPermission(packageName, , Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                }
+//                startActivity(intent);
             }
         });
 
@@ -514,6 +529,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
         spinnerStatusRumah.setAdapter(spinnerAdapter);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -549,12 +565,39 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //                pictureFilePath = getRealPathFromURI2(tempUri);
 //                this.imageUri = Uri.parse(new File(pictureFilePath).toString());
 //                Glide.with(this).load(pictureFilePath).into(mImageView);
-                imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mImageView.setImageBitmap(selectedImage);
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-            } catch (IOException  e) {
+
+//                Uri originalUri = null;
+                if (Build.VERSION.SDK_INT < 19) {
+                    imageUri = data.getData();
+                } else {
+                    imageUri = data.getData();
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    try {
+                        this.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
+                    }
+                    catch (SecurityException e){
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
+                    mImageView.setImageBitmap(bitmap);
+                    viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+                }catch (Exception e){
+                    Log.i("TAG", "Some exception " + e);
+                }
+//                data.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                data.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+//                imageUri = data.getData();
+//
+//                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                mImageView.setImageBitmap(selectedImage);
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//
+            } catch (Exception  e) {
                 Log.i("TAG", "Some exception " + e);
             }
         }

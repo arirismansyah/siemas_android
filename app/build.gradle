@@ -9,8 +9,8 @@ android {
         applicationId "com.npssumsel.siemas"
         minSdk 21
         targetSdk 32
-        versionCode 10
-        versionName "2023.2e"
+        versionCode 11
+        versionName "2023.2f"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

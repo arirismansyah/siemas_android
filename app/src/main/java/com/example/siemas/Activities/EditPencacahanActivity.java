@@ -1,5 +1,7 @@
 package com.example.siemas.Activities;
 
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -437,7 +440,9 @@ public class EditPencacahanActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getFotoDialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_PICK);
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 intent.setType("image/*");
                 String[] mimeTypes = {"image/jpeg", "image/png"};
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
@@ -446,6 +451,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -453,6 +459,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 //                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 currentPhotoPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "Title", null);
@@ -470,12 +477,38 @@ public class EditPencacahanActivity extends AppCompatActivity {
 //                Glide.with(this).load(pictureFilePath).into(mImageView);
 //                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
 
-                imageUri = data.getData();
-                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                mImageView.setImageBitmap(selectedImage);
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-            } catch (IOException e) {
+//                Uri originalUri = null;
+                if (Build.VERSION.SDK_INT < 19) {
+                    imageUri = data.getData();
+                } else {
+                    imageUri = data.getData();
+                    final int takeFlags = data.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    try {
+                        this.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
+                    }
+                    catch (SecurityException e){
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
+                    mImageView.setImageBitmap(bitmap);
+                    viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+                }catch (Exception e){
+                    Log.i("TAG", "Some exception " + e);
+                }
+
+//                data.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                data.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+//                imageUri = data.getData();
+//                getContentResolver().takePersistableUriPermission(imageUri, (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION));
+//                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                mImageView.setImageBitmap(selectedImage);
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+            } catch (Exception e) {
                 Log.i("TAG", "Some exception " + e);
             }
         }
