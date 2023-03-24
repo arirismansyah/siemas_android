@@ -2,12 +2,15 @@ package com.example.siemas.Activities;
 
 import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
@@ -28,6 +31,7 @@ import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Build;
@@ -50,6 +54,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.siemas.R;
@@ -59,6 +64,8 @@ import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -66,7 +73,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -118,13 +127,14 @@ public class EditPencacahanActivity extends AppCompatActivity {
     Handler handler;
     long tMilisec, tStart, tBuff, tUpdate = 0L;
     int sec, min, hour;
-    String currentPhotoPath;
     int iddsrt;
 
     private Dsrt dsrt;
     private Dialog getFotoDialog;
     private AppCompatButton galleryBtn, cameraBtn;
 
+    String currentPhotoPath;
+    File photoFile = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -278,8 +288,9 @@ public class EditPencacahanActivity extends AppCompatActivity {
         if (dsrt.getFoto() != null && !dsrt.getFoto().equals("null")) {
             try {
                 imageUri = Uri.parse(dsrt.getFoto());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                mImageView.setImageBitmap(bitmap);
+                Glide.with(this)
+                        .load(imageUri)
+                        .into(mImageView);
             } catch (Exception e) {
                 Log.d("Failed Load Image", "Failed Load Image");
             }
@@ -425,22 +436,35 @@ public class EditPencacahanActivity extends AppCompatActivity {
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getFotoDialog.dismiss();
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                try {
-                    getFotoDialog.dismiss();
-                    startActivityForResult(takePictureIntent, CAMERA);
-                } catch (ActivityNotFoundException e) {
-                    // display error state to the user
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Buat file baru untuk menyimpan gambar hasil pengambilan foto
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        // Error occurred while creating the File
+                        ex.printStackTrace();
+                    }
+                    // Lanjutkan hanya jika file berhasil dibuat
+                    if (photoFile != null) {
+                        // Dapatkan URI file dengan menggunakan FileProvider
+                        String authorities = getApplicationContext().getPackageName() + ".fileprovider";
+                        imageUri = FileProvider.getUriForFile(getApplicationContext(), authorities, photoFile);
+                        // Tambahkan URI file ke intent kamera
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                        // Mulai aplikasi kamera
+                        startActivityForResult(takePictureIntent, CAMERA);
+                    }
                 }
             }
         });
 
-        // get foto by gallery
         galleryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getFotoDialog.dismiss();
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 intent.setType("image/*");
@@ -449,69 +473,81 @@ public class EditPencacahanActivity extends AppCompatActivity {
                 startActivityForResult(intent, GALLERY_REQUEST_CODE);
             }
         });
+
     }
 
     @SuppressLint("WrongConstant")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA) {
-            if (resultCode == Activity.RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
+        if (requestCode == CAMERA && resultCode == RESULT_OK) {
 
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                currentPhotoPath = MediaStore.Images.Media.insertImage(this.getContentResolver(), imageBitmap, "Title", null);
-                mImageView.setImageBitmap(imageBitmap);
-                imageUri = Uri.parse(currentPhotoPath);
-                viewModel.updateFotoRumah(dsrt.getId(),  imageUri.toString());
-            }
-        }
-        if (requestCode == GALLERY_REQUEST_CODE) {
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            File f = new File(currentPhotoPath);
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            this.sendBroadcast(mediaScanIntent);
+
+            String galleryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + "/Camera/";
+            File galleryFile = new File(galleryPath, photoFile.getName());
             try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), selectedImage);
-//                Uri tempUri = getImageUri(getApplicationContext(), bitmap);
-//                pictureFilePath = getRealPathFromURI2(tempUri);
-//                imageUri = Uri.parse(new File(pictureFilePath).toString());
-//                Glide.with(this).load(pictureFilePath).into(mImageView);
-//                viewModel.updateFotoRumah(dsrt.getId(), selectedImage.toString());
+                FileUtils.copyFile(new File(currentPhotoPath), galleryFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            MediaScannerConnection.scanFile(getApplicationContext(),
+                    new String[]{galleryFile.getAbsolutePath()},
+                    null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        @Override
+                        public void onScanCompleted(String path, Uri uri) {
+                            Log.d(TAG, "File " + path + " was scanned successfully");
+                        }
+                    });
 
-//                Uri originalUri = null;
-                if (Build.VERSION.SDK_INT < 19) {
-                    imageUri = data.getData();
-                } else {
-                    imageUri = data.getData();
-                    final int takeFlags = data.getFlags()
-                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
-                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    try {
-                        this.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
-                    }
-                    catch (SecurityException e){
-                        e.printStackTrace();
-                    }
-                }
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(imageUri));
-                    mImageView.setImageBitmap(bitmap);
-                    viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-                }catch (Exception e){
-                    Log.i("TAG", "Some exception " + e);
-                }
+            // Tampilkan gambar ke dalam ImageView
+            Glide.with(this)
+                    .load(contentUri)
+                    .into(mImageView);
+            viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+        }
 
-//                data.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                data.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-//                imageUri = data.getData();
-//                getContentResolver().takePersistableUriPermission(imageUri, (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION));
-//                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-//                mImageView.setImageBitmap(selectedImage);
-//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-            } catch (Exception e) {
-                Log.i("TAG", "Some exception " + e);
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
+            imageUri = data.getData();
+            // Konversi URI menjadi path file
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(imageUri, projection, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                @SuppressLint({"InlinedApi", "Range"}) String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                cursor.close();
+                // Gunakan File Provider untuk memperoleh URI gambar
+                String authorities = getApplicationContext().getPackageName() + ".fileprovider";
+                imageUri = FileProvider.getUriForFile(this, authorities, new File(imagePath));
+                // Gunakan imageUri untuk memuat gambar
+                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+                Glide.with(this)
+                        .load(imageUri)
+                        .into(mImageView);
+            } else {
+                Toast.makeText(getApplicationContext(), "gagal Mengambilgambar", Toast.LENGTH_SHORT);
             }
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Buat nama file gambar dengan timestamp yang unik
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "Siemas_" + timeStamp + "_";
+        // Buat file gambar di direktori penyimpanan external
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        currentPhotoPath = imageFile.getAbsolutePath();
+
+        return imageFile;
     }
 
     public void getLocation() {

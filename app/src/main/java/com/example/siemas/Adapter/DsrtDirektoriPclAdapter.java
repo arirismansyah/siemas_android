@@ -270,13 +270,10 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                                         Toast.LENGTH_SHORT);
                                                 toast.show();
                                             }
-
-
                                         } catch (JSONException | IOException e) {
                                             progressDialog.dismiss();
                                             e.printStackTrace();
                                         }
-
                                     } else {
                                         progressDialog.dismiss();
                                         Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
@@ -288,10 +285,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                     Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                             List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
-
                             for (Dsart dsart : dsartList) {
                                 progressDialog.setMessage("Mengirim Data ART");
                                 progressDialog.show();
@@ -329,7 +323,6 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                                        progressDialog.dismiss();
                                        Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
-
                                    }
                                });
                             }
@@ -449,19 +442,15 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
     private File getBitmapReduced(Bitmap reducedFoto, String filename, Context context) {
         File imageStorage = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
 //        File mFolder = new File(Environment.getExternalStorageDirectory(), "SSN1600");
 //        String TARGET_BASE_PATH = mFolder.getAbsolutePath();
 //        if (!mFolder.exists()) {
 //            boolean b =  mFolder.mkdirs();
 //        }
-
         File file = new File(imageStorage, filename);
-
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         reducedFoto.compress(Bitmap.CompressFormat.JPEG, 60, bos);
         byte[] bitmapData = bos.toByteArray();
-
         try {
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
@@ -474,11 +463,8 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return file;
-
     }
-
     // Cek Koneksi
     public Boolean getConnectivityStatusString(Context context) {
         String status = null;
@@ -498,7 +484,6 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         }
         return false;
     }
-
     private String convert(double latitude, double longitude) {
         StringBuilder builder = new StringBuilder();
         if (latitude < 0) {
@@ -534,6 +519,4 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
 
         return builder.toString();
     }
-
-
 }
