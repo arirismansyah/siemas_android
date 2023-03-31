@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.sql.Blob;
+
 @Entity
 public class Dsrt {
     @PrimaryKey
@@ -139,9 +141,9 @@ public class Dsrt {
     @Nullable
     public String gsmp_desk;
 
-    @ColumnInfo(name = "foto")
+    @ColumnInfo(name = "foto",typeAffinity = ColumnInfo.BLOB)
     @Nullable
-    public String foto;
+    public byte[] foto;
 
     @ColumnInfo(name = "latitude")
     @Nullable
@@ -185,7 +187,7 @@ public class Dsrt {
     @Nullable
     public String sumber;
 
-    public Dsrt(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_pencacahan, @Nullable String alamat, @Nullable String nuc1, @Nullable String nama_krt, int jml_art, @Nullable String nama_krt2, int jml_art2, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, @Nullable String foto, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas, @Nullable String sumber) {
+    public Dsrt(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_pencacahan, @Nullable String alamat, @Nullable String nuc1, @Nullable String nama_krt, int jml_art, @Nullable String nama_krt2, int jml_art2, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, @Nullable byte[] foto, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas, @Nullable String sumber) {
         this.id = id;
         this.kd_kab = kd_kab;
         this.nama_kab = nama_kab;
@@ -541,11 +543,11 @@ public class Dsrt {
     }
 
     @Nullable
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(@Nullable String foto) {
+    public void setFoto(@Nullable byte[] foto) {
         this.foto = foto;
     }
 

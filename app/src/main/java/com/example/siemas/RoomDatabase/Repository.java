@@ -498,6 +498,7 @@ public class Repository {
                                 gsmp = ob.getInt("jml_komoditas_nonmakanan");
                             }
 
+                            byte [] foto = new byte[0];
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
                                     ob.getString("kd_kab"),
@@ -535,7 +536,7 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
-                                    ob.getString("foto"),
+                                    foto,
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -641,7 +642,7 @@ public class Repository {
                                 jml_komoditas_nonmakanan = ob.getInt("jml_komoditas_nonmakanan");
                             }
 
-
+                            byte[] foto = new byte[0];
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
                                     ob.getString("kd_kab"),
@@ -679,7 +680,7 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
-                                    ob.getString("foto"),
+                                    foto,
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -963,13 +964,13 @@ public class Repository {
         @Override
         protected Void doInBackground(Object... objects) {
             int idDsrt = (int) objects[0];
-            String fileFoto = (String) objects[1];
+            byte[] fileFoto = (byte[]) objects[1];
             dsrtDao.updateFotoRumah(idDsrt, fileFoto);
             return null;
         }
     }
 
-    public void updateFotoRumah(int idDsrt, String fileFoto){
+    public void updateFotoRumah(int idDsrt, byte[] fileFoto){
         new updateFotoRumahAsync(dsrtDao).execute(idDsrt, fileFoto);
     }
 
@@ -1015,7 +1016,7 @@ public class Repository {
             String latitude = (String) objects[8];
             String longitude = (String) objects[9];
             String durasi = (String) objects[10];
-            String fileFoto = (String) objects[11];
+            byte[] fileFoto = (byte[]) objects[11];
             int statusPencacahan = (int) objects[12];
             dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
             return null;
@@ -1023,7 +1024,7 @@ public class Repository {
     }
 
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan){
+            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, byte[] fileFoto, int statusPencacahan){
         new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
     }
 

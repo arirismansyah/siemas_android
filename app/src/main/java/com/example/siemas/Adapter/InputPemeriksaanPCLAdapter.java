@@ -89,8 +89,10 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
             holder.namaART.setText(currentdsart.getNama_art());
             holder.pendidikanART.setSelection(spinnerIjazahAdapter.getPosition(currentdsart.getPendidikan()));
             holder.pekerjaanART.setSelection(spinnerKegiatanAdapter.getPosition(currentdsart.getPekerjaan()));
-            holder.pendapatanART.setText(currentdsart.getPendapatan());
-
+//            holder.pendapatanART.setText(currentdsart.getPendapatan());
+            if (!currentdsart.getPendapatan().isEmpty() && !currentdsart.getPendapatan().equals("null")) {
+                holder.pendapatanART.setText(currentdsart.getPendapatan());
+            }
 //            this.pos = holder.getAdapterPosition();
             holder.pendidikanART.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

@@ -98,13 +98,17 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         holder.tvNks.setText("NKS: " + currentDsrt.getNks());
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
-        String fotoRumahPath = currentDsrt.getFoto();
-
-        if (!fotoRumahPath.isEmpty() && !fotoRumahPath.equals("null")) {
+        byte[] fotoRumahPath = currentDsrt.getFoto();
+        if (!fotoRumahPath.equals("null")) {
 //            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
             try {
-                Uri imageUri = Uri.parse(currentDsrt.getFoto());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+//                Uri imageUri = Uri.parse(currentDsrt.getFoto());
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+//                holder.ivRumah.setImageBitmap(bitmap);bitmap
+
+                byte[] imageBytes = currentDsrt.getFoto();
+                // Tampilkan gambar di ImageView
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 holder.ivRumah.setImageBitmap(bitmap);
             } catch (Exception e) {
                 Log.d("Failed Load Image", "Failed Load Image");
@@ -221,31 +225,42 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                             progressDialog.setMessage("Mengirim Data DSRT");
                             progressDialog.show();
                             user = viewModel.getUser().get(0);
-                            Log.d(TAG, "onClick data dsrt: "+ dsrt.getMakanan_sebulan_bypml());
+                            Log.d(TAG, "onClick data dsrt: " + dsrt.getMakanan_sebulan_bypml());
                             JsonElement dsrtJson = new Gson().toJsonTree(dsrt);
                             String fileName = dsrt.getId_bs() + "_" + dsrt.getNks() + "_" + String.valueOf(dsrt.getNu_rt()) + "_" + String.valueOf(dsrt.getId()) + ".jpg";
 
                             checkAndRequestForPermission(itemView.getContext());
                             String[] proj = {MediaStore.Images.Media.DATA};
 
-                            Cursor cursorFile = itemView.getContext().getContentResolver().query(Uri.parse(dsrt.getFoto()), proj, null, null, null);
-                            RequestBody file = RequestBody.create(MultipartBody.FORM,"");
-                            MultipartBody.Part body = MultipartBody.Part.createFormData("file","",file);
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            byte[] imageBytes = dsrt.getFoto();
+//                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+//                            bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
                             try {
-                                cursorFile.moveToFirst();
-                                int column_index = cursorFile.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                                String filePath = cursorFile.getString(column_index);
-                                Log.d(TAG, "onClick: "+ filePath);
-                                checkAndRequestForPermission(itemView.getContext());
-                                Bitmap fullSizeBitmap = BitmapFactory.decodeFile(filePath);
-                                Bitmap reducedBitmap = ImageResizer.reduceBitmapSize(fullSizeBitmap, 2073600);
-                                File reducedFile = getBitmapReduced(reducedBitmap, fileName, itemView.getContext());
-
-                                RequestBody requestFile = RequestBody.create(reducedFile, MediaType.parse("image/*"));
-                                body = MultipartBody.Part.createFormData("file_foto", reducedFile.getName(), requestFile);
-
-                            }catch (Exception e)
-                            {e.printStackTrace();}
+                                imageBytes = compressImageToMaxSize(imageBytes, 30720 );
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), imageBytes);
+                            MultipartBody.Part body = MultipartBody.Part.createFormData("file_foto", "image.png", requestBody);
+//                            RequestBody file = RequestBody.create(MultipartBody.FORM,"");
+//                            MultipartBody.Part body = MultipartBody.Part.createFormData("file","",file);
+//                            try {
+//                                cursorFile.moveToFirst();
+//                                int column_index = cursorFile.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                                String filePath = cursorFile.getString(column_index);
+//                                Log.d(TAG, "onClick: "+ filePath);
+//                                checkAndRequestForPermission(itemView.getContext());
+//                                Bitmap fullSizeBitmap = BitmapFactory.decodeFile(filePath);
+//                                Bitmap reducedBitmap = ImageResizer.reduceBitmapSize(fullSizeBitmap, 2073600);
+//                                File reducedFile = getBitmapReduced(reducedBitmap, fileName, itemView.getContext());
+//                                RequestBody requestFile = RequestBody.create(reducedFile, MediaType.parse("image/*"));
+//                                body = MultipartBody.Part.createFormData("file_foto", reducedFile.getName(), requestFile);
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace()
+//                                ;
+//                            }
 
                             RequestBody dsrtBody = RequestBody.create(dsrtJson.toString(), MediaType.parse("text/plain"));
                             InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
@@ -262,6 +277,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                             if (message.equals("success")) {
                                                 progressDialog.dismiss();
                                                 Toast.makeText(itemView.getContext(), "Data RT berhasil dikirim", Toast.LENGTH_SHORT).show();
+                                                kirim_art(dsrt, itemView,user,interfaceApi);
                                                 viewModel.updateStatusPencacahan(dsrt.getId(), 4);
                                             } else {
                                                 progressDialog.dismiss();
@@ -279,53 +295,14 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                                         Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                                     progressDialog.dismiss();
                                     Toast.makeText(itemView.getContext(), "Ada kesalahan DSRT di server", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
-                            for (Dsart dsart : dsartList) {
-                                progressDialog.setMessage("Mengirim Data ART");
-                                progressDialog.show();
-                                JsonElement dsartJson = new Gson().toJsonTree(dsart);
-                                Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(),"Bearer "+ user.getToken());
-                                calldsart.enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                          if (response.code() == 200) {
-                                               try {
-                                                   String result = response.body().string();
-                                                   JSONObject jo = new JSONObject(result);
-                                                   String message = jo.getString("message");
-                                                   if (message.equals("success")) {
-                                                       progressDialog.dismiss();
-                                                       Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
-                                                       viewModel.updateStatusPencacahan(dsrt.getId(), 4);
-                                                   } else {
-                                                       progressDialog.dismiss();
-                                                       Toast toast = Toast.makeText(itemView.getContext(),
-                                                               jo.getString("message"),
-                                                               Toast.LENGTH_SHORT);
-                                                       toast.show();
-                                                   }
-                                               } catch (JSONException | IOException e) {
-                                                   progressDialog.dismiss();
-                                                   e.printStackTrace();
-                                               }
-                                           } else {
-                                               progressDialog.dismiss();
-                                               Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
-                                           }
-                                   }
-                                   @Override
-                                   public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                       progressDialog.dismiss();
-                                       Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
-                                   }
-                               });
-                            }
+
 //                            Call<ResponseBody> call = interfaceApi.updateDsrt(dsrtJson.toString(), "Bearer " + user.getToken());
 //                            call.enqueue(new Callback<ResponseBody>() {
 //                                @Override
@@ -426,18 +403,83 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         }
     }
 
-    private void checkAndRequestForPermission( Context context){
+    private void kirim_art(Dsrt dsrt,View itemView, User user, InterfaceApi interfaceApi){
+        List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+        for (Dsart dsart : dsartList) {
+            ProgressDialog progressDialog = new ProgressDialog(itemView.getContext());
+            progressDialog.setMessage("Mengirim Data ART");
+            progressDialog.show();
+            JsonElement dsartJson = new Gson().toJsonTree(dsart);
+            Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(), "Bearer " + user.getToken());
+            calldsart.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        try {
+                            String result = response.body().string();
+                            JSONObject jo = new JSONObject(result);
+                            String message = jo.getString("message");
+                            if (message.equals("success")) {
+                                progressDialog.dismiss();
+                                Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
+                                viewModel.updateStatusPencacahan(dsrt.getId(), 4);
+                            } else {
+                                progressDialog.dismiss();
+                                Toast toast = Toast.makeText(itemView.getContext(),
+                                        jo.getString("message"),
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        } catch (JSONException | IOException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void checkAndRequestForPermission(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale( (Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                 Toast.makeText(context, "Permission Dennied", Toast.LENGTH_SHORT).show();
-            }else{
-                ActivityCompat.requestPermissions( (Activity) context, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            } else {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
-        }  else {
+        } else {
 
         }
+    }
+
+    public static byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize) throws IOException {
+        // Load the image into a Bitmap object
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+
+        // Convert the image to JPEG format with 80% quality
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+
+        // Reduce the quality of the image until the size is less than or equal to the maximum size
+        int quality = 80;
+        while (outputStream.toByteArray().length > maxSize) {
+            quality -= 10;
+            outputStream.reset();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+        }
+
+        // Return the compressed image as byte array
+        return outputStream.toByteArray();
     }
 
     private File getBitmapReduced(Bitmap reducedFoto, String filename, Context context) {
@@ -465,6 +507,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         }
         return file;
     }
+
     // Cek Koneksi
     public Boolean getConnectivityStatusString(Context context) {
         String status = null;
@@ -484,6 +527,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         }
         return false;
     }
+
     private String convert(double latitude, double longitude) {
         StringBuilder builder = new StringBuilder();
         if (latitude < 0) {

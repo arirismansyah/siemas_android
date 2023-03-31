@@ -100,7 +100,7 @@ public class ViewModel extends AndroidViewModel {
     }
 
     // update foto
-    public void updateFotoRumah(int idDsrt, String fileFoto) {
+    public void updateFotoRumah(int idDsrt, byte[] fileFoto) {
         repository.updateFotoRumah(idDsrt, fileFoto);
     }
 
@@ -113,7 +113,7 @@ public class ViewModel extends AndroidViewModel {
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah,
                                  String makananSebulan, String nonMakananSebulan,
                                  int gsmp, String gsmp_desk, String latitude, String longitude,
-                                 String durasi, String fileFoto, int statusPencacahan) {
+                                 String durasi, byte[] fileFoto, int statusPencacahan) {
         repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan,
                 nonMakananSebulan, gsmp, gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
     }

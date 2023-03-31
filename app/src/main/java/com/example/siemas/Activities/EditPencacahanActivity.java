@@ -65,9 +65,11 @@ import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -98,6 +100,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
     ActivityResultLauncher<Intent> mGetImage;
     Uri imageUri;
+    byte[] imageBytes;
 
     public static final int CAMERA = 1;
     static final int GALLERY_REQUEST_CODE = 2;
@@ -285,16 +288,30 @@ public class EditPencacahanActivity extends AppCompatActivity {
 
         // set foto
 //        Log.d("Dsrt Foto", dsrt.getFoto().toString());
+
         if (dsrt.getFoto() != null && !dsrt.getFoto().equals("null")) {
             try {
-                imageUri = Uri.parse(dsrt.getFoto());
-                Glide.with(this)
-                        .load(imageUri)
-                        .into(mImageView);
+                 imageBytes = dsrt.getFoto();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                mImageView.setImageBitmap(bitmap);
+//                imageUri = Uri.parse(dsrt.getFoto());
+//                Glide.with(this)
+//                        .load(imageUri)
+//                        .into(mImageView);
             } catch (Exception e) {
                 Log.d("Failed Load Image", "Failed Load Image");
             }
         }
+//        if (dsrt.getFoto() != null && !dsrt.getFoto().equals("null")) {
+//            try {
+//                imageUri = Uri.parse(dsrt.getFoto());
+//                Glide.with(this)
+//                        .load(imageUri)
+//                        .into(mImageView);
+//            } catch (Exception e) {
+//                Log.d("Failed Load Image", "Failed Load Image");
+//            }
+//        }
 
         // get foto dialog
         getFotoDialog = new Dialog(this);
@@ -481,10 +498,23 @@ public class EditPencacahanActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA && resultCode == RESULT_OK) {
-
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             File f = new File(currentPhotoPath);
             Uri contentUri = Uri.fromFile(f);
+
+            try {
+                InputStream inputStream = new FileInputStream(f);
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] b = new byte[1024 * 8];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(b)) != -1) {
+                    bos.write(b, 0, bytesRead);
+                }
+                imageBytes = bos.toByteArray();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
             mediaScanIntent.setData(contentUri);
             this.sendBroadcast(mediaScanIntent);
 
@@ -504,33 +534,48 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             Log.d(TAG, "File " + path + " was scanned successfully");
                         }
                     });
-
-            // Tampilkan gambar ke dalam ImageView
-            Glide.with(this)
-                    .load(contentUri)
-                    .into(mImageView);
-            viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+            mImageView.setImageBitmap(bitmap);
+//            Glide.with(this)
+//                    .load(contentUri)
+//                    .into(mImageView);
+            viewModel.updateFotoRumah(dsrt.getId(), imageBytes);
         }
 
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK) {
             imageUri = data.getData();
             // Konversi URI menjadi path file
-            String[] projection = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(imageUri, projection, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                @SuppressLint({"InlinedApi", "Range"}) String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                cursor.close();
-                // Gunakan File Provider untuk memperoleh URI gambar
-                String authorities = getApplicationContext().getPackageName() + ".fileprovider";
-                imageUri = FileProvider.getUriForFile(this, authorities, new File(imagePath));
-                // Gunakan imageUri untuk memuat gambar
-                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
-                Glide.with(this)
-                        .load(imageUri)
-                        .into(mImageView);
-            } else {
-                Toast.makeText(getApplicationContext(), "gagal Mengambilgambar", Toast.LENGTH_SHORT);
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                imageBytes = IOUtils.toByteArray(inputStream);
+
+                ContentValues values = new ContentValues();
+                viewModel.updateFotoRumah(dsrt.getId(), imageBytes);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                mImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+
+
+
+//            String[] projection = {MediaStore.Images.Media.DATA};
+//            Cursor cursor = getContentResolver().query(imageUri, projection, null, null, null);
+//            if (cursor != null && cursor.moveToFirst()) {
+//                @SuppressLint({"InlinedApi", "Range"}) String imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//                cursor.close();
+//                // Gunakan File Provider untuk memperoleh URI gambar
+//                String authorities = getApplicationContext().getPackageName() + ".fileprovider";
+//                imageUri = FileProvider.getUriForFile(this, authorities, new File(imagePath));
+//                // Gunakan imageUri untuk memuat gambar
+//                viewModel.updateFotoRumah(dsrt.getId(), imageUri.toString());
+//                Glide.with(this)
+//                        .load(imageUri)
+//                        .into(mImageView);
+//            } else {
+//                Toast.makeText(getApplicationContext(), "gagal Mengambilgambar", Toast.LENGTH_SHORT);
+//            }
         }
     }
 
@@ -571,7 +616,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
 
         String latitudeDegrees = Location.convert(Math.abs(latitude), Location.FORMAT_SECONDS);
         String[] latitudeSplit = latitudeDegrees.split(":");
-
+        builder.append(latitudeSplit[0]);
         builder.append("°");
         builder.append(latitudeSplit[1]);
         builder.append("'");

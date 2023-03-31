@@ -1,6 +1,7 @@
 package com.example.siemas.Adapter;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -45,12 +46,17 @@ public class DsrtPemeriksaanPclAdapter extends RecyclerView.Adapter<DsrtPemeriks
         holder.tvNks.setText("NKS: "+currentDsrt.getNks());
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
-        String fotoRumahPath = currentDsrt.getFoto();
-        if (!fotoRumahPath.isEmpty() && !fotoRumahPath.equals("null")) {
+        byte[] fotoRumahPath = currentDsrt.getFoto();
+        if (!fotoRumahPath.equals("null")) {
 //            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
             try {
-                Uri imageUri = Uri.parse(currentDsrt.getFoto());
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+//                Uri imageUri = Uri.parse(currentDsrt.getFoto());
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
+//                holder.ivRumah.setImageBitmap(bitmap);bitmap
+
+                byte[] imageBytes = currentDsrt.getFoto();
+                // Tampilkan gambar di ImageView
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 holder.ivRumah.setImageBitmap(bitmap);
             } catch (Exception e) {
                 Log.d("Failed Load Image", "Failed Load Image");

@@ -9,16 +9,17 @@ android {
         applicationId "com.npssumsel.siemas"
         minSdk 21
         targetSdk 32
-        versionCode 12
-        versionName "2023.3"
+        versionCode 14
+        versionName "2023.3a"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            mappingFile file('mapping/release/mapping.txt')
         }
     }
     compileOptions {

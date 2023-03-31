@@ -56,7 +56,7 @@ public interface DsrtDao {
     List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester );
 
     @Query("UPDATE dsrt SET foto = :fileFoto WHERE id = :idDsrt")
-    void updateFotoRumah(int idDsrt, String fileFoto);
+    void updateFotoRumah(int idDsrt, byte[] fileFoto);
 
     @Query("UPDATE dsrt SET status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
     void updateStatusPencacahan(int idDsrt, int statusPencacahan);
@@ -74,7 +74,7 @@ public interface DsrtDao {
             "durasi_pencachan = :durasi," +
             "foto = :fileFoto," +
             "status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
-    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp,String gsmp_desk, String latitude, String longitude, String durasi, String fileFoto, int statusPencacahan);
+    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp,String gsmp_desk, String latitude, String longitude, String durasi, byte[] fileFoto, int statusPencacahan);
 
     @Query("UPDATE dsrt SET " +
             "latitude_selesai = :latitudea_selesai, " +

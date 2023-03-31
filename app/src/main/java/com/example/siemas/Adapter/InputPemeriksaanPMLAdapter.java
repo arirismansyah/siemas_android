@@ -70,8 +70,10 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
         holder.namaART.setText(currentdsart.getNama_art());
         holder.pendidikanART.setSelection(spinnerIjazahAdapter.getPosition(currentdsart.getPendidikan()));
         holder.pekerjaanART.setSelection(spinnerKegiatanAdapter.getPosition(currentdsart.getPekerjaan()));
-        holder.pendapatanART.setText(currentdsart.getPendapatan());
-
+//            holder.pendapatanART.setText(currentdsart.getPendapatan());
+        if (!currentdsart.getPendapatan().isEmpty() && !currentdsart.getPendapatan().equals("null")) {
+            holder.pendapatanART.setText(currentdsart.getPendapatan());
+        }
         holder.pendidikanART.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
