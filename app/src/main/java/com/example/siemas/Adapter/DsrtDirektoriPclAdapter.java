@@ -88,34 +88,29 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
         Dsrt currentDsrt = dsrtList.get(position);
         holder.dsrt = currentDsrt;
 
-        if (!currentDsrt.getNama_krt2().isEmpty() && !currentDsrt.getNama_krt2().equals("null")) {
-            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt2());
+        if (!currentDsrt.getNama_krt_cacah().isEmpty() && !currentDsrt.getNama_krt_cacah().equals("null")) {
+            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt_cacah());
         } else {
-            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt());
+            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt_prelist());
         }
         holder.tvNuRt.setText("No Urut Ruta: " + String.valueOf(currentDsrt.getNu_rt()));
 
         holder.tvNks.setText("NKS: " + currentDsrt.getNks());
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
-        byte[] fotoRumahPath = currentDsrt.getFoto();
-        if (!fotoRumahPath.equals("null")) {
-//            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
-            try {
-//                Uri imageUri = Uri.parse(currentDsrt.getFoto());
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
-//                holder.ivRumah.setImageBitmap(bitmap);bitmap
 
-                byte[] imageBytes = currentDsrt.getFoto();
-                // Tampilkan gambar di ImageView
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                holder.ivRumah.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                Log.d("Failed Load Image", "Failed Load Image");
-            }
-        } else {
-            holder.ivRumah.setImageResource(R.drawable.ic_home);
-        }
+//        Dsrt fotodsrt = viewModel.getdsrtfoto(currentDsrt.getId());
+//        if (!fotodsrt.getFoto().equals("null")) {
+//            try {
+//                byte[] imageBytes = currentDsrt.getFoto();
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+//                holder.ivRumah.setImageBitmap(bitmap);
+//            } catch (Exception e) {
+//                Log.d("Failed Load Image", "Failed Load Image");
+//            }
+//        } else {
+//            holder.ivRumah.setImageResource(R.drawable.ic_home);
+//        }
 
         if (!currentDsrt.getLatitude().isEmpty() && !currentDsrt.getLatitude().equals("null")) {
             Double latitude = Double.parseDouble(currentDsrt.getLatitude());
@@ -227,13 +222,14 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                             user = viewModel.getUser().get(0);
                             Log.d(TAG, "onClick data dsrt: " + dsrt.getMakanan_sebulan_bypml());
                             JsonElement dsrtJson = new Gson().toJsonTree(dsrt);
-                            String fileName = dsrt.getId_bs() + "_" + dsrt.getNks() + "_" + String.valueOf(dsrt.getNu_rt()) + "_" + String.valueOf(dsrt.getId()) + ".jpg";
+//                            String fileName = dsrt.getId_bs() + "_" + dsrt.getNks() + "_" + String.valueOf(dsrt.getNu_rt()) + "_" + String.valueOf(dsrt.getId()) + ".jpg";
 
                             checkAndRequestForPermission(itemView.getContext());
                             String[] proj = {MediaStore.Images.Media.DATA};
 
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            byte[] imageBytes = dsrt.getFoto();
+//                            byte[] imageBytes = dsrt.getFoto();
+                            byte[] imageBytes = null ;
 //                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 //                            bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
                             try {
@@ -243,6 +239,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                             }
                             RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), imageBytes);
                             MultipartBody.Part body = MultipartBody.Part.createFormData("file_foto", "image.png", requestBody);
+
 //                            RequestBody file = RequestBody.create(MultipartBody.FORM,"");
 //                            MultipartBody.Part body = MultipartBody.Part.createFormData("file","",file);
 //                            try {
@@ -404,7 +401,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
     }
 
     private void kirim_art(Dsrt dsrt,View itemView, User user, InterfaceApi interfaceApi){
-        List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+        List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getTahun(), dsrt.getSemester(),dsrt.getKd_kab(), dsrt.getKd_kec(), dsrt.getKd_desa(), dsrt.getKd_bs() , dsrt.getNu_rt());
         for (Dsart dsart : dsartList) {
             ProgressDialog progressDialog = new ProgressDialog(itemView.getContext());
             progressDialog.setMessage("Mengirim Data ART");

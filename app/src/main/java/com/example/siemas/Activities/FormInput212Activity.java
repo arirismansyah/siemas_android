@@ -62,7 +62,7 @@ public class FormInput212Activity extends AppCompatActivity {
         simpanBtn = findViewById(R.id.simpanLaporan);
 
         // set ti kab
-        tiKdKab.setText(user.getKd_wilayah());
+        tiKdKab.setText(user.getKd_kab());
         tiNamaKab.setText(user.getNama_kab());
 
         // mount spinner dsbs
@@ -71,7 +71,7 @@ public class FormInput212Activity extends AppCompatActivity {
         List<String> idBsList = new ArrayList<String>();
 
         for (int i = 0; i < dsbsList.size(); i++) {
-            idBsList.add(dsbsList.get(i).getId_bs());
+            idBsList.add(dsbsList.get(i).getKd_kab() + dsbsList.get(i).getKd_kec()+ dsbsList.get(i).getKd_desa()+dsbsList.get(i).getKd_bs());
         }
 
         ArrayAdapter<String> spinnerBsAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, idBsList);
@@ -82,13 +82,12 @@ public class FormInput212Activity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String idBs = spinnerBs.getSelectedItem().toString();
-                dsrtList = viewModel.getListDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+                dsrtList = viewModel.getListDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(2,2), idBs.substring(4,3), idBs.substring(7,3), idBs.substring(10,4));
                 // mount spinner dsrt
                 List<String> nuRtList = new ArrayList<String>();
                 for (int j = 0; j < dsrtList.size(); j++) {
-                    nuRtList.add("["+String.valueOf(dsrtList.get(j).getNu_rt())+"]-"+dsrtList.get(j).getNama_krt2());
+                    nuRtList.add("["+String.valueOf(dsrtList.get(j).getNu_rt())+"]-"+dsrtList.get(j).getNama_krt_cacah());
                 }
-
                 ArrayAdapter<String> spinnerNuRtAdapter = new ArrayAdapter<String>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, nuRtList);
                 spinnerNuRt.setAdapter(spinnerNuRtAdapter);
 
@@ -110,7 +109,7 @@ public class FormInput212Activity extends AppCompatActivity {
                 nuRtString = nuRtString.replace("]","");
                 int nuRT = Integer.parseInt(nuRtString);
                 tiNamaKrt.setText(arrayStr[1]);
-                dsrtSelected = viewModel.getDsrtByIdBsNuRt(idBs, periodeList.get(0). getTahun(), periodeList.get(0).getSemester(),  nuRT);
+                dsrtSelected = viewModel.getDsrtByIdBsNuRt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(2,2), idBs.substring(4,3), idBs.substring(7,3), idBs.substring(10,4),  nuRT);
             }
 
             @Override
@@ -133,12 +132,15 @@ public class FormInput212Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String stringDate = dateFormatDate.format(new Date());
                 Laporan212 laporan212 = new Laporan212(
-                        dsrtSelected.getId_bs(),
-                        dsrtSelected.getNks(),
                         dsrtSelected.getTahun(),
                         dsrtSelected.getSemester(),
+                        dsrtSelected.getKd_kab(),
+                        dsrtSelected.getKd_kec(),
+                        dsrtSelected.getKd_desa(),
+                        dsrtSelected.getKd_bs(),
                         dsrtSelected.getNu_rt(),
-                        dsrtSelected.getNama_krt2(),
+                        dsrtSelected.getNks(),
+                        dsrtSelected.getNama_krt_cacah(),
                         user.getEmail(),
                         stringDate,
                         1

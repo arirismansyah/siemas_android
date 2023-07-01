@@ -67,7 +67,11 @@ public class PemeriksaanPmlActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Dsbs dsbs) {
                 Intent intent = new Intent(PemeriksaanPmlActivity.this, PemeriksaanPmlDsrtActivity.class);
-                intent.putExtra(PencacahanDsrtActivity.EXTRA_ID_BS, dsbs.getId_bs());
+                intent.putExtra(PemeriksaanPmlDsrtActivity.EXTRA_KD_KAB,  dsbs.getKd_kab());
+                intent.putExtra(PemeriksaanPmlDsrtActivity.EXTRA_KD_KEC,  dsbs.getKd_kec() );
+                intent.putExtra(PemeriksaanPmlDsrtActivity.EXTRA_KD_DESA,  dsbs.getKd_desa() );
+                intent.putExtra(PemeriksaanPmlDsrtActivity.EXTRA_KD_BS,  dsbs.getKd_bs() );
+                intent.putExtra(PemeriksaanPmlDsrtActivity.EXTRA_ID_BS, "16"+ dsbs.getKd_kab() + dsbs.getKd_kec() + dsbs.getKd_desa() + dsbs.getKd_bs() );
                 startActivityForResult(intent,1);
             }
         });

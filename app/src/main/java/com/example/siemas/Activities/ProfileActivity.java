@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         tvRole.setText(user.getRole());
         tvKdProv.setText("[16]");
         tvNamaProv.setText("Sumatera Selatan");
-        tvKdKab.setText("["+user.getKd_wilayah()+"]");
+        tvKdKab.setText("["+user.getKd_kab()+"]");
         tvNamaKab.setText(user.getNama_kab());
         tvJmlDsbs.setText(String.valueOf(viewModel.getDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).size()));
         tvJmlDsrt.setText(String.valueOf(viewModel.getDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).size()));

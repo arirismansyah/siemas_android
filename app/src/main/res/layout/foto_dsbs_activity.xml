@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.PemeriksaanPclActivity">
+    tools:context=".Activities.FotoDsbsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -23,7 +23,7 @@
         android:layout_marginTop="56dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:layout_editor_absoluteX="0dp"
-        tools:listitem="@layout/dsbs_pemeriksaan_item" />
+        tools:listitem="@layout/foto_dsbs_list_item" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/emptyPictContainer"

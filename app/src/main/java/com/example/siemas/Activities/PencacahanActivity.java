@@ -69,7 +69,11 @@ public class PencacahanActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Dsbs dsbs) {
                 Intent intent = new Intent(PencacahanActivity.this, PencacahanDsrtActivity.class);
-                intent.putExtra(PencacahanDsrtActivity.EXTRA_ID_BS, dsbs.getId_bs());
+                intent.putExtra(PencacahanDsrtActivity.EXTRA_ID_BS, "16" + dsbs.getKd_kab() + dsbs.getKd_kec() + dsbs.getKd_desa() + dsbs.getKd_bs());
+                intent.putExtra(PencacahanDsrtActivity.EXTRA_KD_KAB, dsbs.getKd_kab());
+                intent.putExtra(PencacahanDsrtActivity.EXTRA_KD_KEC, dsbs.getKd_kec());
+                intent.putExtra(PencacahanDsrtActivity.EXTRA_KD_DESA, dsbs.getKd_desa());
+                intent.putExtra(PencacahanDsrtActivity.EXTRA_KD_BS, dsbs.getKd_bs());
                 startActivityForResult(intent,1);
             }
         });

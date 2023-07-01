@@ -58,6 +58,8 @@ public class Table3Fragment extends Fragment {
 
         table3Adapter = new Table3Adapter();
         recyclerView.setAdapter(table3Adapter);
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        table3Adapter.setListDsrt(dsrts);
         viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrtList) {

@@ -35,7 +35,7 @@ public class TableDsbsAdapter extends RecyclerView.Adapter<TableDsbsAdapter.View
             Dsbs dsbsCurrent = dsbsList.get(position);
             holder.tvKec.setText(dsbsCurrent.getNama_kec());
             holder.tvDesa.setText(dsbsCurrent.getNama_desa());
-            holder.tvNbs.setText(dsbsCurrent.getNbs());
+            holder.tvNbs.setText(dsbsCurrent.getKd_bs());
             holder.tvNks.setText(dsbsCurrent.getNks());
         }
     }

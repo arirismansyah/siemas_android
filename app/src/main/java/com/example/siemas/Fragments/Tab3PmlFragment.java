@@ -57,6 +57,8 @@ public class Tab3PmlFragment extends Fragment {
         periodeList = viewModel.getPeriode();
         table3PmlAdapter = new Table3PmlAdapter();
         recyclerView.setAdapter(table3PmlAdapter);
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        table3PmlAdapter.setListDsrt(dsrts);
         viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrtList) {

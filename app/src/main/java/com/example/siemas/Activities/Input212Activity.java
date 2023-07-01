@@ -54,9 +54,7 @@ public class Input212Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(com.example.siemas.R.layout.activity_input212_main);
-
         // disallowed dark mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -96,7 +94,6 @@ public class Input212Activity extends AppCompatActivity {
             Jadwal212 jadwal212 = jadwal212List.get(i);
             String string_date = jadwal212.getTanggal();
             SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-
             try {
                 Date d = f.parse(string_date);
                 Long milliseconds = d.getTime();
@@ -120,33 +117,22 @@ public class Input212Activity extends AppCompatActivity {
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
                 tvMonth.setText(dateFormatMonth.format(firstDayOfNewMonth));
-
             }
         });
-
         // lapor btn
         laporBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String stringDate = dateFormatDate.format(new Date());
-
                 Jadwal212 jadwal212 = viewModel.getJadwalByTanggal(stringDate);
                 Boolean b = !Objects.isNull(jadwal212);
-//                b = true;
-
                 if (b){
                     Intent intent = new Intent(Input212Activity.this, FormInput212Activity.class);
                     startActivity(intent);
-
                 } else {
                     Toast.makeText(getApplicationContext(), "Sekarang belum waktunya pelaporan 212", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
-
-
     }
 }

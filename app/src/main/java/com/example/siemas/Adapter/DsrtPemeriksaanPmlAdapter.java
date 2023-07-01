@@ -72,10 +72,10 @@ public class DsrtPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsrtPemeriks
         Dsrt currentDsrt = dsrtList.get(position);
         holder.dsrt = currentDsrt;
 
-        if (!currentDsrt.getNama_krt2().isEmpty() && !currentDsrt.getNama_krt2().equals("null")) {
-            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt2());
+        if (!currentDsrt.getNama_krt_cacah().isEmpty() && !currentDsrt.getNama_krt_cacah().equals("null")) {
+            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt_cacah());
         } else {
-            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt());
+            holder.tvNamaKrt.setText("Nama KRT: " + currentDsrt.getNama_krt_cacah());
         }
         holder.tvNuRt.setText("No Urut Ruta: " + String.valueOf(currentDsrt.getNu_rt()));
         holder.tvNks.setText("NKS: " + currentDsrt.getNks());
@@ -249,7 +249,7 @@ public class DsrtPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsrtPemeriks
                                 }
                             });
 
-                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+                            List<Dsart> dsartList = viewModel.getDsartbyId( dsrt.getTahun(), dsrt.getSemester(), dsrt.getKd_kab(), dsrt.getKd_kec(), dsrt.getKd_desa(), dsrt.getKd_bs(),dsrt.getNu_rt());
 
                             for (Dsart dsart : dsartList) {
                                 progressDialog.setMessage("Mengirim Data ART");

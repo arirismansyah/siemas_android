@@ -43,7 +43,7 @@ public class DsbsPemeriksaanPclAdapter extends RecyclerView.Adapter<DsbsPemeriks
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dsbs currentDsbs = dsbsList.get(position);
 
-        holder.tvIdBs.setText("BS: "+currentDsbs.getId_bs());
+        holder.tvIdBs.setText("BS: 16"+currentDsbs.getKd_kab()+currentDsbs.getKd_kec()+currentDsbs.getKd_desa()+currentDsbs.getKd_bs());
         holder.tvKdKab.setText("["+currentDsbs.getKd_kab()+"]");
         holder.tvNamaKab.setText(currentDsbs.getNama_kab());
         holder.tvKdKec.setText("["+currentDsbs.getKd_kec()+"]");
@@ -51,8 +51,8 @@ public class DsbsPemeriksaanPclAdapter extends RecyclerView.Adapter<DsbsPemeriks
         holder.tvKdDesa.setText("["+currentDsbs.getKd_desa()+"]");
         holder.tvNamaDesa.setText(currentDsbs.getNama_desa());
         periodeList = viewModel.getPeriode();
-        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw(currentDsbs.getId_bs(), 3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
-        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp(currentDsbs.getId_bs(), 2, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw( 3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp(2, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
 
         holder.tvDsrtBelum.setText(String.valueOf(dsrtListBelum.size()));
         holder.tvDsrtSudah.setText(String.valueOf(dsrtListSudah.size()));

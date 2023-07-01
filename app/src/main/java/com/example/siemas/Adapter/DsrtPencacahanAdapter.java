@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.ViewModel;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -28,7 +29,11 @@ import java.util.List;
 public class DsrtPencacahanAdapter extends RecyclerView.Adapter<DsrtPencacahanAdapter.ViewHolder> {
     private List<Dsrt> dsrtList = new ArrayList<>();
     private onItemCLickListener listener;
+    private ViewModel viewModel;
 
+    public DsrtPencacahanAdapter(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,31 +45,26 @@ public class DsrtPencacahanAdapter extends RecyclerView.Adapter<DsrtPencacahanAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dsrt currentDsrt = dsrtList.get(position);
 
-        if (!currentDsrt.getNama_krt2().isEmpty() && !currentDsrt.getNama_krt2().equals("null")){
-            holder.tvNamaKrt.setText("Nama KRT: "+currentDsrt.getNama_krt2());
+        if (!currentDsrt.getNama_krt_cacah().isEmpty() && !currentDsrt.getNama_krt_cacah().equals("null")){
+            holder.tvNamaKrt.setText("Nama KRT: "+currentDsrt.getNama_krt_cacah());
         } else {
-            holder.tvNamaKrt.setText("Nama KRT: "+currentDsrt.getNama_krt());
+            holder.tvNamaKrt.setText("Nama KRT: "+currentDsrt.getNama_krt_prelist());
         }
         holder.tvNuRt.setText("No Urut Ruta: "+String.valueOf(currentDsrt.getNu_rt()));
         holder.tvNks.setText("NKS: "+currentDsrt.getNks());
-        byte[] fotoRumahPath = currentDsrt.getFoto();
-        if (!fotoRumahPath.equals("null")) {
-//            holder.ivRumah.setImageURI(Uri.parse(fotoRumahPath));
-            try {
-//                Uri imageUri = Uri.parse(currentDsrt.getFoto());
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(holder.ivRumah.getContext().getContentResolver() , imageUri);
-//                holder.ivRumah.setImageBitmap(bitmap);bitmap
 
-                byte[] imageBytes = currentDsrt.getFoto();
-                // Tampilkan gambar di ImageView
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                holder.ivRumah.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                Log.d("Failed Load Image", "Failed Load Image");
-            }
-        } else {
-            holder.ivRumah.setImageResource(R.drawable.ic_home);
-        }
+//        Dsrt fotodsrt = viewModel.getdsrtfoto(dsrtList.get(position).getId());
+//        if (!fotodsrt.getFoto().equals("null")) {
+//            try {
+//                byte[] imageBytes = fotodsrt.getFoto();
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+//                holder.ivRumah.setImageBitmap(bitmap);
+//            } catch (Exception e) {
+//                Log.d("Failed Load Image", "Failed Load Image");
+//            }
+//        } else {
+//            holder.ivRumah.setImageResource(R.drawable.ic_home);
+//        }
 
         int statusPencacahan = currentDsrt.getStatus_pencacahan();
 

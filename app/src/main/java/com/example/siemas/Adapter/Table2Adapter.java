@@ -33,13 +33,13 @@ public class Table2Adapter extends RecyclerView.Adapter<Table2Adapter.ViewHolder
             Dsrt currentDsrt = dsrtList.get(position);
 
             if (currentDsrt.getStatus_pencacahan()<1){
-                holder.tvIdBs.setText(currentDsrt.getId_bs());
+                holder.tvIdBs.setText("16"+currentDsrt.getKd_kab()+ currentDsrt.getKd_kec()+currentDsrt.getKd_desa()+currentDsrt.getKd_bs());
                 holder.tvNks.setText(currentDsrt.getNks());
                 holder.tvNuRt.setText(String.valueOf(currentDsrt.getNu_rt()));
-                if (!currentDsrt.getNama_krt2().isEmpty() && !currentDsrt.getNama_krt2().equals("null")){
-                    holder.tvNamaKrt.setText(currentDsrt.getNama_krt2());
+                if (!currentDsrt.getNama_krt_cacah().isEmpty() && !currentDsrt.getNama_krt_cacah().equals("null")){
+                    holder.tvNamaKrt.setText(currentDsrt.getNama_krt_cacah());
                 } else {
-                    holder.tvNamaKrt.setText(currentDsrt.getNama_krt());
+                    holder.tvNamaKrt.setText(currentDsrt.getNama_krt_prelist());
                 }
             } else {
                 holder.tvIdBs.setVisibility(View.GONE);

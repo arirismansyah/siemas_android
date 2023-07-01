@@ -10,11 +10,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import com.example.siemas.BuildConfig;
 import com.example.siemas.InterfaceApi;
 import com.example.siemas.R;
 import com.example.siemas.RetrofitClientInstance;
-import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
 
 import org.json.JSONException;
@@ -123,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DirectoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        CardView fotoMenu = findViewById(R.id.fotoMenu);
+        fotoMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FotoDsbsActivity.class);
                 startActivity(intent);
             }
         });

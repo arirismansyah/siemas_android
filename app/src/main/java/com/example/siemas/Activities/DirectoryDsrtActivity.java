@@ -23,6 +23,10 @@ import java.util.List;
 
 public class DirectoryDsrtActivity extends AppCompatActivity {
     public static final String EXTRA_ID_BS = "com.example.siemas.Activities.EXTRA_ID_BS";
+    public static final String EXTRA_KD_KAB = "com.example.siemas.Activities.EXTRA_KD_KAB";
+    public static final String EXTRA_KD_KEC = "com.example.siemas.Activities.EXTRA_KD_KEC";
+    public static final String EXTRA_KD_DESA = "com.example.siemas.Activities.EXTRA_KD_DESA";
+    public static final String EXTRA_KD_BS = "com.example.siemas.Activities.EXTRA_KD_BS";
     private RecyclerView recyclerView;
     private ViewModel viewModel;
     private DsrtDirektoriPclAdapter dsrtDirektoriPclAdapter;
@@ -51,7 +55,17 @@ public class DirectoryDsrtActivity extends AppCompatActivity {
         dsrtDirektoriPclAdapter = new DsrtDirektoriPclAdapter(viewModel);
         recyclerView.setAdapter(dsrtDirektoriPclAdapter);
         periodeList = viewModel.getPeriode();
-        viewModel.getLiveDataDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsrt>>() {
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrtByIdBs(idBs, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        if (dsrts.size() > 0) {
+//            containerEmpty.setVisibility(View.GONE);
+//            recyclerView.setVisibility(View.VISIBLE);
+//        } else {
+//            containerEmpty.setVisibility(View.VISIBLE);
+//            recyclerView.setVisibility(View.GONE);
+//        }
+//        dsrtDirektoriPclAdapter.setListDsrt(dsrts);
+        viewModel.getLiveDataDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), EXTRA_KD_KAB, EXTRA_KD_KEC, EXTRA_KD_KEC, EXTRA_ID_BS)
+                .observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
                 if (dsrts.size()>0){

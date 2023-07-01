@@ -9,6 +9,11 @@ import androidx.room.PrimaryKey;
 public class Dsbs {
     @PrimaryKey
     public int id;
+    @ColumnInfo(name = "tahun")
+    public String tahun;
+
+    @ColumnInfo(name = "semester")
+    public int semester;
 
     @ColumnInfo(name = "kd_kab")
     public String kd_kab;
@@ -28,32 +33,15 @@ public class Dsbs {
     @ColumnInfo(name = "nama_desa")
     public String nama_desa;
 
-    @ColumnInfo(name = "nbs")
-    public String nbs;
-
-    @ColumnInfo(name = "id_bs")
-    public String id_bs;
+    @ColumnInfo(name = "kd_bs")
+    public String kd_bs;
 
     @ColumnInfo(name = "nks")
     public String nks;
 
-    @ColumnInfo(name = "tahun")
-    public String tahun;
-
-    @ColumnInfo(name = "semester")
-    public int semester;
-
-    @ColumnInfo(name = "status")
-    @Nullable
-    public int status;
-
     @ColumnInfo(name = "jml_rt")
     @Nullable
     public int jml_rt;
-
-    @ColumnInfo(name = "sumber")
-    @Nullable
-    public String sumber;
 
     @ColumnInfo(name = "pencacah")
     @Nullable
@@ -63,28 +51,22 @@ public class Dsbs {
     @Nullable
     public String pengawas;
 
-
-    public Dsbs(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String nbs, String id_bs, String nks, String tahun, int semester, int status, int jml_rt, @Nullable String sumber, @Nullable String pencacah, @Nullable String pengawas) {
+    public Dsbs(int id, String tahun, int semester, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String kd_bs, String nks, int jml_rt, @Nullable String pencacah, @Nullable String pengawas) {
         this.id = id;
+        this.tahun = tahun;
+        this.semester = semester;
         this.kd_kab = kd_kab;
         this.nama_kab = nama_kab;
         this.kd_kec = kd_kec;
         this.nama_kec = nama_kec;
         this.kd_desa = kd_desa;
         this.nama_desa = nama_desa;
-        this.nbs = nbs;
-        this.id_bs = id_bs;
+        this.kd_bs = kd_bs;
         this.nks = nks;
-        this.tahun = tahun;
-        this.semester = semester;
-        this.status = status;
         this.jml_rt = jml_rt;
-        this.sumber = sumber;
         this.pencacah = pencacah;
         this.pengawas = pengawas;
     }
-
-
 
     public int getId() {
         return id;
@@ -92,6 +74,22 @@ public class Dsbs {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
+
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
     }
 
     public String getKd_kab() {
@@ -142,20 +140,12 @@ public class Dsbs {
         this.nama_desa = nama_desa;
     }
 
-    public String getNbs() {
-        return nbs;
+    public String getKd_bs() {
+        return kd_bs;
     }
 
-    public void setNbs(String nbs) {
-        this.nbs = nbs;
-    }
-
-    public String getId_bs() {
-        return id_bs;
-    }
-
-    public void setId_bs(String id_bs) {
-        this.id_bs = id_bs;
+    public void setKd_bs(String kd_bs) {
+        this.kd_bs = kd_bs;
     }
 
     public String getNks() {
@@ -166,45 +156,12 @@ public class Dsbs {
         this.nks = nks;
     }
 
-    public String getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public int getJml_rt() {
         return jml_rt;
     }
 
     public void setJml_rt(int jml_rt) {
         this.jml_rt = jml_rt;
-    }
-
-    @Nullable
-    public String getSumber() {
-        return sumber;
-    }
-
-    public void setSumber(@Nullable String sumber) {
-        this.sumber = sumber;
     }
 
     @Nullable

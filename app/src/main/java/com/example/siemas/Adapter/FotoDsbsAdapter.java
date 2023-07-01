@@ -3,12 +3,10 @@ package com.example.siemas.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siemas.R;
@@ -20,16 +18,15 @@ import com.example.siemas.RoomDatabase.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAdapter.ViewHolder> {
+public class FotoDsbsAdapter  extends RecyclerView.Adapter<FotoDsbsAdapter.ViewHolder> {
     private List<Dsbs> dsbsList = new ArrayList<>();
+    private FotoDsbsAdapter.onItemCLickListener listener;
+    private ViewModel viewModel;
     private List<Dsrt> dsrtListBelum = new ArrayList<>();
     private List<Dsrt> dsrtListSudah = new ArrayList<>();
-    private onItemCLickListener listener;
-    private ViewModel viewModel;
     private List<Periode> periodeList;
 
-
-    public DsbsPencacahanAdapter(ViewModel viewModel) {
+    public FotoDsbsAdapter(ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -37,27 +34,24 @@ public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.dsbs_pencacahan_item, parent, false);
-        return new ViewHolder(itemView);
+                inflate(R.layout.foto_dsbs_list_item, parent, false);
+        return new FotoDsbsAdapter.ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FotoDsbsAdapter.ViewHolder holder, int position) {
         Dsbs currentDsbs = dsbsList.get(position);
 
-        holder.tvIdBs.setText("BS: 16"+currentDsbs.getKd_kab() + currentDsbs.getKd_kec() + currentDsbs.getKd_desa()+currentDsbs.getKd_bs());
+        holder.tvIdBs.setText("BS: 16"+  currentDsbs.getKd_kab()+ currentDsbs.getKd_kec() + currentDsbs.getKd_desa()+ currentDsbs.getKd_bs());
         holder.tvKdKab.setText("["+currentDsbs.getKd_kab()+"]");
         holder.tvNamaKab.setText(currentDsbs.getNama_kab());
         holder.tvKdKec.setText("["+currentDsbs.getKd_kec()+"]");
         holder.tvNamaKec.setText(currentDsbs.getNama_kec());
         holder.tvKdDesa.setText("["+currentDsbs.getKd_desa()+"]");
         holder.tvNamaDesa.setText(currentDsbs.getNama_desa());
-        holder.tvDsrtBelum.setText(String.valueOf(dsrtListBelum.size()));
-        holder.tvDsrtSudah.setText(String.valueOf(dsrtListSudah.size()));
-
         periodeList = viewModel.getPeriode();
-        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw( 1, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
-        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp( 0, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw(4, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp(3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
 
         holder.tvDsrtBelum.setText(String.valueOf(dsrtListBelum.size()));
         holder.tvDsrtSudah.setText(String.valueOf(dsrtListSudah.size()));
@@ -71,7 +65,6 @@ public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAd
     public int getItemCount() {
         return dsbsList.size();
     }
-
     public void setListDsbs(List<Dsbs> dsbsList) {
         this.dsbsList = dsbsList;
         notifyDataSetChanged();
@@ -80,9 +73,9 @@ public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvIdBs, tvKdKab, tvNamaKab, tvKdKec, tvNamaKec, tvKdDesa, tvNamaDesa, tvDsrtBelum, tvDsrtSudah;
         private ImageView tagStatusBs;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             tvIdBs = itemView.findViewById(R.id.idBS);
             tvKdKab = itemView.findViewById(R.id.idKab);
             tvNamaKab = itemView.findViewById(R.id.NamaKab);
@@ -93,7 +86,6 @@ public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAd
             tagStatusBs = itemView.findViewById(R.id.tagStatusBs);
             tvDsrtBelum = itemView.findViewById(R.id.dsrtBelum);
             tvDsrtSudah = itemView.findViewById(R.id.dsrtSudah);
-            tagStatusBs = itemView.findViewById(R.id.tagStatusBs);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,14 +96,12 @@ public class DsbsPencacahanAdapter extends RecyclerView.Adapter<DsbsPencacahanAd
                     }
                 }
             });
-
         }
     }
 
     public interface onItemCLickListener {
         void onItemClick(Dsbs dsbs);
     }
-
     public void setOnItemClickListener(onItemCLickListener listener) {
         this.listener = listener;
     }

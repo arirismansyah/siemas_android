@@ -50,7 +50,7 @@ public class ReportPclActivity extends AppCompatActivity {
 
         tvKdProv.setText("[16]");
         tvNamaProv.setText("Sumatera Selatan");
-        tvKdKab.setText("["+user.getKd_wilayah()+"]");
+        tvKdKab.setText("["+user.getKd_kab()+"]");
         tvNamaKab.setText(user.getNama_kab());
 
 

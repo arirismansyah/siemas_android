@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.siemas.RoomDatabase.Dao.DsartDao;
 import com.example.siemas.RoomDatabase.Dao.DsbsDao;
 import com.example.siemas.RoomDatabase.Dao.DsrtDao;
+import com.example.siemas.RoomDatabase.Dao.FotoDao;
 import com.example.siemas.RoomDatabase.Dao.Jadwal212Dao;
 import com.example.siemas.RoomDatabase.Dao.KegiatanUtamaDao;
 import com.example.siemas.RoomDatabase.Dao.Laporan212Dao;
@@ -23,6 +24,7 @@ import com.example.siemas.RoomDatabase.Dao.UserDao;
 import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Foto;
 import com.example.siemas.RoomDatabase.Entities.Jadwal212;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
@@ -33,28 +35,39 @@ import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.Entities.User;
 
 
-
-@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class, Periode.class, Dsart.class}, version = 15)
+@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class, Periode.class, Dsart.class, Foto.class}, version = 15)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase localDatabase;
     public static final String databaseName = "siemas";
 
     public abstract UserDao userDao();
+
     public abstract DsartDao dsartDao();
+
     public abstract DsbsDao dsbsDao();
+
     public abstract DsrtDao dsrtDao();
+
     public abstract StatusRumahDao statusRumahDao();
+
     public abstract PendidikanDao pendidikanDao();
+
     public abstract StatusDao statusDao();
+
     public abstract KegiatanUtamaDao kegiatanUtamaDao();
+
     public abstract Jadwal212Dao jadwal212Dao();
+
     public abstract Laporan212Dao laporan212Dao();
 
     public abstract PeriodeDao periodeDao();
 
-    public static synchronized LocalDatabase getLocalDatabase(Context context){
-        if(localDatabase == null){
+    public abstract FotoDao fotoDao();
+
+    public static synchronized LocalDatabase getLocalDatabase(Context context) {
+        if (localDatabase == null) {
             localDatabase = Room.databaseBuilder(context.getApplicationContext(), LocalDatabase.class, databaseName)
+//                    .setMaxSize(4 * 1024 * 1024)
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .addCallback(mRoomCallBack)
@@ -69,6 +82,7 @@ public abstract class LocalDatabase extends RoomDatabase {
             super.onCreate(db);
             new PopulateStatusAsync(localDatabase).execute();
         }
+
         @Override
         public void onDestructiveMigration(@NonNull SupportSQLiteDatabase db) {
             super.onDestructiveMigration(db);
@@ -76,17 +90,15 @@ public abstract class LocalDatabase extends RoomDatabase {
         }
     };
 
-
-
     private static class PopulateStatusAsync extends AsyncTask<Void, Void, Void> {
         private StatusDao statusDao;
         private StatusRumahDao statusRumahDao;
         private PendidikanDao pendidikanDao;
         private KegiatanUtamaDao kegiatanUtamaDao;
 
-        private PopulateStatusAsync(LocalDatabase ldb){
+        private PopulateStatusAsync(LocalDatabase ldb) {
             statusDao = ldb.statusDao();
-            statusRumahDao =ldb.statusRumahDao();
+            statusRumahDao = ldb.statusRumahDao();
             pendidikanDao = ldb.pendidikanDao();
             kegiatanUtamaDao = ldb.kegiatanUtamaDao();
         }
@@ -100,6 +112,9 @@ public abstract class LocalDatabase extends RoomDatabase {
             statusDao.insertStatus(new com.example.siemas.RoomDatabase.Entities.Status(4, "Sudah Upload Pemeriksaan Pencacah"));
             statusDao.insertStatus(new com.example.siemas.RoomDatabase.Entities.Status(5, "Sudah Pemeriksaan Pengawas"));
             statusDao.insertStatus(new com.example.siemas.RoomDatabase.Entities.Status(6, "Sudah Upload Pemeriksaan Pengawas"));
+            statusDao.insertStatus(new com.example.siemas.RoomDatabase.Entities.Status(98, "Non Respon"));
+            statusDao.insertStatus(new com.example.siemas.RoomDatabase.Entities.Status(99, "Non Respon Upload"));
+
             statusRumahDao.insertStatusRumah(new StatusRumah(1, "Milik Sendiri"));
             statusRumahDao.insertStatusRumah(new StatusRumah(2, "Kontrak"));
             statusRumahDao.insertStatusRumah(new StatusRumah(3, "Sewa"));

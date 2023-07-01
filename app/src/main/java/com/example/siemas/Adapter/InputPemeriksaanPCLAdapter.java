@@ -39,9 +39,9 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
     ArrayAdapter<String> spinnerKegiatanAdapter;
     public int pos;
 
-    public InputPemeriksaanPCLAdapter(ViewModel viewModel, String id_bs, String tahun, int semester, int nu_rt) {
+    public InputPemeriksaanPCLAdapter(ViewModel viewModel, String tahun, int semester, String kd_kab,String kd_kec, String kd_desa, String kd_bs,  int nu_rt) {
         this.viewModel = viewModel;
-        this.dsartList = viewModel.getDsartbyId(id_bs, tahun, semester, nu_rt);
+        this.dsartList = viewModel.getDsartbyId(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt);
     }
 
     public void saveadapter(ViewModel viewModel){

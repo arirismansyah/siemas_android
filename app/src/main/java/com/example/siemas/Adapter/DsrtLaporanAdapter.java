@@ -31,6 +31,7 @@ import com.example.siemas.R;
 import com.example.siemas.RetrofitClientInstance;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
+import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
 import com.google.gson.Gson;
@@ -55,6 +56,7 @@ import retrofit2.Response;
 public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.ViewHolder> {
     private List<Laporan212> laporan212List = new ArrayList<>();
     private ViewModel viewModel;
+    private List<Periode> periodeList;
 
     public DsrtLaporanAdapter(ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -71,8 +73,8 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Laporan212 currentLaporan = laporan212List.get(position);
         holder.laporan212 = currentLaporan;
-
-        holder.tvNbs.setText("ID BS: " + currentLaporan.getId_bs());
+        periodeList = viewModel.getPeriode();
+        holder.tvNbs.setText("ID BS: 16" + currentLaporan.getKd_kab()+ currentLaporan.getKd_kec()+currentLaporan.getKd_desa()+currentLaporan.getKd_bs());
         holder.tvNks.setText("NKS: " + currentLaporan.getNks());
         holder.tvNuRt.setText("NU RT: " + String.valueOf(currentLaporan.getNu_rt()));
         holder.tvNamaKrt.setText("Nama KRT: "+currentLaporan.getNama_krt());
@@ -157,7 +159,7 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
                                         String message = jo.getString("message");
                                         if (message.equals("success")) {
 
-                                            viewModel.updateStatusLaporan(laporan212.getId_bs(), laporan212.getNu_rt(), 2);
+                                            viewModel.updateStatusLaporan( 2, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(),  laporan212.getKd_kab(), laporan212.getKd_kec(), laporan212.getKd_desa(), laporan212.getKd_bs(), laporan212.getNu_rt());
                                             progressDialog.dismiss();
                                             Toast.makeText(itemView.getContext(), "Data berhasil dikirim", Toast.LENGTH_SHORT).show();
 

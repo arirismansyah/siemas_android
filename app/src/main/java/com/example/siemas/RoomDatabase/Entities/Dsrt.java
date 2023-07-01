@@ -12,64 +12,66 @@ public class Dsrt {
     @PrimaryKey
     public int id;
 
-    @ColumnInfo(name = "kd_kab")
-    public String kd_kab;
-    @ColumnInfo(name = "nama_kab")
-    public String nama_kab;
-    @ColumnInfo(name = "kd_kec")
-    public String kd_kec;
-    @ColumnInfo(name = "nama_kec")
-    public String nama_kec;
-    @ColumnInfo(name = "kd_desa")
-    public String kd_desa;
-    @ColumnInfo(name = "nama_desa")
-    public String nama_desa;
-    @ColumnInfo(name = "id_bs")
-    public String id_bs;
-
-    @ColumnInfo(name = "nks")
-    @Nullable
-    public String nks;
-
     @ColumnInfo(name = "tahun")
     public String tahun;
 
     @ColumnInfo(name = "semester")
     public int semester;
 
+    @ColumnInfo(name = "kd_kab")
+    @Nullable
+    public String kd_kab;
+
+    @ColumnInfo(name = "nama_kab")
+    @Nullable
+    public String nama_kab;
+
+    @ColumnInfo(name = "kd_kec")
+    @Nullable
+    public String kd_kec;
+
+    @ColumnInfo(name = "nama_kec")
+    @Nullable
+    public String nama_kec;
+
+    @ColumnInfo(name = "kd_desa")
+    @Nullable
+    public String kd_desa;
+
+    @ColumnInfo(name = "nama_desa")
+    @Nullable
+    public String nama_desa;
+
+    @ColumnInfo(name = "kd_bs")
+    @Nullable
+    public String kd_bs;
+
     @ColumnInfo(name = "nu_rt")
     public int nu_rt;
 
-    @ColumnInfo(name = "status_res")
+    @ColumnInfo(name = "nks")
     @Nullable
-    public int status_res;
+    public String nks;
+
     @ColumnInfo(name = "status_pencacahan")
     @Nullable
     public int status_pencacahan;
 
-    @ColumnInfo(name = "alamat")
+    @ColumnInfo(name = "nama_krt_prelist")
     @Nullable
-    public String alamat;
+    public String nama_krt_prelist;
 
-    @ColumnInfo(name = "nuc1")
+    @ColumnInfo(name = "jml_art_prelist")
     @Nullable
-    public String nuc1;
+    public int jml_art_prelist;
 
-    @ColumnInfo(name = "nama_krt")
+    @ColumnInfo(name = "nama_krt_cacah")
     @Nullable
-    public String nama_krt;
+    public String nama_krt_cacah;
 
-    @ColumnInfo(name = "jml_art")
+    @ColumnInfo(name = "jml_art_cacah")
     @Nullable
-    public int jml_art;
-
-    @ColumnInfo(name = "nama_krt2")
-    @Nullable
-    public String nama_krt2;
-
-    @ColumnInfo(name = "jml_art2")
-    @Nullable
-    public int jml_art2;
+    public int jml_art_cacah;
 
     @ColumnInfo(name = "status_rumah")
     @Nullable
@@ -91,7 +93,6 @@ public class Dsrt {
     @Nullable
     public String nonmakanan_sebulan;
 
-
     @ColumnInfo(name = "makanan_sebulan_bypml")
     @Nullable
     public String makanan_sebulan_bypml;
@@ -99,7 +100,6 @@ public class Dsrt {
     @ColumnInfo(name = "nonmakanan_sebulan_bypml")
     @Nullable
     public String nonmakanan_sebulan_bypml;
-
 
     @ColumnInfo(name = "transportasi")
     @Nullable
@@ -141,10 +141,6 @@ public class Dsrt {
     @Nullable
     public String gsmp_desk;
 
-    @ColumnInfo(name = "foto",typeAffinity = ColumnInfo.BLOB)
-    @Nullable
-    public byte[] foto;
-
     @ColumnInfo(name = "latitude")
     @Nullable
     public String latitude;
@@ -173,7 +169,6 @@ public class Dsrt {
     @Nullable
     public String durasi_pencacahan;
 
-
     @ColumnInfo(name = "pencacah")
     @Nullable
     public String pencacah;
@@ -182,31 +177,24 @@ public class Dsrt {
     @Nullable
     public String pengawas;
 
-
-    @ColumnInfo(name = "sumber")
-    @Nullable
-    public String sumber;
-
-    public Dsrt(int id, String kd_kab, String nama_kab, String kd_kec, String nama_kec, String kd_desa, String nama_desa, String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_pencacahan, @Nullable String alamat, @Nullable String nuc1, @Nullable String nama_krt, int jml_art, @Nullable String nama_krt2, int jml_art2, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, @Nullable byte[] foto, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas, @Nullable String sumber) {
+    public Dsrt(int id, String tahun, int semester, @Nullable String kd_kab, @Nullable String nama_kab, @Nullable String kd_kec, @Nullable String nama_kec, @Nullable String kd_desa, @Nullable String nama_desa, @Nullable String kd_bs, int nu_rt, @Nullable String nks, int status_pencacahan, @Nullable String nama_krt_prelist, int jml_art_prelist, @Nullable String nama_krt_cacah, int jml_art_cacah, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas) {
         this.id = id;
+        this.tahun = tahun;
+        this.semester = semester;
         this.kd_kab = kd_kab;
         this.nama_kab = nama_kab;
         this.kd_kec = kd_kec;
         this.nama_kec = nama_kec;
         this.kd_desa = kd_desa;
         this.nama_desa = nama_desa;
-        this.id_bs = id_bs;
-        this.nks = nks;
-        this.tahun = tahun;
-        this.semester = semester;
+        this.kd_bs = kd_bs;
         this.nu_rt = nu_rt;
-        this.status_res = status_res;
-        this.alamat = alamat;
-        this.nuc1 = nuc1;
-        this.nama_krt = nama_krt;
-        this.jml_art = jml_art;
-        this.nama_krt2 = nama_krt2;
-        this.jml_art2 = jml_art2;
+        this.nks = nks;
+        this.status_pencacahan = status_pencacahan;
+        this.nama_krt_prelist = nama_krt_prelist;
+        this.jml_art_prelist = jml_art_prelist;
+        this.nama_krt_cacah = nama_krt_cacah;
+        this.jml_art_cacah = jml_art_cacah;
         this.status_rumah = status_rumah;
         this.jml_komoditas_makanan = jml_komoditas_makanan;
         this.jml_komoditas_nonmakanan = jml_komoditas_nonmakanan;
@@ -222,10 +210,8 @@ public class Dsrt {
         this.kegiatan_seminggu = kegiatan_seminggu;
         this.deskripsi_kegiatan = deskripsi_kegiatan;
         this.luas_lantai = luas_lantai;
-        this.status_pencacahan = status_pencacahan;
         this.gsmp = gsmp;
         this.gsmp_desk = gsmp_desk;
-        this.foto = foto;
         this.latitude = latitude;
         this.longitude = longitude;
         this.latitude_selesai = latitude_selesai;
@@ -235,7 +221,6 @@ public class Dsrt {
         this.durasi_pencacahan = durasi_pencacahan;
         this.pencacah = pencacah;
         this.pengawas = pengawas;
-        this.sumber = sumber;
     }
 
     public int getId() {
@@ -246,77 +231,12 @@ public class Dsrt {
         this.id = id;
     }
 
-    public String getKd_kab() {
-        return kd_kab;
+    public String getTahun() {
+        return tahun;
     }
 
-    public void setKd_kab(String kd_kab) {
-        this.kd_kab = kd_kab;
-    }
-
-    public String getNama_kab() {
-        return nama_kab;
-    }
-
-    public void setNama_kab(String nama_kab) {
-        this.nama_kab = nama_kab;
-    }
-
-    public String getKd_kec() {
-        return kd_kec;
-    }
-
-    public void setKd_kec(String kd_kec) {
-        this.kd_kec = kd_kec;
-    }
-
-    public String getNama_kec() {
-        return nama_kec;
-    }
-
-    public void setNama_kec(String nama_kec) {
-        this.nama_kec = nama_kec;
-    }
-
-    public String getKd_desa() {
-        return kd_desa;
-    }
-
-    public void setKd_desa(String kd_desa) {
-        this.kd_desa = kd_desa;
-    }
-
-    public String getNama_desa() {
-        return nama_desa;
-    }
-
-    public void setNama_desa(String nama_desa) {
-        this.nama_desa = nama_desa;
-    }
-
-    public String getId_bs() {
-        return id_bs;
-    }
-
-    public void setId_bs(String id_bs) {
-        this.id_bs = id_bs;
-    }
-
-    @Nullable
-    public String getNks() {
-        return nks;
-    }
-
-    public void setNks(@Nullable String nks) {
-        this.nks = nks;
-    }
-
-    public int getNu_rt() {
-        return nu_rt;
-    }
-
-    public void setNu_rt(int nu_rt) {
-        this.nu_rt = nu_rt;
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
     }
 
     public int getSemester() {
@@ -328,55 +248,125 @@ public class Dsrt {
     }
 
     @Nullable
-    public String getAlamat() {
-        return alamat;
+    public String getKd_kab() {
+        return kd_kab;
     }
 
-    public void setAlamat(@Nullable String alamat) {
-        this.alamat = alamat;
-    }
-
-    @Nullable
-    public String getNuc1() {
-        return nuc1;
-    }
-
-    public void setNuc1(@Nullable String nuc1) {
-        this.nuc1 = nuc1;
+    public void setKd_kab(@Nullable String kd_kab) {
+        this.kd_kab = kd_kab;
     }
 
     @Nullable
-    public String getNama_krt() {
-        return nama_krt;
+    public String getNama_kab() {
+        return nama_kab;
     }
 
-    public void setNama_krt(@Nullable String nama_krt) {
-        this.nama_krt = nama_krt;
-    }
-
-    public int getJml_art() {
-        return jml_art;
-    }
-
-    public void setJml_art(int jml_art) {
-        this.jml_art = jml_art;
+    public void setNama_kab(@Nullable String nama_kab) {
+        this.nama_kab = nama_kab;
     }
 
     @Nullable
-    public String getNama_krt2() {
-        return nama_krt2;
+    public String getKd_kec() {
+        return kd_kec;
     }
 
-    public void setNama_krt2(@Nullable String nama_krt2) {
-        this.nama_krt2 = nama_krt2;
+    public void setKd_kec(@Nullable String kd_kec) {
+        this.kd_kec = kd_kec;
     }
 
-    public int getJml_art2() {
-        return jml_art2;
+    @Nullable
+    public String getNama_kec() {
+        return nama_kec;
     }
 
-    public void setJml_art2(int jml_art2) {
-        this.jml_art2 = jml_art2;
+    public void setNama_kec(@Nullable String nama_kec) {
+        this.nama_kec = nama_kec;
+    }
+
+    @Nullable
+    public String getKd_desa() {
+        return kd_desa;
+    }
+
+    public void setKd_desa(@Nullable String kd_desa) {
+        this.kd_desa = kd_desa;
+    }
+
+    @Nullable
+    public String getNama_desa() {
+        return nama_desa;
+    }
+
+    public void setNama_desa(@Nullable String nama_desa) {
+        this.nama_desa = nama_desa;
+    }
+
+    @Nullable
+    public String getKd_bs() {
+        return kd_bs;
+    }
+
+    public void setKd_bs(@Nullable String kd_bs) {
+        this.kd_bs = kd_bs;
+    }
+
+    public int getNu_rt() {
+        return nu_rt;
+    }
+
+    public void setNu_rt(int nu_rt) {
+        this.nu_rt = nu_rt;
+    }
+
+    @Nullable
+    public String getNks() {
+        return nks;
+    }
+
+    public void setNks(@Nullable String nks) {
+        this.nks = nks;
+    }
+
+    public int getStatus_pencacahan() {
+        return status_pencacahan;
+    }
+
+    public void setStatus_pencacahan(int status_pencacahan) {
+        this.status_pencacahan = status_pencacahan;
+    }
+
+    @Nullable
+    public String getNama_krt_prelist() {
+        return nama_krt_prelist;
+    }
+
+    public void setNama_krt_prelist(@Nullable String nama_krt_prelist) {
+        this.nama_krt_prelist = nama_krt_prelist;
+    }
+
+    public int getJml_art_prelist() {
+        return jml_art_prelist;
+    }
+
+    public void setJml_art_prelist(int jml_art_prelist) {
+        this.jml_art_prelist = jml_art_prelist;
+    }
+
+    @Nullable
+    public String getNama_krt_cacah() {
+        return nama_krt_cacah;
+    }
+
+    public void setNama_krt_cacah(@Nullable String nama_krt_cacah) {
+        this.nama_krt_cacah = nama_krt_cacah;
+    }
+
+    public int getJml_art_cacah() {
+        return jml_art_cacah;
+    }
+
+    public void setJml_art_cacah(int jml_art_cacah) {
+        this.jml_art_cacah = jml_art_cacah;
     }
 
     @Nullable
@@ -386,14 +376,6 @@ public class Dsrt {
 
     public void setStatus_rumah(@Nullable String status_rumah) {
         this.status_rumah = status_rumah;
-    }
-
-    public int getStatus_res() {
-        return status_res;
-    }
-
-    public void setStatus_res(int status_res) {
-        this.status_res = status_res;
     }
 
     public int getJml_komoditas_makanan() {
@@ -413,24 +395,6 @@ public class Dsrt {
     }
 
     @Nullable
-    public String getMakanan_sebulan_bypml() {
-        return makanan_sebulan_bypml;
-    }
-
-    public void setMakanan_sebulan_bypml(@Nullable String makanan_sebulan_bypml) {
-        this.makanan_sebulan_bypml = makanan_sebulan_bypml;
-    }
-
-    @Nullable
-    public String getNonmakanan_sebulan_bypml() {
-        return nonmakanan_sebulan_bypml;
-    }
-
-    public void setNonmakanan_sebulan_bypml(@Nullable String nonmakanan_sebulan_bypml) {
-        this.nonmakanan_sebulan_bypml = nonmakanan_sebulan_bypml;
-    }
-
-    @Nullable
     public String getMakanan_sebulan() {
         return makanan_sebulan;
     }
@@ -446,6 +410,24 @@ public class Dsrt {
 
     public void setNonmakanan_sebulan(@Nullable String nonmakanan_sebulan) {
         this.nonmakanan_sebulan = nonmakanan_sebulan;
+    }
+
+    @Nullable
+    public String getMakanan_sebulan_bypml() {
+        return makanan_sebulan_bypml;
+    }
+
+    public void setMakanan_sebulan_bypml(@Nullable String makanan_sebulan_bypml) {
+        this.makanan_sebulan_bypml = makanan_sebulan_bypml;
+    }
+
+    @Nullable
+    public String getNonmakanan_sebulan_bypml() {
+        return nonmakanan_sebulan_bypml;
+    }
+
+    public void setNonmakanan_sebulan_bypml(@Nullable String nonmakanan_sebulan_bypml) {
+        this.nonmakanan_sebulan_bypml = nonmakanan_sebulan_bypml;
     }
 
     @Nullable
@@ -517,14 +499,6 @@ public class Dsrt {
         this.luas_lantai = luas_lantai;
     }
 
-    public int getStatus_pencacahan() {
-        return status_pencacahan;
-    }
-
-    public void setStatus_pencacahan(int status_pencacahan) {
-        this.status_pencacahan = status_pencacahan;
-    }
-
     public int getGsmp() {
         return gsmp;
     }
@@ -540,15 +514,6 @@ public class Dsrt {
 
     public void setGsmp_desk(@Nullable String gsmp_desk) {
         this.gsmp_desk = gsmp_desk;
-    }
-
-    @Nullable
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(@Nullable byte[] foto) {
-        this.foto = foto;
     }
 
     @Nullable
@@ -630,22 +595,5 @@ public class Dsrt {
 
     public void setPengawas(@Nullable String pengawas) {
         this.pengawas = pengawas;
-    }
-
-    @Nullable
-    public String getSumber() {
-        return sumber;
-    }
-
-    public void setSumber(@Nullable String sumber) {
-        this.sumber = sumber;
-    }
-
-    public String getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(String tahun) {
-        this.tahun = tahun;
     }
 }

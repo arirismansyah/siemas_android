@@ -5,16 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
-@Entity(primaryKeys = {"id_bs","tahun" ,"semester","nu_rt"})
+@Entity(primaryKeys = {"tahun" ,"semester","kd_kab","kd_kec", "kd_desa","kd_bs", "nu_rt"})
 public class Laporan212 {
-    @NonNull
-    @ColumnInfo(name = "id_bs")
-    public String id_bs;
-
-    @Nullable
-    @ColumnInfo(name = "nks")
-    public String nks;
-
     @NonNull
     @ColumnInfo(name = "tahun")
     public String tahun;
@@ -24,8 +16,29 @@ public class Laporan212 {
     public int semester;
 
     @NonNull
+    @ColumnInfo(name = "kd_kab")
+    public String kd_kab;
+
+    @NonNull
+    @ColumnInfo(name = "kd_kec")
+    public String kd_kec;
+
+    @NonNull
+    @ColumnInfo(name = "kd_desa")
+    public String kd_desa;
+
+    @NonNull
+    @ColumnInfo(name = "kd_bs")
+    public String kd_bs;
+
+    @NonNull
     @ColumnInfo(name = "nu_rt")
     public int nu_rt;
+
+    @Nullable
+    @ColumnInfo(name = "nks")
+    public String nks;
+
     @Nullable
     @ColumnInfo(name = "nama_krt")
     public String nama_krt;
@@ -42,13 +55,15 @@ public class Laporan212 {
     @ColumnInfo(name = "status")
     public int status;
 
-
-    public Laporan212(@NonNull String id_bs, @Nullable String nks, @NonNull String tahun, int semester, int nu_rt, @Nullable String nama_krt, @Nullable String pengawas, @Nullable String tanggal, int status) {
-        this.id_bs = id_bs;
-        this.nks = nks;
+    public Laporan212(@NonNull String tahun, int semester, @NonNull String kd_kab, @NonNull String kd_kec, @NonNull String kd_desa, @NonNull String kd_bs, int nu_rt, @Nullable String nks, @Nullable String nama_krt, @Nullable String pengawas, @Nullable String tanggal, int status) {
         this.tahun = tahun;
         this.semester = semester;
+        this.kd_kab = kd_kab;
+        this.kd_kec = kd_kec;
+        this.kd_desa = kd_desa;
+        this.kd_bs = kd_bs;
         this.nu_rt = nu_rt;
+        this.nks = nks;
         this.nama_krt = nama_krt;
         this.pengawas = pengawas;
         this.tanggal = tanggal;
@@ -73,12 +88,47 @@ public class Laporan212 {
     }
 
     @NonNull
-    public String getId_bs() {
-        return id_bs;
+    public String getKd_kab() {
+        return kd_kab;
     }
 
-    public void setId_bs(@NonNull String id_bs) {
-        this.id_bs = id_bs;
+    public void setKd_kab(@NonNull String kd_kab) {
+        this.kd_kab = kd_kab;
+    }
+
+    @NonNull
+    public String getKd_kec() {
+        return kd_kec;
+    }
+
+    public void setKd_kec(@NonNull String kd_kec) {
+        this.kd_kec = kd_kec;
+    }
+
+    @NonNull
+    public String getKd_desa() {
+        return kd_desa;
+    }
+
+    public void setKd_desa(@NonNull String kd_desa) {
+        this.kd_desa = kd_desa;
+    }
+
+    @NonNull
+    public String getKd_bs() {
+        return kd_bs;
+    }
+
+    public void setKd_bs(@NonNull String kd_bs) {
+        this.kd_bs = kd_bs;
+    }
+
+    public int getNu_rt() {
+        return nu_rt;
+    }
+
+    public void setNu_rt(int nu_rt) {
+        this.nu_rt = nu_rt;
     }
 
     @Nullable
@@ -88,14 +138,6 @@ public class Laporan212 {
 
     public void setNks(@Nullable String nks) {
         this.nks = nks;
-    }
-
-    public int getNu_rt() {
-        return nu_rt;
-    }
-
-    public void setNu_rt(int nu_rt) {
-        this.nu_rt = nu_rt;
     }
 
     @Nullable

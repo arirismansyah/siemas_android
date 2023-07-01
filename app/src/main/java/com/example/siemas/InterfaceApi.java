@@ -47,7 +47,7 @@ public interface InterfaceApi {
     Call<ResponseBody> upload_foto(
             @Header("Authorization") String token,
             @Part MultipartBody.Part file_foto,
-            @Part("id_dsrt") RequestBody id_dsrt
+            @Part("id_dsrt") int id_dsrt
     );
 
     @Multipart()

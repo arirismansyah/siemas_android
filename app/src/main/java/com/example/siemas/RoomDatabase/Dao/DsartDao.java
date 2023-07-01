@@ -15,12 +15,15 @@ public interface DsartDao {
     @Insert(entity = Dsart.class, onConflict = OnConflictStrategy.REPLACE)
     Void insert_listdsart(List<Dsart> dsartList);
 
-    @Query("DELETE FROM Dsart WHERE id_bs = :id_bs AND tahun = :tahun AND semester = :semester AND nu_rt = :nu_rt")
-    int nukeDsartbyid(String id_bs, String tahun, int semester, int nu_rt);
+    @Query("DELETE FROM Dsart WHERE tahun = :tahun AND semester = :semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND nu_rt = :nu_rt")
+    int nukeDsartbyid(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt);
 
-    @Query("SELECT * FROM Dsart WHERE id_bs = :id_bs AND tahun = :tahun AND semester = :semester AND nu_rt = :nu_rt")
-    List<Dsart> getDsartListbyid(String id_bs, String tahun, int semester, int nu_rt);
-    @Query("SELECT * FROM Dsart WHERE id_bs = :id_bs AND tahun = :tahun AND semester = :semester AND nu_rt = :nu_rt")
-    List<Dsart> getDsartListlamabyid(String id_bs, String tahun, int semester, int nu_rt);
+    @Query("SELECT * FROM Dsart WHERE tahun = :tahun AND semester = :semester AND kd_kab =:kd_kab " +
+            "AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND nu_rt = :nu_rt")
+    List<Dsart> getDsartListbyid(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt);
+
+    @Query("SELECT * FROM Dsart WHERE tahun = :tahun AND semester = :semester AND kd_kab =:kd_kab " +
+            "AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND nu_rt = :nu_rt")
+    List<Dsart> getDsartListlamabyid(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt);
 
 }

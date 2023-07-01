@@ -59,6 +59,8 @@ public class Table2Fragment extends Fragment {
         periodeList = viewModel.getPeriode();
         table2Adapter = new Table2Adapter();
         recyclerView.setAdapter(table2Adapter);
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        table2Adapter.setListDsrt(dsrts);
         viewModel.getLiveDataDsrt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrtList) {

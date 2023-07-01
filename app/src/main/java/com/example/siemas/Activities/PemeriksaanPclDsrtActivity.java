@@ -26,6 +26,11 @@ import java.util.List;
 
 public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
     public static final String EXTRA_ID_BS = "com.example.siemas.Activities.EXTRA_ID_BS";
+    public static final String EXTRA_ID_DSRT = "com.example.siemas.Activities.EXTRA_ID_DSRT";
+    public static final String EXTRA_KD_KAB = "com.example.siemas.Activities.EXTRA_KD_KAB";
+    public static final String EXTRA_KD_KEC = "com.example.siemas.Activities.EXTRA_KD_KEC";
+    public static final String EXTRA_KD_DESA = "com.example.siemas.Activities.EXTRA_KD_DESA";
+    public static final String EXTRA_KD_BS = "com.example.siemas.Activities.EXTRA_KD_BS";
     private RecyclerView recyclerView;
     private ViewModel viewModel;
     private DsrtPemeriksaanPclAdapter dsrtPemeriksaanPclAdapter;
@@ -51,10 +56,22 @@ public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
         periodeList = viewModel.getPeriode();
         String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
-        dsrtPemeriksaanPclAdapter = new DsrtPemeriksaanPclAdapter();
+        String kd_kab = this.getIntent().getStringExtra(EXTRA_KD_KAB);
+        String kd_kec = this.getIntent().getStringExtra(EXTRA_KD_KEC);
+        String kd_desa = this.getIntent().getStringExtra(EXTRA_KD_DESA);
+        String kd_bs = this.getIntent().getStringExtra(EXTRA_KD_BS);
+        dsrtPemeriksaanPclAdapter = new DsrtPemeriksaanPclAdapter(viewModel);
         recyclerView.setAdapter(dsrtPemeriksaanPclAdapter);
-
-        viewModel.getLiveDataDsrtByIdBs(idBs,periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsrt>>() {
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrtByIdBs(idBs,periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        if (dsrts.size() > 0) {
+//            containerEmpty.setVisibility(View.GONE);
+//            recyclerView.setVisibility(View.VISIBLE);
+//        } else {
+//            containerEmpty.setVisibility(View.VISIBLE);
+//            recyclerView.setVisibility(View.GONE);
+//        }
+//        dsrtPemeriksaanPclAdapter.setListDsrt(dsrts);
+        viewModel.getLiveDataDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), kd_kab, kd_kec, kd_desa, kd_bs).observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
                 if (dsrts.size()>0){
@@ -85,13 +102,16 @@ public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
                 } else {
 
                     Intent intent = new Intent(PemeriksaanPclDsrtActivity.this, InputPemeriksaanPclActivity.class);
-                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_KAB, dsrt.getKd_kab());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NKS, dsrt.getNks());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId_bs());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
-                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KAB, dsrt.getKd_kab());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KEC, dsrt.getKd_kec());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_DESA, dsrt.getKd_desa());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_BS, dsrt.getKd_bs());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NKS, dsrt.getNks());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_prelist());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_BS, "16"+ dsrt.getKd_kab()+dsrt.getKd_kec()+dsrt.getKd_desa()+dsrt.getKd_bs());
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
+                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
                     startActivityForResult(intent, 1);
 
 

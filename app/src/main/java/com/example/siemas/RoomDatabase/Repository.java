@@ -13,6 +13,7 @@ import com.example.siemas.RetrofitClientInstance;
 import com.example.siemas.RoomDatabase.Dao.DsartDao;
 import com.example.siemas.RoomDatabase.Dao.DsbsDao;
 import com.example.siemas.RoomDatabase.Dao.DsrtDao;
+import com.example.siemas.RoomDatabase.Dao.FotoDao;
 import com.example.siemas.RoomDatabase.Dao.Jadwal212Dao;
 import com.example.siemas.RoomDatabase.Dao.KegiatanUtamaDao;
 import com.example.siemas.RoomDatabase.Dao.Laporan212Dao;
@@ -24,6 +25,7 @@ import com.example.siemas.RoomDatabase.Dao.UserDao;
 import com.example.siemas.RoomDatabase.Entities.Dsart;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Foto;
 import com.example.siemas.RoomDatabase.Entities.Jadwal212;
 import com.example.siemas.RoomDatabase.Entities.KegiatanUtama;
 import com.example.siemas.RoomDatabase.Entities.Laporan212;
@@ -53,13 +55,13 @@ public class Repository {
     private DsartDao dsartDao;
     private DsbsDao dsbsDao;
     private DsrtDao dsrtDao;
+    private FotoDao fotoDao;
     private StatusRumahDao statusRumahDao;
     private PendidikanDao pendidikanDao;
     private StatusDao statusDao;
     private KegiatanUtamaDao kegiatanUtamaDao;
     private Jadwal212Dao jadwal212Dao;
     private Laporan212Dao laporan212Dao;
-
     private PeriodeDao periodeDao;
 
     public Repository(Application application) {
@@ -75,6 +77,7 @@ public class Repository {
         this.jadwal212Dao = ldb.jadwal212Dao();
         this.laporan212Dao = ldb.laporan212Dao();
         this.periodeDao = ldb.periodeDao();
+        this.fotoDao = ldb.fotoDao();
     }
 
 
@@ -165,26 +168,20 @@ public class Repository {
                         ArrayList<Dsbs> dsbsList = new ArrayList<Dsbs>(joArray.length());
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
-                            int status = 0;
-                            if (!ob.getString("status").equals("null")) {
-                                status = ob.getInt("status");
-                            }
+
                             Dsbs dsbs = new Dsbs(
                                     ob.getInt("id"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
                                     ob.getString("kd_kab"),
                                     ob.getString("nama_kab"),
                                     ob.getString("kd_kec"),
                                     ob.getString("nama_kec"),
                                     ob.getString("kd_desa"),
                                     ob.getString("nama_desa"),
-                                    ob.getString("nbs"),
-                                    ob.getString("id_bs"),
+                                    ob.getString("kd_bs"),
                                     ob.getString("nks"),
-                                    ob.getString("tahun"),
-                                    ob.getInt("semester"),
-                                    status,
                                     ob.getInt("jml_rt"),
-                                    ob.getString("sumber"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas")
                             );
@@ -238,20 +235,17 @@ public class Repository {
                             }
                             Dsbs dsbs = new Dsbs(
                                     ob.getInt("id"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
                                     ob.getString("kd_kab"),
                                     ob.getString("nama_kab"),
                                     ob.getString("kd_kec"),
                                     ob.getString("nama_kec"),
                                     ob.getString("kd_desa"),
                                     ob.getString("nama_desa"),
-                                    ob.getString("nbs"),
-                                    ob.getString("id_bs"),
+                                    ob.getString("kd_bs"),
                                     ob.getString("nks"),
-                                    ob.getString("tahun"),
-                                    ob.getInt("semester"),
-                                    status,
                                     ob.getInt("jml_rt"),
-                                    ob.getString("sumber"),
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas")
                             );
@@ -442,7 +436,6 @@ public class Repository {
                     String result = response.body().string();
                     JSONObject jo = new JSONObject(result);
                     String message = jo.getString("message");
-
                     if (message.equals("success")) {
                         JSONArray joArray = new JSONArray(jo.getString("body"));
                         ArrayList<Dsrt> dsrtList = new ArrayList<Dsrt>(joArray.length());
@@ -450,15 +443,14 @@ public class Repository {
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
 
-
-                            int jml_art = 0;
-                            if (!ob.getString("jml_art").equals("null")) {
-                                jml_art = ob.getInt("jml_art");
+                            int jml_art_prelist = 0;
+                            if (!ob.getString("jml_art_prelist").equals("null")) {
+                                jml_art_prelist = ob.getInt("jml_art_prelist");
                             }
 
-                            int jml_art2 = 0;
-                            if (!ob.getString("jml_art2").equals("null")) {
-                                jml_art2 = ob.getInt("jml_art2");
+                            int jml_art_cacah = 0;
+                            if (!ob.getString("jml_art_cacah").equals("null")) {
+                                jml_art_cacah = ob.getInt("jml_art_cacah");
                             }
 
                             int art_sekolah = 0;
@@ -501,24 +493,22 @@ public class Repository {
                             byte [] foto = new byte[0];
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
-                                    ob.getString("kd_kab"),
-                                    ob.getString("nama_kab"),
-                                    ob.getString("id_kec"),
-                                    ob.getString("nama_kec"),
-                                    ob.getString("id_desa"),
-                                    ob.getString("nama_desa"),
-                                    ob.getString("id_bs"),
-                                    ob.getString("nks"),
                                     ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("nama_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("nama_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("nama_desa"),
+                                    ob.getString("kd_bs"),
                                     ob.getInt("nu_rt"),
+                                    ob.getString("nks"),
                                     status_pencacahan,
-                                    ob.getString("alamat"),
-                                    ob.getString("nuc1"),
-                                    ob.getString("nama_krt"),
-                                    jml_art,
-                                    ob.getString("nama_krt2"),
-                                    jml_art2,
+                                    ob.getString("nama_krt_prelist"),
+                                    jml_art_prelist,
+                                    ob.getString("nama_krt_cacah"),
+                                    jml_art_cacah,
                                     ob.getString("status_rumah"),
                                     jml_komoditas_makanan,
                                     jml_komoditas_nonmakanan,
@@ -536,7 +526,6 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
-                                    foto,
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -545,12 +534,10 @@ public class Repository {
                                     ob.getString("jam_selesai"),
                                     ob.getString("durasi_pencacahan"),
                                     ob.getString("pencacah"),
-                                    ob.getString("pengawas"),
-                                    ob.getString("sumber")
+                                    ob.getString("pengawas")
                             );
                             dsrtList.add(dsrt);
                         }
-
                         insertDsrtList(dsrtList);
                     } else {
                         Toast.makeText(context, "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
@@ -595,14 +582,14 @@ public class Repository {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
 
 
-                            int jml_art = 0;
-                            if (!ob.getString("jml_art").equals("null")) {
-                                jml_art = ob.getInt("jml_art");
+                            int jml_art_prelist = 0;
+                            if (!ob.getString("jml_art_prelist").equals("null")) {
+                                jml_art_prelist = ob.getInt("jml_art_prelist");
                             }
 
-                            int jml_art2 = 0;
-                            if (!ob.getString("jml_art2").equals("null")) {
-                                jml_art2 = ob.getInt("jml_art2");
+                            int jml_art_cacah = 0;
+                            if (!ob.getString("jml_art_cacah").equals("null")) {
+                                jml_art_cacah = ob.getInt("jml_art_cacah");
                             }
 
                             int art_sekolah = 0;
@@ -645,24 +632,22 @@ public class Repository {
                             byte[] foto = new byte[0];
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
-                                    ob.getString("kd_kab"),
-                                    ob.getString("nama_kab"),
-                                    ob.getString("id_kec"),
-                                    ob.getString("nama_kec"),
-                                    ob.getString("id_desa"),
-                                    ob.getString("nama_desa"),
-                                    ob.getString("id_bs"),
-                                    ob.getString("nks"),
                                     ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("nama_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("nama_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("nama_desa"),
+                                    ob.getString("kd_bs"),
                                     ob.getInt("nu_rt"),
+                                    ob.getString("nks"),
                                     status_pencacahan,
-                                    ob.getString("alamat"),
-                                    ob.getString("nuc1"),
-                                    ob.getString("nama_krt"),
-                                    jml_art,
-                                    ob.getString("nama_krt2"),
-                                    jml_art2,
+                                    ob.getString("nama_krt_prelist"),
+                                    jml_art_prelist,
+                                    ob.getString("nama_krt_cacah"),
+                                    jml_art_cacah,
                                     ob.getString("status_rumah"),
                                     jml_komoditas_makanan,
                                     jml_komoditas_nonmakanan,
@@ -680,7 +665,6 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
-                                    foto,
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -689,8 +673,7 @@ public class Repository {
                                     ob.getString("jam_selesai"),
                                     ob.getString("durasi_pencacahan"),
                                     ob.getString("pencacah"),
-                                    ob.getString("pengawas"),
-                                    ob.getString("sumber")
+                                    ob.getString("pengawas")
                             );
                             dsrtList.add(dsrt);
                         }
@@ -767,6 +750,8 @@ public class Repository {
         return null;
     }
 
+
+
     // get list jadwal 212
     public static class getListJadwal extends AsyncTask<Void, Void, List<Jadwal212>> {
         private Jadwal212Dao jadwal212Dao;
@@ -793,29 +778,27 @@ public class Repository {
     }
 
     // get list dsrt by idBs
-    public static class getListDsrtByIdBsAsync extends AsyncTask<String, Void, List<Dsrt>>{
+    public static class getListDsrtByIdBsAsync extends AsyncTask<Object, Void, List<Dsrt>>{
         private DsrtDao dsrtDao;
-        private String tahun;
-        private int semester;
 
-        public getListDsrtByIdBsAsync(DsrtDao dsrtDao, String tahun, int semester) {
-
+        public getListDsrtByIdBsAsync(DsrtDao dsrtDao) {
             this.dsrtDao = dsrtDao;
-            this.tahun = tahun;
-            this.semester= semester;
-
         }
-
-
         @Override
-        protected List<Dsrt> doInBackground(String... strings) {
-            return dsrtDao.getListDsrtByIdBs(strings[0] ,tahun ,semester);
+        protected List<Dsrt> doInBackground(Object... objects) {
+            String tahun = (String) objects[0];
+            int semester = (int) objects[1];
+            String kd_kab = (String) objects[2];
+            String kd_kec = (String) objects[3];
+            String kd_desa = (String) objects[4];
+            String kd_bs = (String) objects[5];
+            return dsrtDao.getListDsrtByIdBs(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
         }
     }
 
-    public List<Dsrt> getListDsrtByIdBs(String idBs, String tahun, int semester ){
+    public List<Dsrt> getListDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs ){
         try {
-            return new getListDsrtByIdBsAsync(dsrtDao, tahun, semester).execute(idBs).get();
+            return new getListDsrtByIdBsAsync(dsrtDao).execute(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -830,23 +813,25 @@ public class Repository {
         private String tahun;
         private int semester;
 
-        public getListDsrtByIdBsStatusLwAsync(DsrtDao dsrtDao,String tahun, int semester) {
+        public getListDsrtByIdBsStatusLwAsync(DsrtDao dsrtDao) {
             this.dsrtDao = dsrtDao;
-            this.tahun = tahun;
-            this.semester = semester;
         }
 
         @Override
         protected List<Dsrt> doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int status = (int) objects[1];
-            return dsrtDao.getListDsrtByIdBsStatusLw(idBs, status, tahun, semester);
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return dsrtDao.getListDsrtByIdBsStatusLw(status, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
         }
     }
-
-    public List<Dsrt> getListDsrtByIdBsStatusLw(String idBs, int status, String tahun, int semester) {
+    public List<Dsrt> getListDsrtByIdBsStatusLw(int status_pencacahan, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
         try {
-            return new getListDsrtByIdBsStatusLwAsync(dsrtDao, tahun, semester).execute(idBs, status).get();
+            return new getListDsrtByIdBsStatusLwAsync(dsrtDao).execute(status_pencacahan, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -865,17 +850,20 @@ public class Repository {
 
         @Override
         protected List<Dsrt> doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int status = (int) objects[1];
-            String tahun = (String) objects[2];
-            int semester = (int) objects[3];
-            return dsrtDao.getListDsrtByIdBsStatusUp(idBs, status, tahun, semester);
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return dsrtDao.getListDsrtByIdBsStatusUp(status, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
         }
     }
 
-    public List<Dsrt> getListDsrtByIdBsStatusUp(String idBs, int status, String tahun, int semester) {
+    public List<Dsrt> getListDsrtByIdBsStatusUp(int status_pencacahan, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
         try {
-            return new getListDsrtByIdBsStatusUpAsync(dsrtDao).execute(idBs, status, tahun, semester).get();
+            return new getListDsrtByIdBsStatusUpAsync(dsrtDao).execute(status_pencacahan, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -890,14 +878,40 @@ public class Repository {
     }
 
     // get live data dsrt by idbs
-    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String idBs, String tahun, int semester ) {
-        return dsrtDao.getLiveDsrtByIdBs(idBs,tahun,semester);
+    public LiveData<List<Dsrt>> getLiveDataDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs ) {
+        return dsrtDao.getLiveDsrtByIdBs(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
     // get live data dsrt
     public LiveData<List<Dsrt>> getLiveDataDsrt(String tahun, int semester){
         return dsrtDao.getDsrtLive(tahun, semester);
     }
+
+    public LiveData<List<Foto>> getLiveDataFotoByIdBs(String idBs, String tahun, int semester ) {
+        return fotoDao.getLiveDataFotoByIdBs(idBs,tahun,semester);
+    }
+
+
+    private static class updateStatusFotoAsync extends AsyncTask<Object, Void, Void>{
+        private FotoDao fotoDao;
+
+        public updateStatusFotoAsync(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+            int idDsrt = (int) objects[0];
+            int statusPencacahan = (int) objects[1];
+            fotoDao.updateStatusFoto(idDsrt, statusPencacahan);
+            return null;
+        }
+    }
+
+    public void updateStatusFoto(int idDsrt, int status){
+        new updateStatusFotoAsync(fotoDao).execute(idDsrt, status);
+    }
+
 
     // get dsrt by id
     private static class getDsrtByIdAsync extends AsyncTask<Integer, Void, Dsrt> {
@@ -906,7 +920,6 @@ public class Repository {
         public getDsrtByIdAsync(DsrtDao dsrtDao) {
             this.dsrtDao = dsrtDao;
         }
-
         @Override
         protected Dsrt doInBackground(Integer... integers) {
             return dsrtDao.getDsrtById(integers[0]);
@@ -924,6 +937,29 @@ public class Repository {
         return null;
     }
 
+//    private static class getDsrtFotoAsycn extends AsyncTask<Integer, Void, Dsrt> {
+//        private DsrtDao dsrtDao;
+//
+//        public getDsrtFotoAsycn(DsrtDao dsrtDao) {
+//            this.dsrtDao = dsrtDao;
+//        }
+//        @Override
+//        protected Dsrt doInBackground(Integer... integers) {
+//            return dsrtDao.getfotobyid(integers[0]);
+//        }
+//    }
+//    public Dsrt getDsrtFoto(Integer idDsrt) {
+//        try {
+//            return new getDsrtFotoAsycn(dsrtDao).execute(idDsrt).get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
+
     // get dsrt by id bs and nu rt
     private static class getDsrtByIdBsNuRTAsync extends AsyncTask<Object, Void, Dsrt> {
         private DsrtDao dsrtDao;
@@ -934,17 +970,20 @@ public class Repository {
 
         @Override
         protected Dsrt doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            String tahun = (String) objects[1];
-            int semester = (int) objects[2] ;
-            int nuRt = (int) objects[3];
-            return dsrtDao.getDsrtByIdBSNuRt(idBs,  tahun, semester , nuRt);
+            String tahun = (String) objects[0];
+            int semester = (int) objects[1] ;
+            String kd_kab = (String) objects[2];
+            String kd_kec = (String) objects[3];
+            String kd_desa = (String) objects[4];
+            String kd_bs = (String) objects[5];
+            int nu_rt = (int) objects[6];
+            return dsrtDao.getDsrtByIdBSNuRt(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt);
         }
     }
 
-    public Dsrt getDsrtByIdBsNuRt(String idBs, String tahun, int semester, int nuRt) {
+    public Dsrt getDsrtByIdBsNuRt(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt) {
         try {
-            return new getDsrtByIdBsNuRTAsync(dsrtDao).execute(idBs, tahun, semester, nuRt).get();
+            return new getDsrtByIdBsNuRTAsync(dsrtDao).execute(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -954,25 +993,25 @@ public class Repository {
     }
 
     // update foto rumah
-    private static class updateFotoRumahAsync extends AsyncTask<Object, Void, Void>{
-        private DsrtDao dsrtDao;
+//    private static class updateFotoRumahAsync extends AsyncTask<Object, Void, Void>{
+//        private DsrtDao dsrtDao;
+//
+//        public updateFotoRumahAsync(DsrtDao dsrtDao) {
+//            this.dsrtDao = dsrtDao;
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Object... objects) {
+//            int idDsrt = (int) objects[0];
+//            byte[] fileFoto = (byte[]) objects[1];
+//            dsrtDao.updateFotoRumah(idDsrt, fileFoto);
+//            return null;
+//        }
+//    }
 
-        public updateFotoRumahAsync(DsrtDao dsrtDao) {
-            this.dsrtDao = dsrtDao;
-        }
-
-        @Override
-        protected Void doInBackground(Object... objects) {
-            int idDsrt = (int) objects[0];
-            byte[] fileFoto = (byte[]) objects[1];
-            dsrtDao.updateFotoRumah(idDsrt, fileFoto);
-            return null;
-        }
-    }
-
-    public void updateFotoRumah(int idDsrt, byte[] fileFoto){
-        new updateFotoRumahAsync(dsrtDao).execute(idDsrt, fileFoto);
-    }
+//    public void updateFotoRumah(int idDsrt, byte[] fileFoto){
+//        new updateFotoRumahAsync(dsrtDao).execute(idDsrt, fileFoto);
+//    }
 
     // update status pencacahan
     private static class updateStatusPencacahanAsync extends AsyncTask<Object, Void, Void>{
@@ -1016,16 +1055,15 @@ public class Repository {
             String latitude = (String) objects[8];
             String longitude = (String) objects[9];
             String durasi = (String) objects[10];
-            byte[] fileFoto = (byte[]) objects[11];
-            int statusPencacahan = (int) objects[12];
-            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
+            int statusPencacahan = (int) objects[11];
+            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, statusPencacahan);
             return null;
         }
     }
 
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, byte[] fileFoto, int statusPencacahan){
-        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, fileFoto, statusPencacahan);
+            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, int statusPencacahan){
+        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, statusPencacahan);
     }
 
     // update pemeriksaan pcl
@@ -1470,15 +1508,19 @@ public class Repository {
 
         @Override
         protected Integer doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int nuRt = (int) objects[1];
-
-            return laporan212Dao.deleteLaporan(idBs, nuRt);
+            String tahun = (String) objects[0];
+            int semester = (int) objects[1];
+            String kd_kab = (String) objects[2];
+            String kd_kec = (String) objects[3];
+            String kd_desa = (String) objects[4];
+            String kd_bs = (String) objects[5];
+            int nuRT = (int) objects[6];
+            return laporan212Dao.deleteLaporan(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nuRT);
         }
     }
 
-    public void deleteLaporan(String idBs, int nuRt){
-        new deleteLaporanAsync(laporan212Dao).execute(idBs,nuRt);
+    public void deleteLaporan(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nuRT){
+        new deleteLaporanAsync(laporan212Dao).execute(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nuRT);
     }
 
     // update status pencacahan
@@ -1491,16 +1533,21 @@ public class Repository {
 
         @Override
         protected Void doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int nuRT = (int) objects[1];
-            int status = (int) objects[2];
-            laporan212Dao.updateStatus(idBs, nuRT, status);
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            int nuRT = (int) objects[7];
+            laporan212Dao.updateStatus(status, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nuRT);
             return null;
         }
     }
 
-    public void updateStatusLaporan(String idBs, int nuRt, int status){
-        new updateStatusLaporanAsync(laporan212Dao).execute(idBs, nuRt, status);
+    public void updateStatusLaporan(int status, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nuRT){
+        new updateStatusLaporanAsync(laporan212Dao).execute(status,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nuRT);
     }
 
     // get list laporan by id bs and status
@@ -1511,18 +1558,22 @@ public class Repository {
             this.laporan212Dao = laporan212Dao;
         }
 
-
         @Override
         protected List<Laporan212> doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int status = (int) objects[1];
-            return laporan212Dao.getListLaporan212ByIdBsStatus(idBs,status);
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return laporan212Dao.getListLaporan212ByIdBsStatus(status,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
         }
     }
 
-    public List<Laporan212> getLaporanByIdBsStatus(String idBs, int status){
+    public List<Laporan212> getLaporanByIdBsStatus(int status, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs){
         try {
-            return new getListLaporanByIdBsStatusAsync(laporan212Dao).execute(idBs, status).get();
+            return new getListLaporanByIdBsStatusAsync(laporan212Dao).execute(status,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -1553,11 +1604,14 @@ public class Repository {
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
                             Laporan212 laporan212 = new Laporan212(
-                                    ob.getString("id_bs"),
-                                    ob.getString("nks"),
                                     ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("kd_bs"),
                                     ob.getInt("nu_rt"),
+                                    ob.getString("nks"),
                                     ob.getString("nama_krt"),
                                     ob.getString("pengawas"),
                                     ob.getString("tanggal"),
@@ -1617,15 +1671,20 @@ public class Repository {
         }
         @Override
         protected List<Laporan212> doInBackground(Object... objects) {
-            String idBs = (String) objects[0];
-            int status = (int) objects[1];
-            return laporan212Dao.getListLaporan212ByIdBsStatusUp(idBs,status);
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return laporan212Dao.getListLaporan212ByIdBsStatusUp(status,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
         }
     }
 
-    public List<Laporan212> getLaporanByIdBsStatusUp(String idBs, int status){
+    public List<Laporan212> getLaporanByIdBsStatusUp(int status, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs){
         try {
-            return new getListLaporanByIdBsStatusUpAsync(laporan212Dao).execute(idBs, status).get();
+            return new getListLaporanByIdBsStatusUpAsync(laporan212Dao).execute(status,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -1760,6 +1819,7 @@ public class Repository {
         arrayPeriode = periodeList.toArray(arrayPeriode);
         new insertPeriodeListAsync(periodeDao).execute(arrayPeriode);
     }
+
     private static class insertPeriodeListAsync extends AsyncTask<Periode, Void, Void> {
         private PeriodeDao periodeDao;
         public insertPeriodeListAsync(PeriodeDao periodeDao) {
@@ -1771,6 +1831,7 @@ public class Repository {
             return null;
         }
     }
+
     public List<Periode> getPeriode() {
         try {
             return new getperiodeAsync(periodeDao).execute().get();
@@ -1781,6 +1842,7 @@ public class Repository {
         }
         return null;
     }
+
     private static class getperiodeAsync extends AsyncTask<Object, Void, List<Periode>>{
         private PeriodeDao periodeDao;
         public getperiodeAsync(PeriodeDao periodeDao){
@@ -1791,12 +1853,14 @@ public class Repository {
             return periodeDao.getPeriode();
         }
     }
+
     public void insertDsartList(List<Dsart> dsartList) {
         Dsart[] dsarts = new Dsart[dsartList.size()];
         dsarts = dsartList.toArray(dsarts);
         //asynctask
         new insertDsartListAsync(dsartDao).execute(dsarts);
     }
+
     private static class insertDsartListAsync extends AsyncTask<Dsart, Void, Void> {
         private DsartDao dsartDao;
         public insertDsartListAsync(DsartDao dsartDao) {
@@ -1808,44 +1872,52 @@ public class Repository {
             return null;
         }
     }
+
     private static class nukeDsartbyIdAsync extends AsyncTask<Void, Void, Integer> {
         private DsartDao dsartDao;
-        String id_bs, tahun;
+        String kd_kab, kd_kec, kd_desa, kd_bs, tahun;
         int semester, nu_rt;
-        public nukeDsartbyIdAsync(DsartDao dsartDao, String id_bs, String tahun, int semester, int nu_rt) {
-            this.dsartDao = dsartDao;
-            this.id_bs=id_bs;
+        public nukeDsartbyIdAsync(DsartDao dsartDao, String tahun, int semester,
+                                  String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt){
             this.tahun =tahun;
             this.semester = semester;
+            this.kd_kab=kd_kab;
+            this.kd_kec=kd_kec;
+            this.kd_desa=kd_desa;
+            this.kd_bs=kd_bs;
             this.nu_rt = nu_rt;
         }
         @Override
         protected Integer doInBackground(Void... voids) {
-            return dsartDao.nukeDsartbyid(id_bs, tahun, semester, nu_rt);
+            return dsartDao.nukeDsartbyid(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt);
         }
     }
-    public void nukeDsartbyId(String id_bs, String tahun, int semester, int nu_rt) {
-        new nukeDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute();
+    public void nukeDsartbyId(String tahun, int semester,String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt) {
+        new nukeDsartbyIdAsync(dsartDao, tahun, semester, kd_kab,kd_kec, kd_desa, kd_bs, nu_rt).execute();
     }
     private static class getDsartbyIdAsync extends AsyncTask<Void, Void, List<Dsart>>{
         private DsartDao dsartDao;
-        String id_bs, tahun;
+        String kd_kab, kd_kec, kd_desa, kd_bs, tahun;
         int semester, nu_rt;
-        public getDsartbyIdAsync(DsartDao dsartDao,String id_bs, String tahun, int semester, int nu_rt){
+        public getDsartbyIdAsync(DsartDao dsartDao, String tahun, int semester, String kd_kab,
+                                 String kd_kec, String kd_desa, String kd_bs, int nu_rt){
             this.dsartDao = dsartDao;
-            this.id_bs=id_bs;
             this.tahun =tahun;
             this.semester = semester;
+            this.kd_kab=kd_kab;
+            this.kd_kec=kd_kec;
+            this.kd_desa=kd_desa;
+            this.kd_bs=kd_bs;
             this.nu_rt = nu_rt;
         }
         @Override
         protected List<Dsart> doInBackground(Void... voids) {
-            return dsartDao.getDsartListbyid(id_bs, tahun, semester, nu_rt);
+            return dsartDao.getDsartListbyid(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt);
         }
     }
-    public List<Dsart> getDsartbyId(String id_bs, String tahun, int semester, int nu_rt){
+    public List<Dsart> getDsartbyId(String tahun, int semester, String kd_kab,String kd_kec, String kd_desa, String kd_bs,  int nu_rt){
         try {
-            return new getDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute().get();
+            return new getDsartbyIdAsync(dsartDao, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt).execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -1854,32 +1926,32 @@ public class Repository {
         return null;
     }
 
-    private static class getDsartlamabyIdAsync extends AsyncTask<Void, Void, List<Dsart>>{
-        private DsartDao dsartDao;
-        String id_bs, tahun;
-        int semester, nu_rt;
-        public getDsartlamabyIdAsync(DsartDao dsartDao,String id_bs, String tahun, int semester, int nu_rt){
-            this.dsartDao = dsartDao;
-            this.id_bs=id_bs;
-            this.tahun =tahun;
-            this.semester = semester;
-            this.nu_rt = nu_rt;
-        }
-        @Override
-        protected List<Dsart> doInBackground(Void... voids) {
-            return dsartDao.getDsartListbyid(id_bs, tahun, semester, nu_rt);
-        }
-    }
-    public List<Dsart> getDsartlamabyId(String id_bs, String tahun, int semester, int nu_rt){
-        try {
-            return new getDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    private static class getDsartlamabyIdAsync extends AsyncTask<Void, Void, List<Dsart>>{
+//        private DsartDao dsartDao;
+//        String id_bs, tahun;
+//        int semester, nu_rt;
+//        public getDsartlamabyIdAsync(DsartDao dsartDao,String id_bs, String tahun, int semester, int nu_rt){
+//            this.dsartDao = dsartDao;
+//            this.id_bs=id_bs;
+//            this.tahun =tahun;
+//            this.semester = semester;
+//            this.nu_rt = nu_rt;
+//        }
+//        @Override
+//        protected List<Dsart> doInBackground(Void... voids) {
+//            return dsartDao.getDsartListbyid(id_bs, tahun, semester, nu_rt);
+//        }
+//    }
+//    public List<Dsart> getDsartlamabyId(String id_bs, String tahun, int semester, int nu_rt){
+//        try {
+//            return new getDsartbyIdAsync(dsartDao, id_bs, tahun, semester, nu_rt).execute().get();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
     public void getDsartPclFromAPI(Context context, String email, String token) {
@@ -1901,13 +1973,15 @@ public class Repository {
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
                             Dsart dsart = new Dsart(
-                                    ob.getString("id_bs"),
-                                    ob.getString("kd_kab"),
-                                    ob.getString("nks"),
                                     ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("kd_bs"),
                                     ob.getInt("nu_rt"),
                                     ob.getInt("nu_art"),
+                                    ob.getString("nks"),
                                     ob.getString("nama_art"),
                                     ob.getString("pekerjaan"),
                                     ob.getString("pendapatan"),
@@ -1952,13 +2026,15 @@ public class Repository {
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
                             Dsart dsart = new Dsart(
-                                    ob.getString("id_bs"),
-                                    ob.getString("kd_kab"),
-                                    ob.getString("nks"),
                                     ob.getString("tahun"),
                                     ob.getInt("semester"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("kd_bs"),
                                     ob.getInt("nu_rt"),
                                     ob.getInt("nu_art"),
+                                    ob.getString("nks"),
                                     ob.getString("nama_art"),
                                     ob.getString("pekerjaan"),
                                     ob.getString("pendapatan"),

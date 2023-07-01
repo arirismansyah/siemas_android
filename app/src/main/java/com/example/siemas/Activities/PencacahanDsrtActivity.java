@@ -23,6 +23,10 @@ import java.util.List;
 
 public class PencacahanDsrtActivity extends AppCompatActivity {
     public static final String EXTRA_ID_BS = "com.example.siemas.Activities.EXTRA_ID_BS";
+    public static final String EXTRA_KD_KAB = "com.example.siemas.Activities.EXTRA_KD_KAB";
+    public static final String EXTRA_KD_KEC = "com.example.siemas.Activities.EXTRA_KD_KEC";
+    public static final String EXTRA_KD_DESA = "com.example.siemas.Activities.EXTRA_KD_DESA";
+    public static final String EXTRA_KD_BS = "com.example.siemas.Activities.EXTRA_KD_BS";
     private RecyclerView recyclerView;
     private ViewModel viewModel;
     private DsrtPencacahanAdapter dsrtPencacahanAdapter;
@@ -47,10 +51,18 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
         periodeList = viewModel.getPeriode();
         String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
-        dsrtPencacahanAdapter = new DsrtPencacahanAdapter();
+        dsrtPencacahanAdapter = new DsrtPencacahanAdapter(viewModel);
         recyclerView.setAdapter(dsrtPencacahanAdapter);
-
-        viewModel.getLiveDataDsrtByIdBs(idBs,periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(this, new Observer<List<Dsrt>>() {
+//        List<Dsrt> dsrts = viewModel.getLiveDataDsrtByIdBs(idBs,periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+//        if (dsrts.size() > 0) {
+//            containerEmpty.setVisibility(View.GONE);
+//            recyclerView.setVisibility(View.VISIBLE);
+//        } else {
+//            containerEmpty.setVisibility(View.VISIBLE);
+//            recyclerView.setVisibility(View.GONE);
+//        }
+//        dsrtPencacahanAdapter.setListDsrt(dsrts);
+        viewModel.getLiveDataDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), EXTRA_KD_KAB, EXTRA_KD_KEC, EXTRA_KD_KEC, EXTRA_ID_BS).observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
 
@@ -68,14 +80,13 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
         dsrtPencacahanAdapter.setOnItemClickListener(new DsrtPencacahanAdapter.onItemCLickListener() {
             @Override
             public void onItemClick(Dsrt dsrt) {
-
                 if (dsrt.getStatus_pencacahan()==0){
                     Intent intent = new Intent(PencacahanDsrtActivity.this, InputPencacahanActivity.class);
                     intent.putExtra(InputPencacahanActivity.EXTRA_ID_KAB, dsrt.getKd_kab());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NKS, dsrt.getNks());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId_bs());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_cacah());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
                     intent.putExtra(InputPencacahanActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
                     startActivityForResult(intent,1);
@@ -84,8 +95,8 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
                     intent.putExtra(InputPencacahanActivity.EXTRA_ID_KAB, dsrt.getKd_kab());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NKS, dsrt.getNks());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt());
-                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId_bs());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_cacah());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId());
                     intent.putExtra(InputPencacahanActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
                     intent.putExtra(InputPencacahanActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
                     startActivityForResult(intent,1);

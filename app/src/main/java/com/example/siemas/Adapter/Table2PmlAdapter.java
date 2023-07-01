@@ -42,11 +42,11 @@ public class Table2PmlAdapter extends RecyclerView.Adapter<Table2PmlAdapter.View
         if (dsbsList != null && dsbsList.size()>0){
             Dsbs dsbsCurrent = dsbsList.get(position);
             periodeList = viewModel.getPeriode();
-            dsrtList = viewModel.getListDsrtByIdBs(dsbsCurrent.getId_bs(),periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
-            laporanEntriList = viewModel.getListLaporanByIdBsStatusUp(dsbsCurrent.getId_bs(), 0);
-            laporanUploadList = viewModel.getListLaporanByIdBsStatus(dsbsCurrent.getId_bs(), 2);
+            dsrtList = viewModel.getListDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(),dsbsCurrent.getKd_kab(), dsbsCurrent.getKd_kec(),dsbsCurrent.getKd_desa(),dsbsCurrent.getKd_bs());
+            laporanEntriList = viewModel.getListLaporanByIdBsStatusUp(0,  periodeList.get(0).getTahun(), periodeList.get(0).getSemester(),dsbsCurrent.getKd_kab(), dsbsCurrent.getKd_kec(),dsbsCurrent.getKd_desa(),dsbsCurrent.getKd_bs());
+            laporanUploadList = viewModel.getListLaporanByIdBsStatus( 2, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), dsbsCurrent.getKd_kab(), dsbsCurrent.getKd_kec(),dsbsCurrent.getKd_desa(),dsbsCurrent.getKd_bs());
 
-            holder.tvNbs.setText(dsbsCurrent.getId_bs());
+            holder.tvNbs.setText("16"+dsbsCurrent.getKd_kab()+ dsbsCurrent.getKd_kec()+dsbsCurrent.getKd_desa()+dsbsCurrent.getKd_bs());
             holder.tvTarget.setText(String.valueOf(dsrtList.size()));
             holder.tvEntri.setText(String.valueOf(laporanEntriList.size()));
             holder.tvUpload.setText(String.valueOf(laporanUploadList.size()));

@@ -40,7 +40,10 @@ import java.util.Locale;
 
 public class InputPemeriksaanPclActivity extends AppCompatActivity {
     public static final String EXTRA_ID_DSRT = "com.example.siemas.Activities.EXTRA_ID_DSRT";
-    public static final String EXTRA_ID_KAB = "com.example.siemas.Activities.EXTRA_ID_KAB";
+    public static final String EXTRA_KD_KAB = "com.example.siemas.Activities.EXTRA_KD_KAB";
+    public static final String EXTRA_KD_KEC = "com.example.siemas.Activities.EXTRA_KD_KEC";
+    public static final String EXTRA_KD_DESA = "com.example.siemas.Activities.EXTRA_KD_DESA";
+    public static final String EXTRA_KD_BS = "com.example.siemas.Activities.EXTRA_KD_BS";
     public static final String EXTRA_NAMA_KAB = "com.example.siemas.Activities.EXTRA_NAMA_KAB";
     public static final String EXTRA_NKS = "com.example.siemas.Activities.EXTRA_NKS";
     public static final String EXTRA_NAMA_KRT = "com.example.siemas.Activities.EXTRA_NAMA_KRT";
@@ -132,14 +135,14 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         tiNks.setText(dsrt.getNks());
         tiNuRt.setText(String.valueOf(dsrt.getNu_rt()));
 
-        if (!dsrt.getNama_krt2().isEmpty() && !dsrt.getNama_krt2().equals("null")) {
-            tiNamaKrt.setText(dsrt.getNama_krt2());
+        if (!dsrt.getNama_krt_cacah().isEmpty() && !dsrt.getNama_krt_cacah().equals("null")) {
+            tiNamaKrt.setText(dsrt.getNama_krt_cacah());
         } else {
-            tiNamaKrt.setText(dsrt.getNama_krt());
+            tiNamaKrt.setText(dsrt.getNama_krt_prelist());
         }
 
         // set jumlah art
-        tiJmlArt.setText(String.valueOf(dsrt.getJml_art2()));
+        tiJmlArt.setText(String.valueOf(dsrt.getJml_art_cacah()));
 
         String jml_komMakananval = String.valueOf(dsrt.getJml_komoditas_makanan());
         if (!jml_komMakananval.isEmpty() && !jml_komMakananval.equals("null")){
@@ -311,7 +314,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.dssartrecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        inputPemeriksaanPCLAdapter = new InputPemeriksaanPCLAdapter(viewModel, dsrt.getId_bs(), dsrt.getTahun(), dsrt.getSemester(), dsrt.getNu_rt());
+        inputPemeriksaanPCLAdapter = new InputPemeriksaanPCLAdapter(viewModel, dsrt.getTahun(), dsrt.getSemester(), dsrt.getKd_kab(), dsrt.getKd_kec(), dsrt.getKd_desa(), dsrt.getKd_bs(), dsrt.getNu_rt());
         recyclerView.setAdapter(inputPemeriksaanPCLAdapter);
         // batal btn
         batalBtn.setOnClickListener(new View.OnClickListener() {

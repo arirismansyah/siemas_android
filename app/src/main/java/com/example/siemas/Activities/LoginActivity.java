@@ -171,14 +171,10 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject objectRole = new JSONObject(strRole2);
                                 User user = new User(
                                         Integer.parseInt(objectUser.getString("id")),
-                                        objectUser.getString("username"),
                                         objectUser.getString("email"),
                                         objectUser.getString("name"),
-                                        objectUser.getString("kd_wilayah"),
+                                        objectUser.getString("kd_kab"),
                                         objectUser.getString("nama_kab"),
-                                        objectUser.getString("pengawas"),
-                                        objectUser.getString("alamat"),
-                                        objectUser.getString("no_hp"),
                                         objectRole.getString("name"),
                                         objectUser.getString("token")
                                 );

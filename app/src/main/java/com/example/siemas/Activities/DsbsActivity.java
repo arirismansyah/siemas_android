@@ -57,7 +57,7 @@ public class DsbsActivity extends AppCompatActivity {
 
         tvKdProv.setText("[16]");
         tvNamaProv.setText("Sumatera Selatan");
-        tvKdKab.setText("["+user.getKd_wilayah()+"]");
+        tvKdKab.setText("["+user.getKd_kab()+"]");
         tvNamaKab.setText(user.getNama_kab());
 
         recyclerView = findViewById(R.id.recyclerTable);
@@ -91,11 +91,8 @@ public class DsbsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (user.getRole().equals("PENCACAH")){
                     viewModel.getDsrtPclFromApi(DsbsActivity.this, user.getEmail(), user.getToken());
-
                 }
-
                 if (user.getRole().equals("PENGAWAS")){
-
                 }
             }
         });
