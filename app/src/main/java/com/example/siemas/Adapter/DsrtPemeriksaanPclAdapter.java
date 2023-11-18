@@ -227,10 +227,11 @@ public class DsrtPemeriksaanPclAdapter extends RecyclerView.Adapter<DsrtPemeriks
                             progressDialog.show();
 
                             user = viewModel.getUser().get(0);
+                            Log.d("DSRT",dsrt.toString());
                             JsonElement dsrtJson = new Gson().toJsonTree(dsrt);
 
                             InterfaceApi interfaceApi = RetrofitClientInstance.getClient().create(InterfaceApi.class);
-
+                            Log.d("DSRT", dsrtJson.toString());
                             Call<ResponseBody> call = interfaceApi.updateDsrt(dsrtJson.toString(), "Bearer " + user.getToken());
                             call.enqueue(new Callback<ResponseBody>() {
                                 @Override

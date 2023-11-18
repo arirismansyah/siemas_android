@@ -24,9 +24,9 @@ public class Foto {
     @Nullable
     public String kd_desa;
 
-    @ColumnInfo(name = "id_bs")
+    @ColumnInfo(name = "kd_bs")
     @Nullable
-    public String id_bs;
+    public String kd_bs;
 
     @ColumnInfo(name = "nks")
     @Nullable
@@ -49,12 +49,12 @@ public class Foto {
     @Nullable
     public byte[] foto;
 
-    public Foto(int id, @Nullable String kd_kab, @Nullable String kd_kec, @Nullable String kd_desa, @Nullable String id_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_foto, @Nullable byte[] foto) {
+    public Foto(int id, @Nullable String kd_kab, @Nullable String kd_kec, @Nullable String kd_desa, @Nullable String kd_bs, @Nullable String nks, String tahun, int semester, int nu_rt, int status_foto, @Nullable byte[] foto) {
         this.id = id;
         this.kd_kab = kd_kab;
         this.kd_kec = kd_kec;
         this.kd_desa = kd_desa;
-        this.id_bs = id_bs;
+        this.kd_bs = kd_bs;
         this.nks = nks;
         this.tahun = tahun;
         this.semester = semester;
@@ -99,12 +99,12 @@ public class Foto {
     }
 
     @Nullable
-    public String getId_bs() {
-        return id_bs;
+    public String getKd_bs() {
+        return kd_bs;
     }
 
-    public void setId_bs(@Nullable String id_bs) {
-        this.id_bs = id_bs;
+    public void setKd_bs(@Nullable String kd_bs) {
+        this.kd_bs = kd_bs;
     }
 
     @Nullable

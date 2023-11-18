@@ -439,7 +439,7 @@ public class Repository {
                     if (message.equals("success")) {
                         JSONArray joArray = new JSONArray(jo.getString("body"));
                         ArrayList<Dsrt> dsrtList = new ArrayList<Dsrt>(joArray.length());
-
+                        ArrayList<Foto> fotoList = new ArrayList<Foto>(joArray.length());
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
 
@@ -477,20 +477,17 @@ public class Repository {
                             if (!ob.getString("gsmp").equals("null")) {
                                 gsmp = ob.getInt("gsmp");
                             }
-                            int status_res = 0 ;
-                            if (!ob.getString("status_res").equals("null")) {
-                                gsmp = ob.getInt("status_res");
-                            }
+
                             int jml_komoditas_makanan = 0 ;
                             if (!ob.getString("jml_komoditas_makanan").equals("null")) {
-                                gsmp = ob.getInt("jml_komoditas_makanan");
+                                jml_komoditas_makanan = ob.getInt("jml_komoditas_makanan");
                             }
                             int jml_komoditas_nonmakanan = 0 ;
                             if (!ob.getString("jml_komoditas_nonmakanan").equals("null")) {
-                                gsmp = ob.getInt("jml_komoditas_nonmakanan");
+                                jml_komoditas_nonmakanan = ob.getInt("jml_komoditas_nonmakanan");
                             }
 
-                            byte [] foto = new byte[0];
+                            byte [] fotobyte = new byte[0];
                             Dsrt dsrt = new Dsrt(
                                     ob.getInt("id"),
                                     ob.getString("tahun"),
@@ -536,9 +533,33 @@ public class Repository {
                                     ob.getString("pencacah"),
                                     ob.getString("pengawas")
                             );
+
+                            int status_foto = 0 ;
+                            if (!ob.getString("foto").equals("null")) {
+                                status_foto = 2;
+                            }
+                            Foto foto = new Foto(
+                                    ob.getInt("id"),
+                                    ob.getString("kd_kab"),
+                                    ob.getString("kd_kec"),
+                                    ob.getString("kd_desa"),
+                                    ob.getString("kd_bs"),
+                                    ob.getString("nks"),
+                                    ob.getString("tahun"),
+                                    ob.getInt("semester"),
+                                    ob.getInt("nu_rt"),
+                                    status_foto,
+                                    fotobyte
+                            );
+
                             dsrtList.add(dsrt);
+
+                            fotoList.add(foto);
                         }
                         insertDsrtList(dsrtList);
+                        insertFotoList(fotoList);
+                        Toast.makeText(context, "Sync DSRT Success", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
                     } else {
                         Toast.makeText(context, "Ada kesalahan di server", Toast.LENGTH_SHORT).show();
                         pd.dismiss();
@@ -546,10 +567,7 @@ public class Repository {
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(context, "Sync DSRT Success", Toast.LENGTH_SHORT).show();
-                pd.dismiss();
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(context, t.toString(), Toast.LENGTH_SHORT).show();
@@ -706,20 +724,38 @@ public class Repository {
         new insertDsrtListAsync(dsrtDao).execute(arrayDsrt);
     }
 
+
     private static class insertDsrtListAsync extends AsyncTask<Dsrt, Void, Void> {
         private DsrtDao dsrtDao;
-
         public insertDsrtListAsync(DsrtDao dsrtDao) {
             this.dsrtDao = dsrtDao;
         }
-
         @Override
         protected Void doInBackground(Dsrt... dsrts) {
             dsrtDao.insertListDsrt(Arrays.asList(dsrts));
             return null;
         }
-
     }
+
+    public void insertFotoList(List<Foto> fotoList) {
+        Foto[] arrayFoto = new Foto[fotoList.size()];
+        arrayFoto = fotoList.toArray(arrayFoto);
+        //asynctask
+        new insertFotoListAsync(fotoDao).execute(arrayFoto);
+    }
+
+    private static class insertFotoListAsync extends AsyncTask<Foto, Void, Void> {
+        private FotoDao fotoDao;
+        public insertFotoListAsync(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
+        @Override
+        protected Void doInBackground(Foto... fotos) {
+            fotoDao.insertListFoto(Arrays.asList(fotos));
+            return null;
+        }
+    }
+
 
     // get list dsrt
     public static class getListDsrt extends AsyncTask<Void, Void, List<Dsrt>> {

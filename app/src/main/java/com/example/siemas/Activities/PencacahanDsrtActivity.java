@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.siemas.Adapter.DsrtPencacahanAdapter;
@@ -62,10 +63,14 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
 //            recyclerView.setVisibility(View.GONE);
 //        }
 //        dsrtPencacahanAdapter.setListDsrt(dsrts);
-        viewModel.getLiveDataDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), EXTRA_KD_KAB, EXTRA_KD_KEC, EXTRA_KD_KEC, EXTRA_ID_BS).observe(this, new Observer<List<Dsrt>>() {
+        String kd_kab = this.getIntent().getStringExtra(EXTRA_KD_KAB);
+        String kd_kec = this.getIntent().getStringExtra(EXTRA_KD_KEC);
+        String kd_desa = this.getIntent().getStringExtra(EXTRA_KD_DESA);
+        String kd_bs = this.getIntent().getStringExtra(EXTRA_KD_BS);
+
+        viewModel.getLiveDataDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), kd_kab, kd_kec, kd_desa, kd_bs).observe(this, new Observer<List<Dsrt>>() {
             @Override
             public void onChanged(List<Dsrt> dsrts) {
-
                 if (dsrts.size()>0){
                     containerEmpty.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);

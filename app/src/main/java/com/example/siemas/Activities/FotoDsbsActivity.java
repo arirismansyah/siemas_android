@@ -35,7 +35,7 @@ public class FotoDsbsActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.foto_dsbs_activity);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("MENU FOTO");
+        myToolbar.setTitle("MENU FOTO - DSBS");
         setSupportActionBar(myToolbar);
         containerEmpty = findViewById(R.id.emptyPictContainer);
         recyclerView = findViewById(R.id.recyclerFotoDsbs);

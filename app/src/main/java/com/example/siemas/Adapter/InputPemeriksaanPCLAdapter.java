@@ -60,6 +60,7 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
             Dsart currentdsart = dsartList.get(position);
             holder.namaArtTextListener.updatePosition(holder.getAdapterPosition());
 //            holder.pendapatanTextListener.updatePosition(holder.getAdapterPosition());
+
             holder.pendapatanART.addTextChangedListener(new TextWatcher() {
                 private String setEditRupiah = holder.pendapatanART.getText().toString().trim();
                 @Override
@@ -85,14 +86,15 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
                     }
                 }
             });
+            if (currentdsart != null && currentdsart.getPendapatan() != null && !currentdsart.getPendapatan().isEmpty() && !currentdsart.getPendapatan().equals("null")) {
+                holder.pendapatanART.setText(currentdsart.getPendapatan());
+            }
             holder.nuART.setText(Integer.toString(currentdsart.getNu_art()));
             holder.namaART.setText(currentdsart.getNama_art());
             holder.pendidikanART.setSelection(spinnerIjazahAdapter.getPosition(currentdsart.getPendidikan()));
             holder.pekerjaanART.setSelection(spinnerKegiatanAdapter.getPosition(currentdsart.getPekerjaan()));
 //            holder.pendapatanART.setText(currentdsart.getPendapatan());
-            if (!currentdsart.getPendapatan().isEmpty() && !currentdsart.getPendapatan().equals("null")) {
-                holder.pendapatanART.setText(currentdsart.getPendapatan());
-            }
+
 //            this.pos = holder.getAdapterPosition();
             holder.pendidikanART.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -118,6 +120,7 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
     public int getItemCount() {
         return dsartList.size();
     }
+
     public void setListDsArt(List<Dsart> dsartList) {
         this.dsartList = dsartList;
         notifyDataSetChanged();
