@@ -1,12 +1,20 @@
 package com.example.siemas.Adapter;
 
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +28,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.siemas.Activities.FotoDsrtActivity;
@@ -38,8 +48,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -51,12 +64,25 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHolder> {
+    private ViewModel viewModel;
+    private Activity mActivity;
+
     private List<Foto> fotoList = new ArrayList<>();
     private onItemCLickListener listener;
-    private ViewModel viewModel;
+    private AppCompatButton galleryBtn, cameraBtn;
+    private Dialog getFotoDialog;
 
-    public FotoDsrtAdapter(ViewModel viewModel) {
+    String currentPhotoPath;
+    public static final int CAMERA = 1;
+    static final int GALLERY_REQUEST_CODE = 2;
+    File photoFile = null;
+    public Uri imageUri;
+
+    public int fotoid;
+
+    public FotoDsrtAdapter(ViewModel viewModel, Activity activity) {
         this.viewModel = viewModel;
+        this.mActivity = activity;
     }
 
     @NonNull
@@ -70,7 +96,6 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Foto currentFoto = fotoList.get(position);
         holder.foto = currentFoto;
-
         Dsrt dsrt = viewModel.getDsrtById(currentFoto.getId());
 
         if (!dsrt.getNama_krt_cacah().isEmpty() && !dsrt.getNama_krt_cacah().equals("null")) {
@@ -121,6 +146,7 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
         private User user;
 
         public ViewHolder(@NonNull View itemView) {
+
             super(itemView);
             tvNks = itemView.findViewById(R.id.nks);
             tvNuRt = itemView.findViewById(R.id.nuRt);
@@ -138,7 +164,67 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
                     }
                 }
             });
-
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    int position = getAdapterPosition();
+//                    if (listener != null && position != RecyclerView.NO_POSITION) {
+//                        listener.onItemClick(fotoList.get(position));
+//                        Log.d("fotoDsrtAdapter", "onclick");
+//                        getFotoDialog = new Dialog(itemView.getContext());
+//                        getFotoDialog.setContentView(R.layout.getfoto_dialog);
+//                        getFotoDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                        galleryBtn = getFotoDialog.findViewById(R.id.galleryBtn);
+//                        cameraBtn = getFotoDialog.findViewById(R.id.cameraBtn);
+//
+//                        cameraBtn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                getFotoDialog.dismiss();
+//                                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                                if (takePictureIntent.resolveActivity(view.getContext().getPackageManager()) != null) {
+//                                    try {
+//                                        photoFile = createImageFile();
+//                                    } catch (IOException ex) {
+//                                        ex.printStackTrace();
+//                                    }
+//                                    if (photoFile != null) {
+//                                        String authorities = view.getContext().getPackageName() + ".fileprovider";
+//                                        imageUri = FileProvider.getUriForFile(view.getContext(), authorities, photoFile);
+//                                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//                                        // Menambahkan ID DSRT ke intent
+//                                        takePictureIntent.putExtra(FotoDsrtActivity.EXTRA_ID, foto.getId());
+////                                        Toast.makeText(itemView.getContext(), foto.getId(), Toast.LENGTH_SHORT);
+//                                        fotoid = foto.getId();
+//                                        mActivity.startActivityForResult(takePictureIntent, CAMERA);
+//                                    }
+//                                }
+//                            }
+//                        });
+//
+//                        galleryBtn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                getFotoDialog.dismiss();
+//                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                                intent.addFlags(FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+//                                intent.setType("image/*");
+//                                String[] mimeTypes = {"image/jpeg", "image/png"};
+//                                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+//                                // Menambahkan ID DSRT ke intent
+//                                intent.putExtra(FotoDsrtActivity.EXTRA_ID, foto.getId());
+////                                Toast.makeText(itemView.getContext(), foto.getId(), Toast.LENGTH_SHORT);
+////                                startActivityForResult(intent, GALLERY_REQUEST_CODE);
+//                                fotoid = foto.getId();
+//                                mActivity.startActivityForResult(intent, GALLERY_REQUEST_CODE);
+//                            }
+//                        });
+//
+//                        getFotoDialog.show();
+//                    }
+//                }
+//            });
             uploadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,11 +241,14 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
                         });
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         alertDialog.show();
-                    } else {
+
+                    }
+                    else {
                         boolean status_net = getConnectivityStatusString(itemView.getContext());
                         if (!status_net) {
                             Toast.makeText(itemView.getContext(), "Koneksi terputus, periksa koneksi internet anda.", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        else {
                             ProgressDialog progressDialog = new ProgressDialog(itemView.getContext());
                             progressDialog.setMessage("Mengirim Data");
                             progressDialog.show();
@@ -170,7 +259,8 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
 //                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
 //                            bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
                             try {
-                                imageBytes = compressImageToMaxSize(imageBytes, 30720);
+                                int maxSizeBytes = 1 * 1024 * 1024; // 5 MB
+                                imageBytes = compressImageToMaxSize(imageBytes, maxSizeBytes, 500,500);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
@@ -219,17 +309,17 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
         }
     }
 
-    public void setFotoList(List<Foto> fotoList) {
-        this.fotoList = fotoList;
-        notifyDataSetChanged();
-    }
-
     public interface onItemCLickListener {
         void onItemClick(Foto foto);
     }
 
     public void setOnItemClickListener(onItemCLickListener listener) {
         this.listener = listener;
+    }
+
+    public void setFotoList(List<Foto> fotoList) {
+        this.fotoList = fotoList;
+        notifyDataSetChanged();
     }
 
     public Boolean getConnectivityStatusString(Context context) {
@@ -254,19 +344,49 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
     public byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize) throws IOException {
         // Load the image into a Bitmap object
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
         // Convert the image to JPEG format with 80% quality
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-
         // Reduce the quality of the image until the size is less than or equal to the maximum size
         int quality = 80;
-        while (outputStream.toByteArray().length > maxSize) {
+        while (outputStream.toByteArray().length > maxSize & quality != 0) {
             quality -= 10;
             outputStream.reset();
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
         }
+        // Return the compressed image as byte array
+        return outputStream.toByteArray();
+    }
 
+    public byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize, int maxWidth, int maxHeight) throws IOException {
+        // Load the image into a Bitmap object
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        // Get the current dimensions of the bitmap
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        // Calculate the new dimensions to fit within the specified maxWidth and maxHeight
+        float aspectRatio = (float) width / height;
+        if (width > maxWidth || height > maxHeight) {
+            if (aspectRatio > 1) {
+                width = maxWidth;
+                height = (int) (width / aspectRatio);
+            } else {
+                height = maxHeight;
+                width = (int) (height * aspectRatio);
+            }
+        }
+        // Resize the bitmap to the new dimensions
+        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        // Convert the image to JPEG format with 80% quality
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+        // Reduce the quality of the image until the size is less than or equal to the maximum size
+        int quality = 80;
+        while (outputStream.toByteArray().length > maxSize && quality != 0) {
+            quality -= 10;
+            outputStream.reset();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+        }
         // Return the compressed image as byte array
         return outputStream.toByteArray();
     }

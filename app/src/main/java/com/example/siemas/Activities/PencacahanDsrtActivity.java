@@ -51,9 +51,10 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(ViewModel.class);
         periodeList = viewModel.getPeriode();
-        String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
         dsrtPencacahanAdapter = new DsrtPencacahanAdapter(viewModel);
         recyclerView.setAdapter(dsrtPencacahanAdapter);
+
+//        String idBs = this.getIntent().getStringExtra(EXTRA_ID_BS);
 //        List<Dsrt> dsrts = viewModel.getLiveDataDsrtByIdBs(idBs,periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
 //        if (dsrts.size() > 0) {
 //            containerEmpty.setVisibility(View.GONE);
@@ -63,6 +64,7 @@ public class PencacahanDsrtActivity extends AppCompatActivity {
 //            recyclerView.setVisibility(View.GONE);
 //        }
 //        dsrtPencacahanAdapter.setListDsrt(dsrts);
+
         String kd_kab = this.getIntent().getStringExtra(EXTRA_KD_KAB);
         String kd_kec = this.getIntent().getStringExtra(EXTRA_KD_KEC);
         String kd_desa = this.getIntent().getStringExtra(EXTRA_KD_DESA);

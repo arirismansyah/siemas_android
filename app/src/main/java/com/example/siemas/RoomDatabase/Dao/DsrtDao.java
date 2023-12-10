@@ -43,9 +43,6 @@ public interface DsrtDao {
     @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp  FROM dsrt WHERE  kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     List<Dsrt> getListDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
-//    @Query("UPDATE foto SET foto = :fileFoto WHERE id = :idDsrt")
-//    void updateFotoRumah(int idDsrt, byte[] fileFoto);
-
     @Query("UPDATE dsrt SET status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
     void updateStatusPencacahan(int idDsrt, int statusPencacahan);
 

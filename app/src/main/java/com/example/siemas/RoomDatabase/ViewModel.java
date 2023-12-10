@@ -84,8 +84,8 @@ public class ViewModel extends AndroidViewModel {
         return repository.getDsrtById(idDsrt);
     }
 
-    public LiveData<List<Foto>> getLiveDatafotobyIdbs(String idBs, String tahun, int semester) {
-        return repository.getLiveDataFotoByIdBs(idBs, tahun,semester);
+    public LiveData<List<Foto>> getLiveDatafotobyIdbs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
+        return repository.getLiveDataFotoByIdBs(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
     public LiveData<List<Dsbs>> getLiveDataDsbs(String tahun, int semester) {
@@ -104,10 +104,14 @@ public class ViewModel extends AndroidViewModel {
         return repository.getListDsrtByIdBsStatusUp(status_pencacahan,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
-    // update foto
-//    public void updateFotoRumah(int idDsrt, byte[] fileFoto) {
-//        repository.updateFotoRumah(idDsrt, fileFoto);
-//    }
+    public Foto getFotoById(Integer idDsrt) {
+        return repository.getFotoById(idDsrt);
+    }
+
+//     update foto
+    public void updateFotoRumah(int idDsrt, byte[] fileFoto) {
+        repository.updateFotoRumah(idDsrt, fileFoto);
+    }
 
     // update status pencacahan
     public void updateStatusPencacahan(int idDsrt, int statusPencacahan) {

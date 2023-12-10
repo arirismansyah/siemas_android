@@ -923,8 +923,8 @@ public class Repository {
         return dsrtDao.getDsrtLive(tahun, semester);
     }
 
-    public LiveData<List<Foto>> getLiveDataFotoByIdBs(String idBs, String tahun, int semester ) {
-        return fotoDao.getLiveDataFotoByIdBs(idBs,tahun,semester);
+    public LiveData<List<Foto>> getLiveDataFotoByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs ) {
+        return fotoDao.getLiveDataFotoByIdBs(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
 
@@ -973,27 +973,27 @@ public class Repository {
         return null;
     }
 
-//    private static class getDsrtFotoAsycn extends AsyncTask<Integer, Void, Dsrt> {
-//        private DsrtDao dsrtDao;
-//
-//        public getDsrtFotoAsycn(DsrtDao dsrtDao) {
-//            this.dsrtDao = dsrtDao;
-//        }
-//        @Override
-//        protected Dsrt doInBackground(Integer... integers) {
-//            return dsrtDao.getfotobyid(integers[0]);
-//        }
-//    }
-//    public Dsrt getDsrtFoto(Integer idDsrt) {
-//        try {
-//            return new getDsrtFotoAsycn(dsrtDao).execute(idDsrt).get();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    private static class getFotoByIdAsycn extends AsyncTask<Integer, Void, Foto> {
+        private FotoDao fotoDao;
+
+        public getFotoByIdAsycn(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
+        @Override
+        protected Foto doInBackground(Integer... integers) {
+            return fotoDao.getFotoById(integers[0]);
+        }
+    }
+    public Foto getFotoById(Integer idDsrt) {
+        try {
+            return new getFotoByIdAsycn(fotoDao).execute(idDsrt).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     // get dsrt by id bs and nu rt
@@ -1028,26 +1028,26 @@ public class Repository {
         return null;
     }
 
-    // update foto rumah
-//    private static class updateFotoRumahAsync extends AsyncTask<Object, Void, Void>{
+//     update foto rumah
+    private static class updateFotoRumahAsync extends AsyncTask<Object, Void, Void>{
 //        private DsrtDao dsrtDao;
-//
-//        public updateFotoRumahAsync(DsrtDao dsrtDao) {
-//            this.dsrtDao = dsrtDao;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Object... objects) {
-//            int idDsrt = (int) objects[0];
-//            byte[] fileFoto = (byte[]) objects[1];
-//            dsrtDao.updateFotoRumah(idDsrt, fileFoto);
-//            return null;
-//        }
-//    }
+        private FotoDao fotoDao;
+        public updateFotoRumahAsync(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
 
-//    public void updateFotoRumah(int idDsrt, byte[] fileFoto){
-//        new updateFotoRumahAsync(dsrtDao).execute(idDsrt, fileFoto);
-//    }
+        @Override
+        protected Void doInBackground(Object... objects) {
+            int idDsrt = (int) objects[0];
+            byte[] fileFoto = (byte[]) objects[1];
+            fotoDao.updateFotoRumah(idDsrt, fileFoto);
+            return null;
+        }
+    }
+
+    public void updateFotoRumah(int idDsrt, byte[] fileFoto){
+        new updateFotoRumahAsync(fotoDao).execute(idDsrt, fileFoto);
+    }
 
     // update status pencacahan
     private static class updateStatusPencacahanAsync extends AsyncTask<Object, Void, Void>{

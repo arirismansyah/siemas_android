@@ -99,6 +99,11 @@
             android:exported="false" />
         <activity
             android:name=".Activities.FotoDsrtActivity"
+            android:exported="false"
+            android:resizeableActivity="false"
+            />
+        <activity
+            android:name=".Activities.FotoInput"
             android:exported="false" />
         <activity
             android:name=".Activities.LoginActivity"

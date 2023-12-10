@@ -508,6 +508,11 @@ public class InputPencacahanActivity extends AppCompatActivity {
         spinnerStatusRumah.setAdapter(spinnerAdapter);
     }
 
+
+    // Register the permissions callback, which handles the user's response to the
+    // system permissions dialog. Save the return value, an instance of
+    // ActivityResultLauncher, as an instance variable.
+
 //    @SuppressLint("WrongConstant")
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -610,6 +615,29 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
         // Return the compressed image as byte array
         return outputStream.toByteArray();
+    }
+
+    private void checkAndRequestForPermission() {
+        if (ContextCompat.checkSelfPermission(
+                InputPencacahanActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+            }
+        } else {
+            openGallery();
+        }
+    }
+
+    private void openGallery() {
+        getFotoDialog.dismiss();
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
     private File createImageFile() throws IOException {

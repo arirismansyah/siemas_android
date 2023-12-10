@@ -35,7 +35,7 @@ import com.example.siemas.RoomDatabase.Entities.StatusRumah;
 import com.example.siemas.RoomDatabase.Entities.User;
 
 
-@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class, Periode.class, Dsart.class, Foto.class}, version = 15)
+@Database(entities = {User.class, Dsbs.class, Dsrt.class, StatusRumah.class, Pendidikan.class, Status.class, KegiatanUtama.class, Jadwal212.class, Laporan212.class, Periode.class, Dsart.class, Foto.class}, version = 15, exportSchema = false)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase localDatabase;
     public static final String databaseName = "siemas";

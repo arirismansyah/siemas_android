@@ -61,6 +61,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private InputPemeriksaanPCLAdapter inputPemeriksaanPCLAdapter;
     private String current = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

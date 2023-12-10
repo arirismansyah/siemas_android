@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Foto;
 
 import java.util.List;
@@ -23,10 +24,12 @@ public interface FotoDao {
     @Update(entity = Foto.class)
     void updateFoto(Foto foto);
 
-    @Query("SELECT * FROM Foto WHERE id_bs = :idbs AND tahun = :tahun AND semester = :semester")
-    LiveData<List<Foto>> getLiveDataFotoByIdBs(String idbs, String tahun, int semester);
+    @Query("SELECT * FROM Foto WHERE kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
+    LiveData<List<Foto>> getLiveDataFotoByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
     @Query("UPDATE foto SET status_foto = :status WHERE id = :idDsrt")
     void updateStatusFoto(int idDsrt, int status);
 
+    @Query("Select *  FROM foto WHERE id = :idDsrt")
+    Foto getFotoById(int idDsrt);
 }

@@ -63,7 +63,11 @@ public class FotoDsbsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(Dsbs dsbs) {
                 Intent intent = new Intent(FotoDsbsActivity.this, FotoDsrtActivity.class);
-                intent.putExtra(PencacahanDsrtActivity.EXTRA_ID_BS, "16"+ dsbs.getKd_kab() + dsbs.getKd_kec() + dsbs.getKd_desa() + dsbs.getKd_bs());
+                intent.putExtra(FotoDsrtActivity.EXTRA_ID_BS, "16"+ dsbs.getKd_kab() + dsbs.getKd_kec() + dsbs.getKd_desa() + dsbs.getKd_bs());
+                intent.putExtra(FotoDsrtActivity.EXTRA_KD_KAB, dsbs.getKd_kab());
+                intent.putExtra(FotoDsrtActivity.EXTRA_KD_KEC, dsbs.getKd_kec());
+                intent.putExtra(FotoDsrtActivity.EXTRA_KD_DESA, dsbs.getKd_desa());
+                intent.putExtra(FotoDsrtActivity.EXTRA_KD_BS, dsbs.getKd_bs());
                 startActivityForResult(intent,1);
             }
         });
