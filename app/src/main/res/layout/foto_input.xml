@@ -232,25 +232,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/batalbtn"
-                    android:padding="0dp"
-                    android:layout_width="90dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_button"
-                    android:backgroundTint="@color/dark"
-                    android:text="BATAL"
-                    android:textColor="@color/white"></androidx.appcompat.widget.AppCompatButton>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/simpanbtn"
+                    android:id="@+id/kembalibtn"
                     android:padding="0dp"
                     android:layout_width="90dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/bg_button"
                     android:backgroundTint="@color/orange"
-                    android:text="SIMPAN"
+                    android:text="KEMBALI"
                     android:textColor="@color/white"></androidx.appcompat.widget.AppCompatButton>
             </androidx.appcompat.widget.LinearLayoutCompat>
 

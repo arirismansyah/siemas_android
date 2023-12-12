@@ -76,7 +76,7 @@ public class FotoInput extends AppCompatActivity {
     private ViewModel viewModel;
     private ImageView mImageView;
     private Dialog getFotoDialog;
-    private AppCompatButton galleryBtn, cameraBtn, batalBtn, simpanBtn, getLocationBtn, getFotoBtn;
+    private AppCompatButton galleryBtn, cameraBtn, kembaliBtn, getLocationBtn, getFotoBtn;
     private Context mContext;
     String currentPhotoPath;
     File photoFile = null;
@@ -99,8 +99,7 @@ public class FotoInput extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
 
-        batalBtn = findViewById(R.id.batalbtn);
-        simpanBtn = findViewById(R.id.simpanbtn);
+        kembaliBtn = findViewById(R.id.kembalibtn);
         getFotoBtn = findViewById(R.id.getFotoBtn);
         mImageView = findViewById(R.id.ivFotoRumah);
         getFotoDialog = new Dialog(FotoInput.this);
@@ -121,16 +120,11 @@ public class FotoInput extends AppCompatActivity {
             }
         }
 
-        batalBtn.setOnClickListener(new View.OnClickListener() {
+
+        kembaliBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-        simpanBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 
