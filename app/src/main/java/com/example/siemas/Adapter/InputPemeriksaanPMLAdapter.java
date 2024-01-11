@@ -113,7 +113,7 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
                     holder.pendapatanART.setText(setEditRupiah);
                     holder.pendapatanART.setSelection(setEditRupiah.length());
                     holder.pendapatanART.addTextChangedListener( this);
-                    dsartList.get(holder.getAdapterPosition()).setPendapatan(s.toString());
+                    dsartList.get(holder.getAdapterPosition()).setPendapatan(setEditRupiah);
                 }
             }
         });
@@ -124,7 +124,7 @@ public class InputPemeriksaanPMLAdapter extends RecyclerView.Adapter<InputPemeri
             holder.namaARTlama.setText(currentdsartlama.getNama_art());
             holder.pendidikanARTlama.setText(currentdsartlama.getPendidikan());
             holder.pekerjaanARTlama.setText(currentdsartlama.getPekerjaan());
-            holder.pendapatanARTlama.setText(formatrupiah( Double.parseDouble(currentdsartlama.getPendapatan())));
+            holder.pendapatanARTlama.setText(currentdsartlama.getPendapatan());
 
         }catch (Exception e){e.printStackTrace();}
     }

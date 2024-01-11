@@ -82,7 +82,7 @@ public class InputPemeriksaanPCLAdapter extends RecyclerView.Adapter<InputPemeri
                         holder.pendapatanART.setText(setEditRupiah);
                         holder.pendapatanART.setSelection(setEditRupiah.length());
                         holder.pendapatanART.addTextChangedListener( this);
-                        dsartList.get(holder.getAdapterPosition()).setPendapatan(s.toString());
+                        dsartList.get(holder.getAdapterPosition()).setPendapatan(setEditRupiah);
                     }
                 }
             });

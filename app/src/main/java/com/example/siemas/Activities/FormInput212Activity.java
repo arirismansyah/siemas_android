@@ -82,7 +82,7 @@ public class FormInput212Activity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String idBs = spinnerBs.getSelectedItem().toString();
-                dsrtList = viewModel.getListDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(2,2), idBs.substring(4,3), idBs.substring(7,3), idBs.substring(10,4));
+                dsrtList = viewModel.getListDsrtByIdBs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(0,2), idBs.substring(2,5), idBs.substring(5,8), idBs.substring(8,12));
                 // mount spinner dsrt
                 List<String> nuRtList = new ArrayList<String>();
                 for (int j = 0; j < dsrtList.size(); j++) {
@@ -109,7 +109,7 @@ public class FormInput212Activity extends AppCompatActivity {
                 nuRtString = nuRtString.replace("]","");
                 int nuRT = Integer.parseInt(nuRtString);
                 tiNamaKrt.setText(arrayStr[1]);
-                dsrtSelected = viewModel.getDsrtByIdBsNuRt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(2,2), idBs.substring(4,3), idBs.substring(7,3), idBs.substring(10,4),  nuRT);
+                dsrtSelected = viewModel.getDsrtByIdBsNuRt(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), idBs.substring(0,2), idBs.substring(2,5), idBs.substring(5,8), idBs.substring(8,12),  nuRT);
             }
 
             @Override

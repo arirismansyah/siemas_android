@@ -209,7 +209,7 @@ public class MainActivityPML extends AppCompatActivity {
             calendar2.setTime(date1);
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
-            pendingIntent = PendingIntent.getBroadcast(this, idPending, intent, PendingIntent.FLAG_ONE_SHOT);
+            pendingIntent = PendingIntent.getBroadcast(this, idPending, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
             Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
         } catch (ParseException e) {

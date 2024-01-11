@@ -229,10 +229,10 @@ public class Repository {
                         ArrayList<Dsbs> dsbsList = new ArrayList<Dsbs>(joArray.length());
                         for (int i = 0; i < joArray.length(); i++) {
                             JSONObject ob = new JSONObject(joArray.get(i).toString());
-                            int status = 0;
-                            if (!ob.getString("status").equals("null")) {
-                                status = ob.getInt("status");
-                            }
+//                            int status = 0;
+//                            if (!ob.getString("status").equals("null")) {
+//                                status = ob.getInt("status");
+//                            }
                             Dsbs dsbs = new Dsbs(
                                     ob.getInt("id"),
                                     ob.getString("tahun"),
@@ -634,10 +634,10 @@ public class Repository {
                             if (!ob.getString("gsmp").equals("null")) {
                                 gsmp = ob.getInt("gsmp");
                             }
-                            int status_res = 0 ;
-                            if (!ob.getString("status_res").equals("null")) {
-                                gsmp = ob.getInt("status_res");
-                            }
+//                            int status_res = 0 ;
+//                            if (!ob.getString("status_res").equals("null")) {
+//                                gsmp = ob.getInt("status_res");
+//                            }
                             int jml_komoditas_makanan = 0 ;
                             if (!ob.getString("jml_komoditas_makanan").equals("null")) {
                                 jml_komoditas_makanan = ob.getInt("jml_komoditas_makanan");
