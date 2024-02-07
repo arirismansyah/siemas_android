@@ -199,7 +199,7 @@ public class DsrtDirektoriPclAdapter extends RecyclerView.Adapter<DsrtDirektoriP
                 public void onClick(View view) {
                     if (dsrt.getStatus_pencacahan() < 3) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
-                        alertDialogBuilder.setTitle("SIEMAS 2022");
+                        alertDialogBuilder.setTitle("SIEMAS 2024");
                         alertDialogBuilder.setMessage("Untuk dapat melakukan upload selesaikan input pencacahan & pemeriksaan terlebih dulu!");
                         alertDialogBuilder.setCancelable(false);
                         alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {

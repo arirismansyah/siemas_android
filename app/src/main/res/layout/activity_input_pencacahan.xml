@@ -333,6 +333,70 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
+                        android:text="Apakah menerima program Bantuan Sosial"
+                        android:textSize="16dp"
+                        android:textStyle="bold"></TextView>
+
+                    <RadioGroup
+                        android:id="@+id/rgBantuan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/radioBtnBantuanNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tidak">
+                        </RadioButton>
+
+                        <RadioButton
+                            android:id="@+id/radioBtnBantuanYa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ya">
+                        </RadioButton>
+
+                    </RadioGroup>
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yang diterima :"
+                            android:textColor="@color/black"
+                            >
+
+                        </TextView>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/input_bantuan_desk"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="misal: BPNT,PIP,PKH,BLT"
+                            android:maxLines="1"></com.google.android.material.textfield.TextInputEditText>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/bg_input_grey"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
                         android:text="Lokasi"
                         android:textSize="16dp"
                         android:textStyle="bold"></TextView>
@@ -414,6 +478,7 @@
             >
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"

@@ -109,7 +109,7 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
             namaPendidikan.add(pendidikanList.get(i).getPendidikan());
         }
 
-        ArrayAdapter<String> spinnerIjazahAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaPendidikan);
+        ArrayAdapter<String> spinnerIjazahAdapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, namaPendidikan);
         spinnerIjazahKrt.setAdapter(spinnerIjazahAdapter);
 
         // mount spinner kegiatan
@@ -375,18 +375,18 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
                 if (
                         (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
-                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
-                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
+//                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
+//                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5_bypml.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian8_3_bypml.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian304.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian305.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArtSekolah.getText())) &&
-                                (!TextUtils.isEmpty(tiJmlArtBpjs.getText())) &&
-                                (!TextUtils.isEmpty(tiDeskripsiUsaha.getText())) &&
-                                (!TextUtils.isEmpty(tiLuasLantai.getText()))
+                                (!TextUtils.isEmpty(tiRincian8_3_bypml.getText()))
+//                                (!TextUtils.isEmpty(tiRincian304.getText())) &&
+//                                (!TextUtils.isEmpty(tiRincian305.getText())) &&
+//                                (!TextUtils.isEmpty(tiJmlArtSekolah.getText())) &&
+//                                (!TextUtils.isEmpty(tiJmlArtBpjs.getText())) &&
+//                                (!TextUtils.isEmpty(tiDeskripsiUsaha.getText())) &&
+//                                (!TextUtils.isEmpty(tiLuasLantai.getText()))
                 ) {
 
                     String ijazah = spinnerIjazahKrt.getSelectedItem().toString();
@@ -396,24 +396,44 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
 
                     try {
 
+//                        viewModel.updatePemeriksaan(
+//                                dsrt.getId(),
+//                                tiNamaKrt.getText().toString(),
+//                                Integer.parseInt(tiJmlArt.getText().toString()),
+//                                Integer.parseInt(tijml_kom_makanan.getText().toString()),
+//                                Integer.parseInt(tijml_kom_nonmakanan.getText().toString()),
+//                                tiRincian16_5.getText().toString(),
+//                                tiRincian8_3.getText().toString(),
+//                                tiRincian16_5_bypml.getText().toString(),
+//                                tiRincian8_3_bypml.getText().toString(),
+//                                trasnportasi,
+//                                peliharaan,
+//                                Integer.parseInt(tiJmlArtSekolah.getText().toString()),
+//                                Integer.parseInt(tiJmlArtBpjs.getText().toString()),
+//                                ijazah,
+//                                kegiatan,
+//                                tiDeskripsiUsaha.getText().toString(),
+//                                Integer.parseInt(tiLuasLantai.getText().toString()),
+//                                5
+//                        );
                         viewModel.updatePemeriksaan(
                                 dsrt.getId(),
                                 tiNamaKrt.getText().toString(),
                                 Integer.parseInt(tiJmlArt.getText().toString()),
-                                Integer.parseInt(tijml_kom_makanan.getText().toString()),
-                                Integer.parseInt(tijml_kom_nonmakanan.getText().toString()),
+                                0,
+                                0,
                                 tiRincian16_5.getText().toString(),
                                 tiRincian8_3.getText().toString(),
                                 tiRincian16_5_bypml.getText().toString(),
                                 tiRincian8_3_bypml.getText().toString(),
-                                trasnportasi,
-                                peliharaan,
-                                Integer.parseInt(tiJmlArtSekolah.getText().toString()),
-                                Integer.parseInt(tiJmlArtBpjs.getText().toString()),
-                                ijazah,
-                                kegiatan,
-                                tiDeskripsiUsaha.getText().toString(),
-                                Integer.parseInt(tiLuasLantai.getText().toString()),
+                                "",
+                                "",
+                                0,
+                                0,
+                                "",
+                                "",
+                                "",
+                                0,
                                 5
                         );
 

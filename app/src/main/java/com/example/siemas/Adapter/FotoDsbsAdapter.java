@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
 import com.example.siemas.RoomDatabase.Entities.Dsrt;
+import com.example.siemas.RoomDatabase.Entities.Foto;
 import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.ViewModel;
 
@@ -22,8 +23,8 @@ public class FotoDsbsAdapter  extends RecyclerView.Adapter<FotoDsbsAdapter.ViewH
     private List<Dsbs> dsbsList = new ArrayList<>();
     private FotoDsbsAdapter.onItemCLickListener listener;
     private ViewModel viewModel;
-    private List<Dsrt> dsrtListBelum = new ArrayList<>();
-    private List<Dsrt> dsrtListSudah = new ArrayList<>();
+    private List<Foto> dsrtListBelum = new ArrayList<>();
+    private List<Foto> dsrtListSudah = new ArrayList<>();
     private List<Periode> periodeList;
 
     public FotoDsbsAdapter(ViewModel viewModel) {
@@ -50,8 +51,10 @@ public class FotoDsbsAdapter  extends RecyclerView.Adapter<FotoDsbsAdapter.ViewH
         holder.tvKdDesa.setText("["+currentDsbs.getKd_desa()+"]");
         holder.tvNamaDesa.setText(currentDsbs.getNama_desa());
         periodeList = viewModel.getPeriode();
-        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw(4, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
-        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp(3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+//        dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw(4, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+//        dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp(3, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+        dsrtListBelum = viewModel.getListDsrtByStatusFoto(0, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
+        dsrtListSudah = viewModel.getListDsrtByStatusFotoNot(0, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec() , currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
 
         holder.tvDsrtBelum.setText(String.valueOf(dsrtListBelum.size()));
         holder.tvDsrtSudah.setText(String.valueOf(dsrtListSudah.size()));

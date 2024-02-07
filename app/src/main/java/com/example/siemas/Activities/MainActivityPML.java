@@ -86,7 +86,7 @@ public class MainActivityPML extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivityPML.this);
-                alertDialogBuilder.setTitle("SIEMAS 2022");
+                alertDialogBuilder.setTitle("SIEMAS 2024");
                 alertDialogBuilder.setMessage("Anda yakin ingin logout? Data yang tersimpan di local akan terhapus.");
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
@@ -121,7 +121,7 @@ public class MainActivityPML extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivityPML.this);
-                alertDialogBuilder.setTitle("SIEMAS 2022");
+                alertDialogBuilder.setTitle("SIEMAS 2024");
                 alertDialogBuilder.setMessage("Anda yakin ingin melakukan Sync Data? Jika ini bukan pertama kali anda melakukan sync data, data yang tersimpan di local dan belum diupload akan terganti dengan data dari server.");
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
@@ -210,7 +210,13 @@ public class MainActivityPML extends AppCompatActivity {
             alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             pendingIntent = PendingIntent.getBroadcast(this, idPending, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
+                }
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
+            }
             Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
         } catch (ParseException e) {
             e.printStackTrace();

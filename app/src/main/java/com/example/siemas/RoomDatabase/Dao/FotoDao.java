@@ -32,4 +32,10 @@ public interface FotoDao {
 
     @Query("Select *  FROM foto WHERE id = :idDsrt")
     Foto getFotoById(int idDsrt);
+
+    @Query("Select id, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt, nks, status_foto  FROM foto WHERE status_foto = :status_foto AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
+    List<Foto> getListDsrtByStatusFoto(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
+
+    @Query("Select id, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs, nu_rt, nks, status_foto  FROM foto WHERE status_foto <> :status_foto AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
+    List<Foto> getListDsrtByStatusFotoNot(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 }

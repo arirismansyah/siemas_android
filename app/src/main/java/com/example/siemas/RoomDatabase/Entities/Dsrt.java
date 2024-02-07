@@ -141,6 +141,14 @@ public class Dsrt {
     @Nullable
     public String gsmp_desk;
 
+    @ColumnInfo(name = "bantuan")
+    @Nullable
+    public int bantuan;
+
+    @ColumnInfo(name = "bantuan_desk")
+    @Nullable
+    public String bantuan_desk;
+
     @ColumnInfo(name = "latitude")
     @Nullable
     public String latitude;
@@ -177,7 +185,7 @@ public class Dsrt {
     @Nullable
     public String pengawas;
 
-    public Dsrt(int id, String tahun, int semester, @Nullable String kd_kab, @Nullable String nama_kab, @Nullable String kd_kec, @Nullable String nama_kec, @Nullable String kd_desa, @Nullable String nama_desa, @Nullable String kd_bs, int nu_rt, @Nullable String nks, int status_pencacahan, @Nullable String nama_krt_prelist, int jml_art_prelist, @Nullable String nama_krt_cacah, int jml_art_cacah, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas) {
+    public Dsrt(int id, String tahun, int semester, @Nullable String kd_kab, @Nullable String nama_kab, @Nullable String kd_kec, @Nullable String nama_kec, @Nullable String kd_desa, @Nullable String nama_desa, @Nullable String kd_bs, int nu_rt, @Nullable String nks, int status_pencacahan, @Nullable String nama_krt_prelist, int jml_art_prelist, @Nullable String nama_krt_cacah, int jml_art_cacah, @Nullable String status_rumah, int jml_komoditas_makanan, int jml_komoditas_nonmakanan, @Nullable String makanan_sebulan, @Nullable String nonmakanan_sebulan, @Nullable String makanan_sebulan_bypml, @Nullable String nonmakanan_sebulan_bypml, @Nullable String transportasi, @Nullable String peliharaan, int art_sekolah, int art_bpjs, @Nullable String ijazah_krt, @Nullable String kegiatan_seminggu, @Nullable String deskripsi_kegiatan, int luas_lantai, int gsmp, @Nullable String gsmp_desk, int bantuan, @Nullable String bantuan_desk, @Nullable String latitude, @Nullable String longitude, @Nullable String latitude_selesai, @Nullable String longitude_selesai, @Nullable String jam_mulai, @Nullable String jam_selesai, @Nullable String durasi_pencacahan, @Nullable String pencacah, @Nullable String pengawas) {
         this.id = id;
         this.tahun = tahun;
         this.semester = semester;
@@ -212,6 +220,8 @@ public class Dsrt {
         this.luas_lantai = luas_lantai;
         this.gsmp = gsmp;
         this.gsmp_desk = gsmp_desk;
+        this.bantuan = bantuan;
+        this.bantuan_desk = bantuan_desk;
         this.latitude = latitude;
         this.longitude = longitude;
         this.latitude_selesai = latitude_selesai;
@@ -503,8 +513,16 @@ public class Dsrt {
         return gsmp;
     }
 
+    public int getBantuan() {
+        return bantuan;
+    }
+
     public void setGsmp(int gsmp) {
         this.gsmp = gsmp;
+    }
+
+    public void setBantuan(int bantuan) {
+        this.bantuan = bantuan;
     }
 
     @Nullable
@@ -512,8 +530,17 @@ public class Dsrt {
         return gsmp_desk;
     }
 
+    @Nullable
+    public String getBantuan_desk() {
+        return bantuan_desk;
+    }
+
     public void setGsmp_desk(@Nullable String gsmp_desk) {
         this.gsmp_desk = gsmp_desk;
+    }
+
+    public void setBantuan_desk(@Nullable String bantuan_desk) {
+        this.bantuan_desk = bantuan_desk;
     }
 
     @Nullable

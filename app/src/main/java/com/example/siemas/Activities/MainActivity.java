@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-                alertDialogBuilder.setTitle("SIEMAS 2022");
+                alertDialogBuilder.setTitle("SIEMAS 2024");
                 alertDialogBuilder.setMessage("Anda yakin ingin logout? Data yang tersimpan di local akan terhapus.");
                 alertDialogBuilder.setCancelable(false);
                 alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {

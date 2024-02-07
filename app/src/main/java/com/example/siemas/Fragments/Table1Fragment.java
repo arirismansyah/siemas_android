@@ -55,23 +55,23 @@ public class Table1Fragment extends Fragment {
         recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView1.setHasFixedSize(true);
 
-        recyclerView2 = view.findViewById(R.id.recyclerTable1Pemeriksaan);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView2.setHasFixedSize(true);
+//        recyclerView2 = view.findViewById(R.id.recyclerTable1Pemeriksaan);
+//        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        recyclerView2.setHasFixedSize(true);
 
 
         viewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())).get(ViewModel.class);
         periodeList = viewModel.getPeriode();
         table1PencacahanAdapter = new Table1PencacahanAdapter(viewModel);
-        table1PemeriksaanAdapter = new Table1PemeriksaanAdapter(viewModel);
+//        table1PemeriksaanAdapter = new Table1PemeriksaanAdapter(viewModel);
 
         recyclerView1.setAdapter(table1PencacahanAdapter);
-        recyclerView2.setAdapter(table1PemeriksaanAdapter);
+//        recyclerView2.setAdapter(table1PemeriksaanAdapter);
 
         viewModel.getLiveDataDsbs(periodeList.get(0).getTahun(), periodeList.get(0).getSemester()).observe(getActivity(), new Observer<List<Dsbs>>() {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
-                table1PemeriksaanAdapter.setListDsbs(dsbs);
+//                table1PemeriksaanAdapter.setListDsbs(dsbs);
                 table1PencacahanAdapter.setListDsbs(dsbs);
             }
         });

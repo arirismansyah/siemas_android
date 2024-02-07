@@ -110,7 +110,7 @@ public class FotoInput extends AppCompatActivity {
 
         foto = viewModel.getFotoById(Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID)));
 
-        if (foto.getFoto() != null && !foto.getFoto().equals("null")) {
+        if (foto.getFoto() != null) {
             try {
                 imageBytes = foto.getFoto();
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -191,7 +191,7 @@ public class FotoInput extends AppCompatActivity {
                     bos.write(b, 0, bytesRead);
                 }
                 imageBytes = bos.toByteArray();
-                imageBytes = compressImageToMaxSize(imageBytes, 30720);
+                imageBytes = compressImageToMaxSize(imageBytes, 1024 * 1024);
                 bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -225,7 +225,7 @@ public class FotoInput extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(imageUri);
                 imageBytes = IOUtils.toByteArray(inputStream);
                 try {
-                    imageBytes = compressImageToMaxSize(imageBytes, 30720 );
+                    imageBytes = compressImageToMaxSize(imageBytes, 1024 * 1024 );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -274,22 +274,52 @@ public class FotoInput extends AppCompatActivity {
         return imageFile;
     }
 
-    public static byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize) throws IOException {
+    public byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize) throws IOException {
         // Load the image into a Bitmap object
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
         // Convert the image to JPEG format with 80% quality
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
-
         // Reduce the quality of the image until the size is less than or equal to the maximum size
         int quality = 80;
-        while (outputStream.toByteArray().length > maxSize && quality == 0) {
-
+        while (outputStream.toByteArray().length > maxSize & quality != 0) {
+            quality -= 10;
             outputStream.reset();
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
         }
+        // Return the compressed image as byte array
+        return outputStream.toByteArray();
+    }
 
+    public byte[] compressImageToMaxSize(byte[] imageBytes, int maxSize, int maxWidth, int maxHeight) throws IOException {
+        // Load the image into a Bitmap object
+        Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        // Get the current dimensions of the bitmap
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        // Calculate the new dimensions to fit within the specified maxWidth and maxHeight
+        float aspectRatio = (float) width / height;
+        if (width > maxWidth || height > maxHeight) {
+            if (aspectRatio > 1) {
+                width = maxWidth;
+                height = (int) (width / aspectRatio);
+            } else {
+                height = maxHeight;
+                width = (int) (height * aspectRatio);
+            }
+        }
+        // Resize the bitmap to the new dimensions
+        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+        // Convert the image to JPEG format with 80% quality
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+        // Reduce the quality of the image until the size is less than or equal to the maximum size
+        int quality = 80;
+        while (outputStream.toByteArray().length > maxSize && quality != 0) {
+            quality -= 10;
+            outputStream.reset();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+        }
         // Return the compressed image as byte array
         return outputStream.toByteArray();
     }

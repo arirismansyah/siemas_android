@@ -36,7 +36,7 @@ public class PemeriksaanPclActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("MENU PEMERIKSAAN");
+        myToolbar.setTitle("MENU UPLOAD");
         setSupportActionBar(myToolbar);
 
         containerEmpty = findViewById(R.id.emptyPictContainer);

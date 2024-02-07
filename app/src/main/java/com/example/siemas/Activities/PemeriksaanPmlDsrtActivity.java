@@ -88,7 +88,7 @@ public class PemeriksaanPmlDsrtActivity extends AppCompatActivity {
             public void onItemClick(Dsrt dsrt) {
                 if (dsrt.getStatus_pencacahan()<4){
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PemeriksaanPmlDsrtActivity.this);
-                    alertDialogBuilder.setTitle("SIEMAS 2022");
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
                     alertDialogBuilder.setMessage("PCL harus melakukan input pada menu pencacahan & pemeriksaan terlebih dahulu (menyelesaikan pencacahan & pemeriksaan) dan upload data untuk Rumah Tangga ini. Minta PCL untuk upload data kemudian lakukan Sync Data kembali sebelum melakukan input pemeriksaan.");
                     alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {

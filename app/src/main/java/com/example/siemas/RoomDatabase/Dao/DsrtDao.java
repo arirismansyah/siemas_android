@@ -18,29 +18,29 @@ public interface DsrtDao {
     @Insert(entity = Dsrt.class, onConflict = OnConflictStrategy.REPLACE)
     void insertListDsrt(List<Dsrt> listDsrt);
 
-    @Query("Select id, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nks, tahun, semester, nu_rt, nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah,jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai,gsmp " +
+    @Query("Select id, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nks, tahun, semester, nu_rt, nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah,jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai,gsmp,bantuan " +
             "FROM dsrt WHERE tahun = :tahun AND semester = :semester ")
     LiveData<List<Dsrt>> getDsrtLive(String tahun, int semester);
 
     @Query("Select *  FROM dsrt WHERE id = :idDsrt")
     Dsrt getDsrtById(int idDsrt);
 
-    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp  FROM dsrt  WHERE tahun = :tahun AND semester = :semester ORDER BY nu_rt")
+    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt  WHERE tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     List<Dsrt> getDsrtList(String tahun, int semester);
 
     @Query("Select *  FROM dsrt WHERE tahun = :tahun AND semester = :semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND nu_rt = :nu_rt")
     Dsrt getDsrtByIdBSNuRt(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt);
 
-    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp  FROM dsrt WHERE status_pencacahan < :status_pencacahan AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
+    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt WHERE status_pencacahan < :status_pencacahan AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
     List<Dsrt> getListDsrtByIdBsStatusLw(int status_pencacahan, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
-    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp  FROM dsrt WHERE status_pencacahan > :status_pencacahan AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
+    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt WHERE status_pencacahan > :status_pencacahan AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
     List<Dsrt> getListDsrtByIdBsStatusUp(int status_pencacahan, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
     @Query("Select *  FROM dsrt WHERE  kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     LiveData<List<Dsrt>> getLiveDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
-    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp  FROM dsrt WHERE  kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
+    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt WHERE  kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester ORDER BY nu_rt")
     List<Dsrt> getListDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 
     @Query("UPDATE dsrt SET status_pencacahan = :statusPencacahan WHERE id = :idDsrt")
@@ -54,12 +54,14 @@ public interface DsrtDao {
             "nonmakanan_sebulan = :nonMakananSebulan, " +
             "gsmp = :gsmp," +
             "gsmp_desk = :gsmp_desk," +
+            "bantuan = :bantuan," +
+            "bantuan_desk = :bantuan_desk," +
             "latitude = :latitude," +
             "longitude = :longitude," +
             "durasi_pencachan = :durasi," +
             "status_pencacahan = :statusPencacahan " +
             "WHERE id = :idDsrt")
-    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp, String gsmp_desk, String latitude, String longitude, String durasi, int statusPencacahan);
+    void updatePencacahan(int idDsrt, String namaKrt, int jmlKrt, String statusRumah, String makananSebulan, String nonMakananSebulan, int gsmp, String gsmp_desk, int bantuan, String bantuan_desk, String latitude, String longitude, String durasi, int statusPencacahan);
 
     @Query("UPDATE dsrt SET " +
             "latitude_selesai = :latitudea_selesai, " +

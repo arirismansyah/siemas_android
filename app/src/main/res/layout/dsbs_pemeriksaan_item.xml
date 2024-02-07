@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
-                        android:text="DSRT Belum Diperiksa:"
+                        android:text="DSRT Belum Diupload:"
                         android:textSize="12sp"
                         android:textStyle="bold"></TextView>
 
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
-                        android:text="DSRT Sudah Diperiksa:"
+                        android:text="DSRT Sudah Diupload:"
                         android:textSize="12sp"
                         android:textStyle="bold"></TextView>
 

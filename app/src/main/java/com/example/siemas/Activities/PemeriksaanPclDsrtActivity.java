@@ -46,7 +46,7 @@ public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        myToolbar.setTitle("MENU PEMERIKSAAN - DSRT");
+        myToolbar.setTitle("MENU UPLOAD - DSRT");
         setSupportActionBar(myToolbar);
 
         containerEmpty = findViewById(R.id.emptyPictContainer);
@@ -90,8 +90,9 @@ public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
             public void onItemClick(Dsrt dsrt) {
                 if (dsrt.getStatus_pencacahan() < 1) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PemeriksaanPclDsrtActivity.this);
-                    alertDialogBuilder.setTitle("SIEMAS 2022");
-                    alertDialogBuilder.setMessage("Anda harus melakukan input pada menu pencacahan terlebih dahulu (menyelesaikan pencacahan) untuk Rumah Tangga ini sebelum melakukan input pemeriksaan.");
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
+//                    alertDialogBuilder.setMessage("Anda harus melakukan input pada menu pencacahan terlebih dahulu (menyelesaikan pencacahan) untuk Rumah Tangga ini sebelum melakukan input pemeriksaan.");
+                    alertDialogBuilder.setMessage("Anda harus melakukan input pada menu pencacahan terlebih dahulu (menyelesaikan pencacahan) untuk Rumah Tangga ini.");
                     alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
@@ -101,19 +102,28 @@ public class PemeriksaanPclDsrtActivity extends AppCompatActivity {
                     alertDialog.show();
                 } else {
 
-                    Intent intent = new Intent(PemeriksaanPclDsrtActivity.this, InputPemeriksaanPclActivity.class);
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KAB, dsrt.getKd_kab());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KEC, dsrt.getKd_kec());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_DESA, dsrt.getKd_desa());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_BS, dsrt.getKd_bs());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NKS, dsrt.getNks());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_prelist());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_BS, "16"+ dsrt.getKd_kab()+dsrt.getKd_kec()+dsrt.getKd_desa()+dsrt.getKd_bs());
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
-                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
-                    startActivityForResult(intent, 1);
+//                    Intent intent = new Intent(PemeriksaanPclDsrtActivity.this, InputPemeriksaanPclActivity.class);
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KAB, dsrt.getKd_kab());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_KEC, dsrt.getKd_kec());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_DESA, dsrt.getKd_desa());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_KD_BS, dsrt.getKd_bs());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NKS, dsrt.getNks());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_prelist());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_BS, "16"+ dsrt.getKd_kab()+dsrt.getKd_kec()+dsrt.getKd_desa()+dsrt.getKd_bs());
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
+//                    intent.putExtra(InputPemeriksaanPclActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
+//                    startActivityForResult(intent, 1);
 
+                    Intent intent = new Intent(PemeriksaanPclDsrtActivity.this, EditPencacahanActivity.class);
+                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_KAB, dsrt.getKd_kab());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KAB, dsrt.getNama_kab());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NKS, dsrt.getNks());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NAMA_KRT, dsrt.getNama_krt_cacah());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_BS, dsrt.getId());
+                    intent.putExtra(InputPencacahanActivity.EXTRA_NU_RT, String.valueOf(dsrt.getNu_rt()));
+                    intent.putExtra(InputPencacahanActivity.EXTRA_ID_DSRT, String.valueOf(dsrt.getId()));
+                    startActivityForResult(intent,1);
 
                 }
             }

@@ -206,7 +206,7 @@ public class DsrtPemeriksaanPclAdapter extends RecyclerView.Adapter<DsrtPemeriks
                 public void onClick(View view) {
                     if (dsrt.getStatus_pencacahan() < 3) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
-                        alertDialogBuilder.setTitle("SIEMAS 2022");
+                        alertDialogBuilder.setTitle("SIEMAS 2024");
                         alertDialogBuilder.setMessage("Untuk dapat melakukan upload selesaikan input pemeriksaan terlebih dulu!");
                         alertDialogBuilder.setCancelable(false);
                         alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -266,48 +266,48 @@ public class DsrtPemeriksaanPclAdapter extends RecyclerView.Adapter<DsrtPemeriks
                                 }
                             });
 
-                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getTahun(), dsrt.getSemester(), dsrt.getKd_kab(), dsrt.getKd_kec(), dsrt.getKd_desa(), dsrt.getKd_bs(), dsrt.getNu_rt());
-                            for (Dsart dsart : dsartList) {
-                                progressDialog.setMessage("Mengirim Data ART");
-                                progressDialog.show();
-                                JsonElement dsartJson = new Gson().toJsonTree(dsart);
-                                Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(), "Bearer " + user.getToken());
-                                calldsart.enqueue(new Callback<ResponseBody>() {
-                                    @Override
-                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                        if (response.code() == 200) {
-                                            try {
-                                                String result = response.body().string();
-                                                JSONObject jo = new JSONObject(result);
-                                                String message = jo.getString("message");
-                                                if (message.equals("success")) {
-                                                    progressDialog.dismiss();
-                                                    Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
-
-                                                } else {
-                                                    progressDialog.dismiss();
-                                                    Toast toast = Toast.makeText(itemView.getContext(),
-                                                            jo.getString("message"),
-                                                            Toast.LENGTH_SHORT);
-                                                    toast.show();
-                                                }
-                                            } catch (JSONException | IOException e) {
-                                                progressDialog.dismiss();
-                                                e.printStackTrace();
-                                            }
-                                        } else {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+//                            List<Dsart> dsartList = viewModel.getDsartbyId(dsrt.getTahun(), dsrt.getSemester(), dsrt.getKd_kab(), dsrt.getKd_kec(), dsrt.getKd_desa(), dsrt.getKd_bs(), dsrt.getNu_rt());
+//                            for (Dsart dsart : dsartList) {
+//                                progressDialog.setMessage("Mengirim Data ART");
+//                                progressDialog.show();
+//                                JsonElement dsartJson = new Gson().toJsonTree(dsart);
+//                                Call<ResponseBody> calldsart = interfaceApi.updateDsart(dsartJson.toString(), "Bearer " + user.getToken());
+//                                calldsart.enqueue(new Callback<ResponseBody>() {
+//                                    @Override
+//                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                                        if (response.code() == 200) {
+//                                            try {
+//                                                String result = response.body().string();
+//                                                JSONObject jo = new JSONObject(result);
+//                                                String message = jo.getString("message");
+//                                                if (message.equals("success")) {
+//                                                    progressDialog.dismiss();
+//                                                    Toast.makeText(itemView.getContext(), "Data ART berhasil dikirim", Toast.LENGTH_SHORT).show();
+//
+//                                                } else {
+//                                                    progressDialog.dismiss();
+//                                                    Toast toast = Toast.makeText(itemView.getContext(),
+//                                                            jo.getString("message"),
+//                                                            Toast.LENGTH_SHORT);
+//                                                    toast.show();
+//                                                }
+//                                            } catch (JSONException | IOException e) {
+//                                                progressDialog.dismiss();
+//                                                e.printStackTrace();
+//                                            }
+//                                        } else {
+//                                            progressDialog.dismiss();
+//                                            Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                                        progressDialog.dismiss();
+//                                        Toast.makeText(itemView.getContext(), "Ada kesalahan ART di server", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//                            }
                         }
                     }
                 }

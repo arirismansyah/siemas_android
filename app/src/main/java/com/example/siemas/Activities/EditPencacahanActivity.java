@@ -120,10 +120,10 @@ public class EditPencacahanActivity extends AppCompatActivity {
     private double currentLongitude;
     private String lokasi = "";
 
-    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk;
+    private TextInputEditText tiKdKab, tinamaKab, tiNks, tiNuRt, tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk, tibantuandesk;
     private Spinner spinnerStatusRumah;
-    private RadioButton rbGsmpYa, rbGsmpNo;
-    private RadioGroup rgGsmp;
+    private RadioButton rbGsmpYa, rbGsmpNo, rbBantuanYa, rbBantuanNo;
+    private RadioGroup rgGsmp, rgBantuan;
     private AppCompatButton batalBtn, simpanBtn, getLocationBtn, getFotoBtn;
     private ViewModel viewModel;
     TextView timerText;
@@ -160,6 +160,9 @@ public class EditPencacahanActivity extends AppCompatActivity {
         rgGsmp = findViewById(R.id.rgGsmp);
         rbGsmpYa = findViewById(R.id.radioBtnGsmpYa);
         rbGsmpNo = findViewById(R.id.radioBtnGsmpNo);
+        rgBantuan = findViewById(R.id.rgBantuan);
+        rbBantuanYa = findViewById(R.id.radioBtnBantuanYa);
+        rbBantuanNo = findViewById(R.id.radioBtnBantuanNo);
         simpanBtn = findViewById(R.id.simpanPencacahanDsrt);
         getLocationBtn = findViewById(R.id.getLocationBtn);
         tiKoordinat = findViewById(R.id.inputLocation);
@@ -167,6 +170,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
         batalBtn = findViewById(R.id.batalPencacahanDsrt);
         mImageView = findViewById(R.id.ivFotoRumah);
         tigsmpdesk = findViewById(R.id.input_gsmp_desk);
+        tibantuandesk = findViewById(R.id.input_bantuan_desk);
 
         iddsrt = Integer.parseInt(this.getIntent().getStringExtra(EXTRA_ID_DSRT));
 
@@ -184,7 +188,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
             namaStatusRumah.add(statusRumahList.get(i).getStatus_rumah());
         }
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaStatusRumah);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, namaStatusRumah);
         spinnerStatusRumah.setAdapter(spinnerAdapter);
 
         // setting value
@@ -278,6 +282,17 @@ public class EditPencacahanActivity extends AppCompatActivity {
         }
         tigsmpdesk.setText(dsrt.getGsmp_desk());
 
+        // set bantuan
+        int bantuanVal = dsrt.getBantuan();
+        if (bantuanVal == 0) {
+            rbBantuanNo.setChecked(true);
+            rbBantuanYa.setChecked(false);
+        } else {
+            rbBantuanYa.setChecked(true);
+            rbBantuanNo.setChecked(false);
+        }
+        tibantuandesk.setText(dsrt.getBantuan_desk());
+
         // set koordinat
         if (dsrt.getLatitude() != null && !dsrt.getLatitude().equals("null")) {
             currentLatitude = Double.parseDouble(dsrt.getLatitude());
@@ -363,17 +378,25 @@ public class EditPencacahanActivity extends AppCompatActivity {
                 if (rgGsmp.getCheckedRadioButtonId() == -1) {
                     rbGsmpNo.setError("Harus dipilih");
                 }
+                if (rgBantuan.getCheckedRadioButtonId() == -1) {
+                    rbBantuanNo.setError("Harus dipilih");
+                }
                 if (
                         (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
                                 (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
                                 (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
                                 (!TextUtils.isEmpty(tiKoordinat.getText())) &&
-                                (!(rgGsmp.getCheckedRadioButtonId() == -1))
+                                (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
+                                (!(rgBantuan.getCheckedRadioButtonId() == -1))
                 ) {
                     int gsmp = 0;
                     if (rbGsmpYa.isChecked()) {
                         gsmp = 1;
+                    }
+                    int bantuan = 0;
+                    if (rbBantuanYa.isChecked()) {
+                        bantuan = 1;
                     }
                     String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
                     viewModel.updatePencacahan(
@@ -385,63 +408,65 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             tiNonMakananSebulan.getText().toString(),
                             gsmp,
                             tigsmpdesk.getText().toString(),
+                            bantuan,
+                            tibantuandesk.getText().toString(),
                             String.valueOf(currentLatitude),
                             String.valueOf(currentLongitude),
                             dsrt.getDurasi_pencacahan(),
-                            1
+                            3
                     );
 
-                    if (Integer.parseInt(tiJmlArt.getText().toString()) < dsrt.getJml_art_cacah()) {
-                        viewModel.nukeDsartbyId(
-                                dsrt.getTahun(),
-                                dsrt.getSemester(),
-                                dsrt.getKd_kab(),
-                                dsrt.getKd_kec(),
-                                dsrt.getKd_desa(),
-                                dsrt.getKd_bs(),
-                                dsrt.getNu_rt());
-                        List<Dsart> dsartList = new ArrayList<>();
-                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
-                            Dsart dsart = new Dsart(
-                                    dsrt.getTahun(),
-                                    dsrt.getSemester(),
-                                    dsrt.getKd_kab(),
-                                    dsrt.getKd_kec(),
-                                    dsrt.getKd_desa(),
-                                    dsrt.getKd_bs(),
-                                    dsrt.getNu_rt(),
-                                    i,
-                                    dsrt.getNks(),
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                            );
-                            dsartList.add(dsart);
-                        }
-                        viewModel.insertDsart(dsartList);
-                    } else if (Integer.parseInt(tiJmlArt.getText().toString()) > dsrt.getJml_art_cacah()) {
-                        List<Dsart> dsartList = new ArrayList<>();
-                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
-                            Dsart dsart = new Dsart(
-                                    dsrt.getTahun(),
-                                    dsrt.getSemester(),
-                                    dsrt.getKd_kab(),
-                                    dsrt.getKd_kec(),
-                                    dsrt.getKd_desa(),
-                                    dsrt.getKd_bs(),
-                                    dsrt.getNu_rt(),
-                                    i,
-                                    dsrt.getNks(),
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                            );
-                            dsartList.add(dsart);
-                        }
-                        viewModel.insertDsart(dsartList);
-                    }
+//                    if (Integer.parseInt(tiJmlArt.getText().toString()) < dsrt.getJml_art_cacah()) {
+//                        viewModel.nukeDsartbyId(
+//                                dsrt.getTahun(),
+//                                dsrt.getSemester(),
+//                                dsrt.getKd_kab(),
+//                                dsrt.getKd_kec(),
+//                                dsrt.getKd_desa(),
+//                                dsrt.getKd_bs(),
+//                                dsrt.getNu_rt());
+//                        List<Dsart> dsartList = new ArrayList<>();
+//                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
+//                            Dsart dsart = new Dsart(
+//                                    dsrt.getTahun(),
+//                                    dsrt.getSemester(),
+//                                    dsrt.getKd_kab(),
+//                                    dsrt.getKd_kec(),
+//                                    dsrt.getKd_desa(),
+//                                    dsrt.getKd_bs(),
+//                                    dsrt.getNu_rt(),
+//                                    i,
+//                                    dsrt.getNks(),
+//                                    null,
+//                                    null,
+//                                    null,
+//                                    null
+//                            );
+//                            dsartList.add(dsart);
+//                        }
+//                        viewModel.insertDsart(dsartList);
+//                    } else if (Integer.parseInt(tiJmlArt.getText().toString()) > dsrt.getJml_art_cacah()) {
+//                        List<Dsart> dsartList = new ArrayList<>();
+//                        for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
+//                            Dsart dsart = new Dsart(
+//                                    dsrt.getTahun(),
+//                                    dsrt.getSemester(),
+//                                    dsrt.getKd_kab(),
+//                                    dsrt.getKd_kec(),
+//                                    dsrt.getKd_desa(),
+//                                    dsrt.getKd_bs(),
+//                                    dsrt.getNu_rt(),
+//                                    i,
+//                                    dsrt.getNks(),
+//                                    null,
+//                                    null,
+//                                    null,
+//                                    null
+//                            );
+//                            dsartList.add(dsart);
+//                        }
+//                        viewModel.insertDsart(dsartList);
+//                    }
                     finish();
                 }
             }

@@ -142,12 +142,12 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private double currentLongitude, doneLongitude;
     private String lokasi = "";
 
-    private TextInputEditText tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk;
+    private TextInputEditText tiNamaKrt, tiJmlArt, tiMakananSebulan, tiNonMakananSebulan, tiKoordinat, tigsmpdesk, tibantuandesk;
 
     private TextView tiKdKab, tinamaKab, tiNks, tiNuRt;
     private Spinner spinnerStatusRumah;
-    private RadioButton rbGsmpYa, rbGsmpNo;
-    private RadioGroup rgGsmp;
+    private RadioButton rbGsmpYa, rbGsmpNo, rbBantuanYa, rbBantuanNo;
+    private RadioGroup rgGsmp, rgBantuan;
     private AppCompatButton batalBtn, simpanBtn, getLocationBtn, getFotoBtn;
     private ViewModel viewModel;
     TextView timerText, jamMulai, jamSelesai;
@@ -163,7 +163,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
     private Calendar calendar;
     private Date dateMulai, dateSelesai, dateDurasi;
     private SimpleDateFormat dateFormatTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-    private String stringJamMulai, stringJamSelesai;
+    private String stringJamMulai, stringJamSelesai, stringDurasi;
 
     String currentPhotoPath;
     File photoFile = null;
@@ -201,6 +201,10 @@ public class InputPencacahanActivity extends AppCompatActivity {
         rbGsmpYa = findViewById(R.id.radioBtnGsmpYa);
         rbGsmpNo = findViewById(R.id.radioBtnGsmpNo);
         tigsmpdesk = findViewById(R.id.input_gsmp_desk);
+        rgBantuan = findViewById(R.id.rgBantuan);
+        rbBantuanYa = findViewById(R.id.radioBtnBantuanYa);
+        rbBantuanNo = findViewById(R.id.radioBtnBantuanNo);
+        tibantuandesk = findViewById(R.id.input_bantuan_desk);
         simpanBtn = findViewById(R.id.simpanPencacahanDsrt);
         getLocationBtn = findViewById(R.id.getLocationBtn);
         tiKoordinat = findViewById(R.id.inputLocation);
@@ -218,8 +222,10 @@ public class InputPencacahanActivity extends AppCompatActivity {
 
         if (!dsrt.getNama_krt_cacah().isEmpty() && !dsrt.getNama_krt_cacah().equals("null")) {
             tiNamaKrt.setText(dsrt.getNama_krt_cacah());
-        } else {
+        } else if (!dsrt.getNama_krt_prelist().isEmpty() && !dsrt.getNama_krt_prelist().equals("null")) {
             tiNamaKrt.setText(dsrt.getNama_krt_prelist());
+        } else {
+            tiNamaKrt.setText("");
         }
 
 //        if (dsrt.getFoto() != null && !dsrt.getFoto().equals("null")) {
@@ -232,15 +238,33 @@ public class InputPencacahanActivity extends AppCompatActivity {
 //            }
 //        }
 
-        if (dsrt.getJam_mulai() != null && !dsrt.getJam_mulai().equals("null")) {
-            jamMulai.setText(dsrt.getJam_mulai());
+        if (dsrt.getJam_mulai() == null || dsrt.getJam_mulai().equals("null")) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+            alertDialogBuilder.setTitle("SIEMAS 2024");
+            alertDialogBuilder.setMessage("Apakah Anda yakin ingin melakukan input pencacahan? Waktu mulai pencacahan akan disimpan secara otomatis.");
+            alertDialogBuilder.setCancelable(false);
+            alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int i) {
+                    waktu_mulaiBtn.performClick();
+                }
+            });
+            alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
-        if (dsrt.getJam_selesai() != null && !dsrt.getJam_selesai().equals("null")) {
-            jamSelesai.setText(dsrt.getJam_selesai());
-        }
-        if (dsrt.getDurasi_pencacahan() != null && !dsrt.getDurasi_pencacahan().equals("null")) {
-            timerText.setText(dsrt.getDurasi_pencacahan());
-        }
+//        if (dsrt.getJam_mulai() != null && !dsrt.getJam_mulai().equals("null")) {
+//            jamMulai.setText(dsrt.getJam_mulai());
+//        }
+//        if (dsrt.getJam_selesai() != null && !dsrt.getJam_selesai().equals("null")) {
+//            jamSelesai.setText(dsrt.getJam_selesai());
+//        }
+//        if (dsrt.getDurasi_pencacahan() != null && !dsrt.getDurasi_pencacahan().equals("null")) {
+//            timerText.setText(dsrt.getDurasi_pencacahan());
+//        }
 
         tiMakananSebulan.addTextChangedListener(new TextWatcher() {
             private String setEditRupiah = tiMakananSebulan.getText().toString().trim();
@@ -340,61 +364,99 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 if (rgGsmp.getCheckedRadioButtonId() == -1) {
                     rbGsmpNo.setError("Harus dipilih");
                 }
+                if (rgBantuan.getCheckedRadioButtonId() == -1) {
+                    rbBantuanNo.setError("Harus dipilih");
+                }
                 if ((!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                         (!TextUtils.isEmpty(tiJmlArt.getText())) &&
                         (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
                         (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
                         (!TextUtils.isEmpty(tiKoordinat.getText())) &&
                         (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
+                        (!(rgBantuan.getCheckedRadioButtonId() == -1)) &&
                         ((spinnerStatusRumah != null)) &&
                         (spinnerStatusRumah.getSelectedItem() != null)
                 ) {
-                    getDoneLocation();
-                    int gsmp = 0;
-                    if (rbGsmpYa.isChecked()) {
-                        gsmp = 1;
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
+                    if (dsrt.getJam_selesai() != null && !dsrt.getJam_selesai().equals("null")) {
+                        alertDialogBuilder.setMessage("Apakah Anda yakin ingin menyimpan hasil input pencacahan?");
+                    } else {
+                        alertDialogBuilder.setMessage("Apakah Anda yakin ingin menyimpan hasil input pencacahan? Waktu selesai pencacahan akan disimpan secara otomatis.");
                     }
-                    String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
-                    viewModel.updatePencacahan(
-                            dsrt.getId(),
-                            tiNamaKrt.getText().toString(),
-                            Integer.parseInt(tiJmlArt.getText().toString()),
-                            statusRumah,
-                            tiMakananSebulan.getText().toString(),
-                            tiNonMakananSebulan.getText().toString(),
-                            gsmp,
-                            tigsmpdesk.getText().toString(),
-                            String.valueOf(currentLatitude),
-                            String.valueOf(currentLongitude),
-                            timerText.getText().toString(),
-                            1
-                    );
-                    viewModel.updateLokasiSelesai(dsrt.getId(), String.valueOf(doneLatitude), String.valueOf(doneLongitude));
-                    List<Dsart> dsartList = new ArrayList<>();
-                    for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
-                        Dsart dsart = new Dsart(
-                                dsrt.getTahun(),
-                                dsrt.getSemester(),
-                                dsrt.getKd_kab(),
-                                dsrt.getKd_kec(),
-                                dsrt.getKd_desa(),
-                                dsrt.getKd_bs(),
-                                dsrt.getNu_rt(),
-                                i,
-                                dsrt.getNks(),
-                                null,
-                                null,
-                                null,
-                                null
-                        );
-                        dsartList.add(dsart);
-                    }
-                    viewModel.insertDsart(dsartList);
-                    finish();
-
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int i) {
+                            if (dsrt.getJam_mulai() == null || dsrt.getJam_mulai().equals("null")) {
+                                viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
+                            }
+                            if (dsrt.getJam_selesai() == null || dsrt.getJam_selesai().equals("null")) {
+                                waktu_selesaiBtn.performClick();
+                                viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
+                            }
+                            if (dsrt.getDurasi_pencacahan() == null || dsrt.getDurasi_pencacahan().equals("null")) {
+                                viewModel.updateDurasiPencacahan(dsrt.getId(), stringDurasi);
+                            }
+                            getDoneLocation();
+                            int gsmp = 0;
+                            if (rbGsmpYa.isChecked()) {
+                                gsmp = 1;
+                            }
+                            int bantuan = 0;
+                            if (rbBantuanYa.isChecked()) {
+                                bantuan = 1;
+                            }
+                            String statusRumah = spinnerStatusRumah.getSelectedItem().toString();
+                            viewModel.updatePencacahan(
+                                    dsrt.getId(),
+                                    tiNamaKrt.getText().toString(),
+                                    Integer.parseInt(tiJmlArt.getText().toString()),
+                                    statusRumah,
+                                    tiMakananSebulan.getText().toString(),
+                                    tiNonMakananSebulan.getText().toString(),
+                                    gsmp,
+                                    tigsmpdesk.getText().toString(),
+                                    bantuan,
+                                    tibantuandesk.getText().toString(),
+                                    String.valueOf(currentLatitude),
+                                    String.valueOf(currentLongitude),
+                                    timerText.getText().toString(),
+                                    3
+                            );
+                            viewModel.updateLokasiSelesai(dsrt.getId(), String.valueOf(doneLatitude), String.valueOf(doneLongitude));
+//                            List<Dsart> dsartList = new ArrayList<>();
+//                            for (int i = 1; i <= Integer.parseInt(tiJmlArt.getText().toString()); i++) {
+//                                Dsart dsart = new Dsart(
+//                                        dsrt.getTahun(),
+//                                        dsrt.getSemester(),
+//                                        dsrt.getKd_kab(),
+//                                        dsrt.getKd_kec(),
+//                                        dsrt.getKd_desa(),
+//                                        dsrt.getKd_bs(),
+//                                        dsrt.getNu_rt(),
+//                                        i,
+//                                        dsrt.getNks(),
+//                                        null,
+//                                        null,
+//                                        null,
+//                                        null
+//                                );
+//                                dsartList.add(dsart);
+//                            }
+//                            viewModel.insertDsart(dsartList);
+                            finish();
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-                    alertDialogBuilder.setTitle("SIEMAS 2022");
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
                     alertDialogBuilder.setMessage("Ada isian yang belum terisi. Pastikan semua isian terisi!");
                     alertDialogBuilder.setCancelable(false);
 
@@ -464,7 +526,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 dateMulai = calendar.getTime();
                 stringJamMulai = dateFormatTime.format(dateMulai);
                 jamMulai.setText("Mulai: " + stringJamMulai);
-                viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
+//                viewModel.updateJamMulai(dsrt.getId(), stringJamMulai);
             }
         });
         waktu_selesaiBtn.setOnClickListener(new View.OnClickListener() {
@@ -474,7 +536,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 dateSelesai = calendar.getTime();
                 stringJamSelesai = dateFormatTime.format(dateSelesai);
                 jamSelesai.setText("Selesai: " + stringJamSelesai);
-                viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
+//                viewModel.updateJamSelesai(dsrt.getId(), stringJamSelesai);
 
                 long longDurasi = dateSelesai.getTime() - dateMulai.getTime();
                 long difference_In_Seconds
@@ -491,8 +553,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
                         = (longDurasi
                         / (1000 * 60 * 60))
                         % 24;
-                String stringDurasi = difference_In_Hours + ":" + difference_In_Minutes + ":" + difference_In_Seconds;
-                viewModel.updateDurasiPencacahan(dsrt.getId(), stringDurasi);
+                stringDurasi = difference_In_Hours + ":" + difference_In_Minutes + ":" + difference_In_Seconds;
+//                viewModel.updateDurasiPencacahan(dsrt.getId(), stringDurasi);
                 timerText.setText(stringDurasi);
             }
         });
@@ -504,7 +566,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
         for (int i = 0; i < statusRumahList.size(); i++) {
             namaStatusRumah.add(statusRumahList.get(i).getStatus_rumah());
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, namaStatusRumah);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, namaStatusRumah);
         spinnerStatusRumah.setAdapter(spinnerAdapter);
     }
 

@@ -422,7 +422,7 @@ public class InputPemeriksaanPclActivity extends AppCompatActivity {
 
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(InputPemeriksaanPclActivity.this);
-                    alertDialogBuilder.setTitle("SIEMAS 2022");
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
                     alertDialogBuilder.setMessage("Ada isian yang belum terisi. Pastikan semua isian terisi!");
                     alertDialogBuilder.setCancelable(false);
 

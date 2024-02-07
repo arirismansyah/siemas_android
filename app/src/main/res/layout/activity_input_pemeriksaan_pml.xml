@@ -271,6 +271,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -301,6 +302,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -451,6 +453,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -480,6 +483,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -509,6 +513,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -538,6 +543,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -567,6 +573,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"                            >
@@ -601,6 +608,7 @@
                         </Spinner>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" >
@@ -632,6 +640,7 @@
                             android:spinnerMode="dialog"></Spinner>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -660,6 +669,7 @@
                         </com.google.android.material.textfield.TextInputEditText>
                     </TableRow>
                     <TableRow
+                        android:visibility="gone"
                         android:gravity="center_vertical"                            >
                         <TextView
                             android:layout_width="120dp"
@@ -695,6 +705,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

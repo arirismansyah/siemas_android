@@ -478,6 +478,11 @@ public class Repository {
                                 gsmp = ob.getInt("gsmp");
                             }
 
+                            int bantuan = 0;
+                            if (!ob.getString("bantuan").equals("null")) {
+                                bantuan = ob.getInt("bantuan");
+                            }
+
                             int jml_komoditas_makanan = 0 ;
                             if (!ob.getString("jml_komoditas_makanan").equals("null")) {
                                 jml_komoditas_makanan = ob.getInt("jml_komoditas_makanan");
@@ -523,6 +528,8 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
+                                    bantuan,
+                                    ob.getString("bantuan_desk"),
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -634,10 +641,17 @@ public class Repository {
                             if (!ob.getString("gsmp").equals("null")) {
                                 gsmp = ob.getInt("gsmp");
                             }
+
+                            int bantuan = 0;
+                            if (!ob.getString("bantuan").equals("null")) {
+                                bantuan = ob.getInt("bantuan");
+                            }
+
 //                            int status_res = 0 ;
 //                            if (!ob.getString("status_res").equals("null")) {
 //                                gsmp = ob.getInt("status_res");
 //                            }
+
                             int jml_komoditas_makanan = 0 ;
                             if (!ob.getString("jml_komoditas_makanan").equals("null")) {
                                 jml_komoditas_makanan = ob.getInt("jml_komoditas_makanan");
@@ -683,6 +697,8 @@ public class Repository {
                                     luas_lantai,
                                     gsmp,
                                     ob.getString("gsmp_desk"),
+                                    bantuan,
+                                    ob.getString("bantuan_desk"),
                                     ob.getString("latitude"),
                                     ob.getString("longitude"),
                                     ob.getString("latitude_selesai"),
@@ -835,6 +851,68 @@ public class Repository {
     public List<Dsrt> getListDsrtByIdBs(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs ){
         try {
             return new getListDsrtByIdBsAsync(dsrtDao).execute(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // get list dsrt by status foto
+    public static class getListDsrtByStatusFotoAsync extends AsyncTask<Object, Void, List<Foto>> {
+        private FotoDao fotoDao;
+
+        public getListDsrtByStatusFotoAsync(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
+
+        @Override
+        protected List<Foto> doInBackground(Object... objects) {
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return fotoDao.getListDsrtByStatusFoto(status, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
+        }
+    }
+    public List<Foto> getListDsrtByStatusFoto(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
+        try {
+            return new getListDsrtByStatusFotoAsync(fotoDao).execute(status_foto, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // get list dsrt by status foto not
+    public static class getListDsrtByStatusFotoNotAsync extends AsyncTask<Object, Void, List<Foto>> {
+        private FotoDao fotoDao;
+
+        public getListDsrtByStatusFotoNotAsync(FotoDao fotoDao) {
+            this.fotoDao = fotoDao;
+        }
+
+        @Override
+        protected List<Foto> doInBackground(Object... objects) {
+            int status = (int) objects[0];
+            String tahun = (String) objects[1];
+            int semester = (int) objects[2];
+            String kd_kab = (String) objects[3];
+            String kd_kec = (String) objects[4];
+            String kd_desa = (String) objects[5];
+            String kd_bs = (String) objects[6];
+            return fotoDao.getListDsrtByStatusFotoNot(status, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
+        }
+    }
+    public List<Foto> getListDsrtByStatusFotoNot(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
+        try {
+            return new getListDsrtByStatusFotoNotAsync(fotoDao).execute(status_foto, tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -1088,18 +1166,20 @@ public class Repository {
             String nonMakananSebulan = (String) objects[5];
             int gsmp = (int) objects[6];
             String gsmp_desk = (String) objects[7];
-            String latitude = (String) objects[8];
-            String longitude = (String) objects[9];
-            String durasi = (String) objects[10];
-            int statusPencacahan = (int) objects[11];
-            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, statusPencacahan);
+            int bantuan = (int) objects[8];
+            String bantuan_desk = (String) objects[9];
+            String latitude = (String) objects[10];
+            String longitude = (String) objects[11];
+            String durasi = (String) objects[12];
+            int statusPencacahan = (int) objects[13];
+            dsrtDao.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, gsmp_desk, bantuan, bantuan_desk, latitude, longitude, durasi, statusPencacahan);
             return null;
         }
     }
 
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah, String makananSebulan, String nonMakananSebulan, int
-            gsmp,String gsmp_desk, String latitude, String longitude, String durasi, int statusPencacahan){
-        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp,gsmp_desk, latitude, longitude, durasi, statusPencacahan);
+            gsmp, String gsmp_desk, int bantuan, String bantuan_desk, String latitude, String longitude, String durasi, int statusPencacahan){
+        new updatePencacahanAsync(dsrtDao).execute(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan, nonMakananSebulan, gsmp, gsmp_desk, bantuan, bantuan_desk, latitude, longitude, durasi, statusPencacahan);
     }
 
     // update pemeriksaan pcl

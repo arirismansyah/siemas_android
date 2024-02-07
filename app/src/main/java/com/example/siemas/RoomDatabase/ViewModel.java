@@ -104,6 +104,14 @@ public class ViewModel extends AndroidViewModel {
         return repository.getListDsrtByIdBsStatusUp(status_pencacahan,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
+    public List<Foto> getListDsrtByStatusFoto(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
+        return repository.getListDsrtByStatusFoto(status_foto,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
+    }
+
+    public List<Foto> getListDsrtByStatusFotoNot(int status_foto, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
+        return repository.getListDsrtByStatusFotoNot(status_foto,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
+    }
+
     public Foto getFotoById(Integer idDsrt) {
         return repository.getFotoById(idDsrt);
     }
@@ -125,10 +133,10 @@ public class ViewModel extends AndroidViewModel {
     // update pencacahan
     public void updatePencacahan(int idDsrt, String namaKrt, int jmlArt, String statusRumah,
                                  String makananSebulan, String nonMakananSebulan,
-                                 int gsmp, String gsmp_desk, String latitude, String longitude,
+                                 int gsmp, String gsmp_desk, int bantuan, String bantuan_desk, String latitude, String longitude,
                                  String durasi, int statusPencacahan) {
         repository.updatePencacahan(idDsrt, namaKrt, jmlArt, statusRumah, makananSebulan,
-                nonMakananSebulan, gsmp, gsmp_desk, latitude, longitude, durasi, statusPencacahan);
+                nonMakananSebulan, gsmp, gsmp_desk, bantuan, bantuan_desk, latitude, longitude, durasi, statusPencacahan);
     }
 
     // update pemeriksaan

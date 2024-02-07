@@ -54,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -106,7 +107,7 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
         holder.tvNuRt.setText("No Urut Ruta: " + String.valueOf(currentFoto.getNu_rt()));
         holder.tvNks.setText("NKS: " + currentFoto.getNks());
 
-        if (!currentFoto.getFoto().equals("null")) {
+        if (currentFoto.getFoto() != null) {
             try {
                 byte[] imageBytes = currentFoto.getFoto();
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -128,6 +129,12 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
         if (status_foto == 1) {
             holder.statusDsrt.setImageResource(R.drawable.ic_tag_saved);
             holder.tvStatusFoto.setText("Sudah Upload");
+            holder.tvStatusFoto.getBackground().setTint(ContextCompat.getColor(holder.tvStatusFoto.getContext(), R.color.teal_200));
+            holder.uploadBtn.setBackgroundColor(ContextCompat.getColor(holder.uploadBtn.getContext(), R.color.teal_200));
+        }
+        if (status_foto == 2) {
+            holder.statusDsrt.setImageResource(R.drawable.ic_tag_saved);
+            holder.tvStatusFoto.setText("Tersimpan di Server");
             holder.tvStatusFoto.getBackground().setTint(ContextCompat.getColor(holder.tvStatusFoto.getContext(), R.color.teal_200));
             holder.uploadBtn.setBackgroundColor(ContextCompat.getColor(holder.uploadBtn.getContext(), R.color.teal_200));
         }
@@ -228,9 +235,9 @@ public class FotoDsrtAdapter extends RecyclerView.Adapter<FotoDsrtAdapter.ViewHo
             uploadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (foto.getFoto().equals(null)) {
+                    if (Objects.requireNonNull(foto.getFoto()).length == 0) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
-                        alertDialogBuilder.setTitle("SIEMAS 2022");
+                        alertDialogBuilder.setTitle("SIEMAS 2024");
                         alertDialogBuilder.setMessage("Untuk dapat melakukan upload input terlebih dahulu foto!");
                         alertDialogBuilder.setCancelable(false);
                         alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {

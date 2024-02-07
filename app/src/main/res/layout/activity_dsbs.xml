@@ -199,6 +199,7 @@
             ></androidx.appcompat.widget.AppCompatButton>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/syncDsart"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
