@@ -125,13 +125,15 @@ public class Input212Activity extends AppCompatActivity {
             public void onClick(View view) {
                 String stringDate = dateFormatDate.format(new Date());
                 Jadwal212 jadwal212 = viewModel.getJadwalByTanggal(stringDate);
-                Boolean b = !Objects.isNull(jadwal212);
-                if (b){
-                    Intent intent = new Intent(Input212Activity.this, FormInput212Activity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Sekarang belum waktunya pelaporan 212", Toast.LENGTH_SHORT).show();
-                }
+//                Boolean b = !Objects.isNull(jadwal212);
+//                if (b){
+//                    Intent intent = new Intent(Input212Activity.this, FormInput212Activity.class);
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Sekarang belum waktunya pelaporan 212", Toast.LENGTH_SHORT).show();
+//                }
+                Intent intent = new Intent(Input212Activity.this, FormInput212Activity.class);
+                startActivity(intent);
             }
         });
     }

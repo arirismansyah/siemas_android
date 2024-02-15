@@ -31,6 +31,9 @@ public interface DsrtDao {
     @Query("Select *  FROM dsrt WHERE tahun = :tahun AND semester = :semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND nu_rt = :nu_rt")
     Dsrt getDsrtByIdBSNuRt(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nu_rt);
 
+    @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt WHERE status_pencacahan > :status_pencacahan_lw AND status_pencacahan < :status_pencacahan_up AND tahun = :tahun AND semester = :semester")
+    List<Dsrt> getListDsrtByStatus(int status_pencacahan_lw, int status_pencacahan_up, String tahun, int semester);
+
     @Query("Select id, tahun, semester, kd_kab,nama_kab, kd_kec, nama_kec, kd_desa, nama_desa, kd_bs, nu_rt, nks,  nama_krt_cacah, status_pencacahan, jml_art_prelist, jml_art_cacah, jml_komoditas_makanan,jml_komoditas_nonmakanan,art_sekolah,art_bpjs,luas_lantai, gsmp, bantuan  FROM dsrt WHERE status_pencacahan < :status_pencacahan AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs =:kd_bs AND tahun = :tahun AND semester = :semester")
     List<Dsrt> getListDsrtByIdBsStatusLw(int status_pencacahan, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs);
 

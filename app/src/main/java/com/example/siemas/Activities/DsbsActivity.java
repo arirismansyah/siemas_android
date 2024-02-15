@@ -1,10 +1,12 @@
 package com.example.siemas.Activities;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.siemas.Adapter.TableDsbsAdapter;
 import com.example.siemas.R;
 import com.example.siemas.RoomDatabase.Entities.Dsbs;
+import com.example.siemas.RoomDatabase.Entities.Dsrt;
 import com.example.siemas.RoomDatabase.Entities.Periode;
 import com.example.siemas.RoomDatabase.Entities.User;
 import com.example.siemas.RoomDatabase.ViewModel;
@@ -25,11 +28,12 @@ import java.util.List;
 public class DsbsActivity extends AppCompatActivity {
     TextView tvKdProv, tvKdKab, tvNamaProv, tvNamaKab;
     ViewModel viewModel;
-    Button syncDsbs, syncDsrt, syncDsart;
+    Button syncAll, syncDsbs, syncDsrt, syncDsart;
     User user;
     RecyclerView recyclerView;
     TableDsbsAdapter adapter;
     private List<Periode> periodeList;
+    private List<Dsrt> dsrtListBelumUpload;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,7 @@ public class DsbsActivity extends AppCompatActivity {
         tvNamaProv = findViewById(R.id.tvNamaProv);
         tvKdKab = findViewById(R.id.tvKdKab);
         tvNamaKab = findViewById(R.id.tvNamakab);
+        syncAll = findViewById(R.id.syncAll);
         syncDsbs = findViewById(R.id.syncDsbs);
         syncDsrt = findViewById(R.id.syncDsrt);
         syncDsart = findViewById(R.id.syncDsart);
@@ -70,6 +75,30 @@ public class DsbsActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Dsbs> dsbs) {
                 adapter.setListDsbs(dsbs);
+            }
+        });
+
+        syncAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dsrtListBelumUpload = viewModel.getListDsrtByStatus(1, 4, periodeList.get(0).getTahun(), periodeList.get(0).getSemester());
+                if (dsrtListBelumUpload.size() > 0) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
+                    alertDialogBuilder.setMessage("Mohon upload seluruh data lokal yang sudah diedit sebelum melakukan sinkronisasi!");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    viewModel.getDsbsPclFromApi(DsbsActivity.this, user.getEmail(), user.getToken());
+                    viewModel.getDsrtPclFromApi(DsbsActivity.this, user.getEmail(), user.getToken());
+                }
             }
         });
 

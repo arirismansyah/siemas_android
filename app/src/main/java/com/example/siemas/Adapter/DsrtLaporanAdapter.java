@@ -4,6 +4,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,11 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.siemas.Activities.MainActivity;
 import com.example.siemas.ImageResizer;
 import com.example.siemas.InterfaceApi;
 import com.example.siemas.R;
@@ -93,15 +96,15 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
             holder.tvStatusLaporan.setText("Tersimpan");
             holder.tvStatusLaporan.getBackground().setTint(ContextCompat.getColor(holder.tvStatusLaporan.getContext(), R.color.orange));
             holder.ivTagStatus.setImageResource(R.drawable.ic_tag_savedlocal);
-            holder.uploadBtn.setBackgroundColor(ContextCompat.getColor(holder.uploadBtn.getContext(), R.color.teal_200));
+            holder.uploadBtn.setBackgroundColor(ContextCompat.getColor(holder.uploadBtn.getContext(), R.color.dark));
         }
         if (status == 2) {
             holder.tvStatusLaporan.setText("Terupload");
             holder.tvStatusLaporan.getBackground().setTint(ContextCompat.getColor(holder.tvStatusLaporan.getContext(), R.color.teal_200));
             holder.ivTagStatus.setImageResource(R.drawable.ic_tag_saved);
             holder.uploadBtn.setBackgroundColor(ContextCompat.getColor(holder.uploadBtn.getContext(), R.color.teal_200));
+            holder.deleteBtn.setVisibility(View.GONE);
         }
-
     }
 
     @Override
@@ -117,7 +120,7 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvNbs, tvNks, tvNuRt, tvNamaKrt, tvStatusLaporan, tvTanggalLaporan;
         private ImageView ivTagStatus;
-        private AppCompatImageButton uploadBtn;
+        private AppCompatImageButton uploadBtn, deleteBtn;
         private Laporan212 laporan212;
         private User user;
 
@@ -130,7 +133,30 @@ public class DsrtLaporanAdapter extends RecyclerView.Adapter<DsrtLaporanAdapter.
             tvStatusLaporan = itemView.findViewById(R.id.tvStatusLaporan);
             ivTagStatus = itemView.findViewById(R.id.tagStatusDsrt);
             uploadBtn = itemView.findViewById(R.id.uploadBtn);
+            deleteBtn = itemView.findViewById(R.id.deleteBtn);
             tvTanggalLaporan = itemView.findViewById(R.id.tanggalLaporan);
+
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                    alertDialogBuilder.setTitle("SIEMAS 2024");
+                    alertDialogBuilder.setMessage("Anda yakin ingin menghapus laporan ini?");
+                    alertDialogBuilder.setCancelable(false);
+                    alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            viewModel.deleteLaporan(periodeList.get(0).getTahun(), periodeList.get(0).getSemester(),  laporan212.getKd_kab(), laporan212.getKd_kec(), laporan212.getKd_desa(), laporan212.getKd_bs(), laporan212.getNu_rt());
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+            });
 
             uploadBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

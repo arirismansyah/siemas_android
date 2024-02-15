@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.npssumsel.siemas"
+        applicationId 'com.bpssumsel.siemas'
         minSdk 21
-        targetSdk 32
-        versionCode 15
+        targetSdk 33
+        versionCode 16
         versionName '2024.1a'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

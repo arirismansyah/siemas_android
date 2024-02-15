@@ -378,7 +378,7 @@ public class InputPemeriksaanPmlActivity extends AppCompatActivity {
 //                                (!TextUtils.isEmpty(tijml_kom_makanan.getText())) &&
 //                                (!TextUtils.isEmpty(tijml_kom_nonmakanan.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5.getText())) &&
-                                (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
+//                                (!TextUtils.isEmpty(tiRincian8_3.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian16_5_bypml.getText())) &&
                                 (!TextUtils.isEmpty(tiRincian8_3_bypml.getText()))
 //                                (!TextUtils.isEmpty(tiRincian304.getText())) &&

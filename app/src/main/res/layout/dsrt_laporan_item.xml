@@ -139,10 +139,24 @@
                     android:gravity="right"
                     >
                     <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/deleteBtn"
+                        android:padding="10dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_delete"
+                        android:background="@color/red"
+                        app:tint="@color/white"
+                        android:scaleType="fitCenter">
+
+                    </androidx.appcompat.widget.AppCompatImageButton>
+
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/uploadBtn"
                         android:padding="10dp"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:src="@drawable/ic_upload_outline"
                         android:background="@color/teal_700"
                         app:tint="@color/white"

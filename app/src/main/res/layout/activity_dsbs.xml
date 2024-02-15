@@ -171,6 +171,21 @@
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/syncAll"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:paddingHorizontal="15dp"
+            android:background="@drawable/bg_button"
+            android:backgroundTint="@color/dark"
+            android:text="Sinkronisasi"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="5dp"
+            ></androidx.appcompat.widget.AppCompatButton>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/syncDsbs"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -185,6 +200,7 @@
             ></androidx.appcompat.widget.AppCompatButton>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:visibility="gone"
             android:id="@+id/syncDsrt"
             android:layout_width="wrap_content"
             android:layout_height="50dp"

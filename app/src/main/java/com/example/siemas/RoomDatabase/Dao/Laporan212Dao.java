@@ -32,7 +32,7 @@ public interface Laporan212Dao {
     @Query("UPDATE laporan212 SET status = :status WHERE tahun =:tahun AND semester =:semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND  kd_bs = :kd_bs AND nu_rt = :nuRT")
     void updateStatus(int status, String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nuRT );
 
-    @Query("DELETE FROM laporan212 WHERE tahun =:tahun AND semester =:semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND  kd_kab = :kd_bs AND nu_rt = :nuRT")
+    @Query("DELETE FROM laporan212 WHERE tahun =:tahun AND semester =:semester AND kd_kab =:kd_kab AND kd_kec =:kd_kec AND kd_desa =:kd_desa AND kd_bs = :kd_bs AND nu_rt = :nuRT")
     int deleteLaporan(String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs, int nuRT);
 
     @Query("DELETE FROM laporan212")

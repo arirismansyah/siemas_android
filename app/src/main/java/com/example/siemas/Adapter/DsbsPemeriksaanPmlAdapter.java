@@ -50,6 +50,7 @@ public class DsbsPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsbsPemeriks
         holder.tvNamaKec.setText(currentDsbs.getNama_kec());
         holder.tvKdDesa.setText("["+currentDsbs.getKd_desa()+"]");
         holder.tvNamaDesa.setText(currentDsbs.getNama_desa());
+        holder.tvEmailPcl.setText(currentDsbs.getPencacah());
         periodeList = viewModel.getPeriode();
         dsrtListBelum = viewModel.getListDsrtByIdBsStatusLw( 5, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
         dsrtListSudah = viewModel.getListDsrtByIdBsStatusUp( 4, periodeList.get(0).getTahun(), periodeList.get(0).getSemester(), currentDsbs.getKd_kab(), currentDsbs.getKd_kec(), currentDsbs.getKd_desa(), currentDsbs.getKd_bs());
@@ -73,7 +74,7 @@ public class DsbsPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsbsPemeriks
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvIdBs, tvKdKab, tvNamaKab, tvKdKec, tvNamaKec, tvKdDesa, tvNamaDesa, tvDsrtBelum, tvDsrtSudah;
+        private TextView tvIdBs, tvKdKab, tvNamaKab, tvKdKec, tvNamaKec, tvKdDesa, tvNamaDesa, tvEmailPcl, tvDsrtBelum, tvDsrtSudah;
         private ImageView tagStatusBs;
 
         public ViewHolder(@NonNull View itemView) {
@@ -85,6 +86,7 @@ public class DsbsPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsbsPemeriks
             tvNamaKec = itemView.findViewById(R.id.NamaKec);
             tvKdDesa = itemView.findViewById(R.id.idDesa);
             tvNamaDesa = itemView.findViewById(R.id.NamaDesa);
+            tvEmailPcl = itemView.findViewById(R.id.EmailPcl);
             tagStatusBs = itemView.findViewById(R.id.tagStatusBs);
             tvDsrtBelum = itemView.findViewById(R.id.dsrtBelum);
             tvDsrtSudah = itemView.findViewById(R.id.dsrtSudah);

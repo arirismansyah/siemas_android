@@ -3,6 +3,7 @@ package com.example.siemas.Activities;
 import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -336,10 +337,47 @@ public class InputPencacahanActivity extends AppCompatActivity {
             }
         });
 
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                alertDialogBuilder.setTitle("SIEMAS 2024");
+                alertDialogBuilder.setMessage("Apakah Anda yakin ingin kembali? Data tidak akan disimpan.");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        finish();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        });
+
         batalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+                alertDialogBuilder.setTitle("SIEMAS 2024");
+                alertDialogBuilder.setMessage("Apakah Anda yakin ingin kembali? Data tidak akan disimpan.");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
+                        finish();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -370,7 +408,7 @@ public class InputPencacahanActivity extends AppCompatActivity {
                 if ((!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                         (!TextUtils.isEmpty(tiJmlArt.getText())) &&
                         (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
-                        (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
+//                        (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
                         (!TextUtils.isEmpty(tiKoordinat.getText())) &&
                         (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
                         (!(rgBantuan.getCheckedRadioButtonId() == -1)) &&
@@ -413,7 +451,8 @@ public class InputPencacahanActivity extends AppCompatActivity {
                                     Integer.parseInt(tiJmlArt.getText().toString()),
                                     statusRumah,
                                     tiMakananSebulan.getText().toString(),
-                                    tiNonMakananSebulan.getText().toString(),
+//                                    tiNonMakananSebulan.getText().toString(),
+                                    "Rp. 0",
                                     gsmp,
                                     tigsmpdesk.getText().toString(),
                                     bantuan,

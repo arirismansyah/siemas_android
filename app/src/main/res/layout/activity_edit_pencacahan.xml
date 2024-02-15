@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
-                        android:text="Rata-rata Pengeluaran Makanan Sebulan"
+                        android:text="Rata-rata Perkiraan Pengeluaran Sebulan"
                         android:textSize="16dp"
                         android:textStyle="bold"></TextView>
 
@@ -299,6 +299,7 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

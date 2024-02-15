@@ -145,23 +145,23 @@ public class MainActivityPML extends AppCompatActivity {
         });
 
         // MENU ALARM
-        CardView notifMenu = findViewById(R.id.notifMenu);
-        notifMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jadwal212List = mviewModel.getListJadwal();
-
-                if (jadwal212List.size()>0){
-                    for (int i = 0; i < jadwal212List.size(); i++) {
-                        String stringDate = jadwal212List.get(i).getTanggal();
-                        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
-                        setAlarm(stringDate);
-                    }
-                } else {
-                    Toast.makeText(MainActivityPML.this, "Silakan sync data terlebih dahulu untuk mendapatkan jadwal 212", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        CardView notifMenu = findViewById(R.id.notifMenu);
+//        notifMenu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                jadwal212List = mviewModel.getListJadwal();
+//
+//                if (jadwal212List.size()>0){
+//                    for (int i = 0; i < jadwal212List.size(); i++) {
+//                        String stringDate = jadwal212List.get(i).getTanggal();
+//                        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+//                        setAlarm(stringDate);
+//                    }
+//                } else {
+//                    Toast.makeText(MainActivityPML.this, "Silakan sync data terlebih dahulu untuk mendapatkan jadwal 212", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         // MENU PEMERIKSAAN
         CardView pemeriksaanMenu = findViewById(R.id.pemeriksaanMenu);

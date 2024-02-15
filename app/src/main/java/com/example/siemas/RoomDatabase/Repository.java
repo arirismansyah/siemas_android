@@ -921,6 +921,34 @@ public class Repository {
         return null;
     }
 
+    // get list dsrt by status pencacahan lower
+    public static class getListDsrtByStatusAsync extends AsyncTask<Object, Void, List<Dsrt>> {
+        private DsrtDao dsrtDao;
+
+        public getListDsrtByStatusAsync(DsrtDao dsrtDao) {
+            this.dsrtDao = dsrtDao;
+        }
+
+        @Override
+        protected List<Dsrt> doInBackground(Object... objects) {
+            int statuslw = (int) objects[0];
+            int statusup = (int) objects[1];
+            String tahun = (String) objects[2];
+            int semester = (int) objects[3];
+            return dsrtDao.getListDsrtByStatus(statuslw, statusup, tahun, semester);
+        }
+    }
+    public List<Dsrt> getListDsrtByStatus(int status_pencacahan_lw, int status_pencacahan_up, String tahun, int semester) {
+        try {
+            return new getListDsrtByStatusAsync(dsrtDao).execute(status_pencacahan_lw, status_pencacahan_up, tahun, semester).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     // get list dsrt by idBs and status pencacahan lower
     public static class getListDsrtByIdBsStatusLwAsync extends AsyncTask<Object, Void, List<Dsrt>> {
         private DsrtDao dsrtDao;

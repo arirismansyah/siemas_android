@@ -99,7 +99,7 @@ public class DsrtPemeriksaanPmlAdapter extends RecyclerView.Adapter<DsrtPemeriks
             holder.tvDurasi.setText("-");
         }
 
-        if (statusPencacahan < 5) {
+        if (statusPencacahan <= 5) {
             holder.statusDsrt.setImageResource(R.drawable.ic_tag_notyet);
             holder.tvStatusPemeriksaanPml.setText("Belum");
             holder.tvStatusPemeriksaanPml.getBackground().setTint(ContextCompat.getColor(holder.tvStatusPemeriksaanPml.getContext(), R.color.red));

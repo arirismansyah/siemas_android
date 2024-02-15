@@ -96,6 +96,10 @@ public class ViewModel extends AndroidViewModel {
         return repository.getLiveDataDsrtByIdBs(tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }
 
+    public List<Dsrt> getListDsrtByStatus(int status_pencacahan_lw, int status_pencacahan_up, String tahun, int semester) {
+        return repository.getListDsrtByStatus(status_pencacahan_lw, status_pencacahan_up,  tahun, semester);
+    }
+
     public List<Dsrt> getListDsrtByIdBsStatusLw(int status_pencacahan,String tahun, int semester, String kd_kab, String kd_kec, String kd_desa, String kd_bs) {
         return repository.getListDsrtByIdBsStatusLw(status_pencacahan,tahun, semester, kd_kab, kd_kec, kd_desa, kd_bs);
     }

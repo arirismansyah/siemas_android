@@ -369,9 +369,9 @@ public class EditPencacahanActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(tiMakananSebulan.getText())) {
                     tiMakananSebulan.setError("Tidak boleh kosong");
                 }
-                if (TextUtils.isEmpty(tiNonMakananSebulan.getText())) {
-                    tiNonMakananSebulan.setError("Tidak boleh kosong");
-                }
+//                if (TextUtils.isEmpty(tiNonMakananSebulan.getText())) {
+//                    tiNonMakananSebulan.setError("Tidak boleh kosong");
+//                }
                 if (TextUtils.isEmpty(tiKoordinat.getText())) {
                     tiKoordinat.setError("Tidak boleh kosong");
                 }
@@ -385,7 +385,7 @@ public class EditPencacahanActivity extends AppCompatActivity {
                         (!TextUtils.isEmpty(tiNamaKrt.getText())) &&
                                 (!TextUtils.isEmpty(tiJmlArt.getText())) &&
                                 (!TextUtils.isEmpty(tiMakananSebulan.getText())) &&
-                                (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
+//                                (!TextUtils.isEmpty(tiNonMakananSebulan.getText())) &&
                                 (!TextUtils.isEmpty(tiKoordinat.getText())) &&
                                 (!(rgGsmp.getCheckedRadioButtonId() == -1)) &&
                                 (!(rgBantuan.getCheckedRadioButtonId() == -1))
@@ -405,7 +405,8 @@ public class EditPencacahanActivity extends AppCompatActivity {
                             Integer.parseInt(tiJmlArt.getText().toString()),
                             statusRumah,
                             tiMakananSebulan.getText().toString(),
-                            tiNonMakananSebulan.getText().toString(),
+//                            tiNonMakananSebulan.getText().toString(),
+                            "Rp. 0",
                             gsmp,
                             tigsmpdesk.getText().toString(),
                             bantuan,
